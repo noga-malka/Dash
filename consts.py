@@ -1,11 +1,5 @@
 class Sensors:
-    TEMP1 = 'temp1'
-    TEMP2 = 'temp2'
-    TEMP3 = 'temp3'
-    TEMP4 = 'temp4'
-    TEMP5 = 'temp5'
-
-    ALL = [TEMP1, TEMP2, TEMP3, TEMP4, TEMP5]
+    ALL = ['CO2 sensor CO2', 'CO2 sensor Temp', 'CO2 sensor Hum', 'HTU21DF sensor Temp', 'HTU21DF sensor Humidity']
 
 
 class DashConsts:
@@ -23,3 +17,8 @@ class DataConsts:
     SENSOR = 'sensor'
     TIME = 'time'
     VALUE = 'value'
+
+
+class Uart:
+    BAUDRATE = 115200
+    TIMEOUT = 1
