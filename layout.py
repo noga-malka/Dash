@@ -15,7 +15,9 @@ def make_layout():
                 [
                     html.H1(children='Sensors'),
                     dcc.Checklist(GraphConsts.ALL, labelStyle={'margin': '5px'}, id=TagIds.CHECKLIST,
-                                  value=GraphConsts.ALL)
+                                  value=GraphConsts.ALL),
+                    dcc.Slider(1, 20, marks={i: f'{i} minutes' for i in [1, 5, 10, 15, 20]}, value=5,
+                               id=TagIds.RANGE),
                 ],
                 style={'text-align': 'center'}),
             dcc.Tabs(id=TagIds.TABS, value='linear',

@@ -12,6 +12,7 @@ class DashConsts:
 
 
 class TagIds:
+    RANGE = 'range'
     CHECKLIST = 'checklist'
     TABS = 'tabs'
     INTERVAL = 'interval'
