@@ -17,3 +17,9 @@ class TagIds:
     TABS = 'tabs'
     INTERVAL = 'interval'
     GRAPH = 'graph'
+
+
+class DataConsts:
+    SENSOR = 'sensor'
+    TIME = 'time'
+    VALUE = 'value'
