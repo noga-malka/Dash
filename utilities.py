@@ -15,5 +15,5 @@ def save_serial_data(handler: SerialHandler):
                  DataConsts.VALUE: float(data[index + 1])}
                 for index in range(0, len(data), 2)]
             realtime.add(sample)
-        except KeyError:
+        except (KeyError, IndexError):
             pass
