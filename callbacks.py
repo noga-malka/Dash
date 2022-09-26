@@ -25,5 +25,7 @@ def update_graph_live(selected_sensors, tab, intervals):
         else:
             fig = px.bar(data[data[DataConsts.TIME] == data[DataConsts.TIME].max()],
                          x=DataConsts.SENSOR, y=DataConsts.VALUE, color=DataConsts.SENSOR, text=DataConsts.VALUE)
+            fig.update_traces(textfont_size=24)
+        fig.update_layout(font=dict(size=18))
         figures.append(fig)
     return figures
