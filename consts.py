@@ -1,5 +1,10 @@
-class Sensors:
-    ALL = ['CO2 sensor CO2', 'CO2 sensor Temp', 'CO2 sensor Hum', 'HTU21DF sensor Temp', 'HTU21DF sensor Humidity']
+class GraphConsts:
+    FIGURES = [
+        ['CO2 sensor Temp', 'HTU21DF sensor Temp'],
+        ['CO2 sensor Hum', 'HTU21DF sensor Humidity'],
+        ['CO2 sensor CO2'],
+    ]
+    ALL = sum(FIGURES, [])
 
 
 class DashConsts:

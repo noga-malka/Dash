@@ -1,14 +1,21 @@
 from dash import html, dcc
-from consts import Sensors, TagIds
+
+from consts import GraphConsts, TagIds
 
 
 def make_layout():
+    graphs = []
+    for index in range(len(GraphConsts.FIGURES)):
+        graphs += [
+            dcc.Graph(id=f'{TagIds.GRAPH}_{index}')
+        ]
     return html.Div(
         [
             html.Div(
                 [
                     html.H1(children='Sensors'),
-                    dcc.Checklist(Sensors.ALL, labelStyle={'margin': '5px'}, id=TagIds.CHECKLIST, value=Sensors.ALL)
+                    dcc.Checklist(GraphConsts.ALL, labelStyle={'margin': '5px'}, id=TagIds.CHECKLIST,
+                                  value=GraphConsts.ALL)
                 ],
                 style={'text-align': 'center'}),
             dcc.Tabs(id=TagIds.TABS, value='linear',
@@ -16,8 +23,7 @@ def make_layout():
                          dcc.Tab(label='Linear Graph', value='linear'),
                          dcc.Tab(label='Bar Graph', value='bar'),
                      ]),
-            dcc.Graph(id=TagIds.GRAPH),
-
+            *graphs,
             dcc.Interval(
                 id=TagIds.INTERVAL,
                 interval=1000,  # in milliseconds
