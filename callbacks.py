@@ -3,7 +3,7 @@ import random
 import pandas
 from dash import Output, Input
 
-from consts import Sensors, DashConsts
+from consts import Sensors, DashConsts, TagIds
 from realtime_data import realtime
 import plotly.express as px
 from dash import Dash
@@ -14,10 +14,10 @@ dash_app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO, DashConsts
 load_figure_template('SUPERHERO')
 
 
-@dash_app.callback(Output('example-graph', 'figure'),
-                   Input('sensor_options', 'value'),
-                   Input('tabs', 'value'),
-                   Input('interval-component', 'n_intervals'))
+@dash_app.callback(Output(TagIds.GRAPH, 'figure'),
+                   Input(TagIds.CHECKLIST, 'value'),
+                   Input(TagIds.TABS, 'value'),
+                   Input(TagIds.INTERVAL, 'n_intervals'))
 def update_graph_live(selected_sensors, tab, intervals):
     current_time = pandas.Timestamp.now()
     sample = [{'time': current_time, 'sensor': sensor, 'value': random.randint(0, 10)} for sensor in Sensors.ALL]

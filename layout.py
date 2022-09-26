@@ -1,5 +1,5 @@
 from dash import html, dcc
-from consts import Sensors
+from consts import Sensors, TagIds
 
 
 def make_layout():
@@ -7,17 +7,17 @@ def make_layout():
         html.Div([
             html.H1(children='Sensors'),
             dcc.Checklist(
-                Sensors.ALL, labelStyle={'margin': '5px'}, id='sensor_options', value=Sensors.ALL
+                Sensors.ALL, labelStyle={'margin': '5px'}, id=TagIds.CHECKLIST, value=Sensors.ALL
             )
         ], style={'text-align': 'center'}),
-        dcc.Tabs(id="tabs", value='linear', children=[
+        dcc.Tabs(id=TagIds.TABS, value='linear', children=[
             dcc.Tab(label='Linear Graph', value='linear'),
             dcc.Tab(label='Bar Graph', value='bar'),
         ]),
-        dcc.Graph(id='example-graph'),
+        dcc.Graph(id=TagIds.GRAPH),
 
         dcc.Interval(
-            id='interval-component',
+            id=TagIds.INTERVAL,
             interval=1000,  # in milliseconds
             n_intervals=0
         )

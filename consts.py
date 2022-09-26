@@ -10,3 +10,10 @@ class Sensors:
 
 class DashConsts:
     CSS = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
+
+
+class TagIds:
+    CHECKLIST = 'checklist'
+    TABS = 'tabs'
+    INTERVAL = 'interval'
+    GRAPH = 'graph'
