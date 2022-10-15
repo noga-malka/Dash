@@ -1,11 +1,11 @@
 import pandas
 
 from consts import DataConsts
+from handlers.handler import Handler
 from realtime_data import realtime
-from serial_reader import SerialHandler
 
 
-def save_serial_data(handler: SerialHandler):
+def save_serial_data(handler: Handler):
     while True:
         try:
             data = handler.read_line().strip().split('\t')

@@ -1,7 +1,7 @@
 class GraphConsts:
     FIGURES = [
-        ['CO2 sensor Temp', 'HTU21DF sensor Temp'],
-        ['CO2 sensor Hum', 'HTU21DF sensor Humidity'],
+        ['CO2 sensor Temp', 'HTU21DF-1 sensor Temp', 'HTU21DF-2 sensor Temp'],
+        ['CO2 sensor Hum', 'HTU21DF-1 sensor Humidity', 'HTU21DF-2 sensor Humidity'],
         ['CO2 sensor CO2'],
     ]
     ALL = sum(FIGURES, [])
@@ -28,3 +28,7 @@ class DataConsts:
 class Uart:
     BAUDRATE = 115200
     TIMEOUT = 1
+
+
+class Bluetooth:
+    DEFAULT_ADDRESS = 'B8:D6:1A:A7:43:32'
