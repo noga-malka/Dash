@@ -1,3 +1,5 @@
+import datetime
+
 import pandas
 
 from consts import DataConsts
@@ -15,5 +17,9 @@ def save_serial_data(handler: Handler):
                  DataConsts.VALUE: float(data[index + 1])}
                 for index in range(0, len(data), 2)]
             realtime.add(sample)
-        except (KeyError, IndexError):
+        except (KeyError, IndexError, ValueError):
             pass
+
+
+def get_time_now():
+    return datetime.datetime.now().strftime("%Y_%m_%d %H:%M:%S")

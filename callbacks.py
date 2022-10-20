@@ -7,6 +7,7 @@ from dash_bootstrap_templates import load_figure_template
 
 from consts import DashConsts, TagIds, DataConsts, GraphConsts
 from realtime_data import realtime
+from utilities import get_time_now
 
 dash_app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO, DashConsts.CSS])
 load_figure_template('SUPERHERO')
@@ -32,3 +33,25 @@ def update_graph_live(selected_sensors, tab, intervals, time_range):
         fig.update_layout(font=dict(size=18))
         figures.append(fig)
     return figures
+
+
+@dash_app.callback(
+    Output('save_status', 'children'),
+    Input('save', 'n_clicks')
+)
+def save_session(n_clicks):
+    if n_clicks:
+        realtime.save_session()
+        return f'last save: {get_time_now()}'
+    return ''
+
+
+@dash_app.callback(
+    Output('clear_status', 'children'),
+    Input('clear', 'n_clicks')
+)
+def clear_session(n_clicks):
+    if n_clicks:
+        realtime.clear_session()
+        return f'last clear: {get_time_now()}'
+    return ''

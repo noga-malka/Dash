@@ -14,6 +14,15 @@ def make_layout():
             html.Div(
                 [
                     html.H1(children='Sensors'),
+                    html.Div(
+                        [html.Button('Save Session', id='save'),
+                         html.Button('Clear Session', id='clear')],
+                        style={'display': 'flex', 'justify-content': 'center'}),
+                    html.Div(
+                        [html.P(id='save_status', style={'margin': '5px'}),
+                         html.P(id='clear_status', style={'margin': '5px'})],
+                        style={'display': 'flex', 'justify-content': 'center'}),
+                    html.P(id='status_text'),
                     dcc.Checklist(GraphConsts.ALL, labelStyle={'margin': '5px'}, id=TagIds.CHECKLIST,
                                   value=GraphConsts.ALL),
                     dcc.Slider(1, 20, marks={i: f'{i} minutes' for i in [1, 5, 10, 15, 20]}, value=5,
