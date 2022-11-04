@@ -3,5 +3,6 @@ pandas~=1.3.4
 plotly~=5.10.0
 pyserial~=3.5
 pybluez~=0.22
+WebUI~=0.2.1
 dash-bootstrap-components~=1.2.1
 dash-bootstrap-templates~=1.0.7

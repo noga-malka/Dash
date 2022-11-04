@@ -1,6 +1,8 @@
 import sys
 from threading import Thread
 
+from webui import WebUI
+
 from callbacks import dash_app
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.serial_reader import SerialHandler
@@ -15,4 +17,4 @@ if __name__ == '__main__':
         handler = types.get(sys.argv[1])()
         Thread(target=save_serial_data, args=[handler]).start()
         dash_app.layout = make_layout()
-        dash_app.run_server(debug=True, use_reloader=False)
+        WebUI(dash_app).run()
