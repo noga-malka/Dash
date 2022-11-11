@@ -15,9 +15,9 @@ theme = {
 
 def generate_layout():
     return html.Div(
-        id="main-page",
         children=[
-            html.H1("Caeli", id='title', className='bg-primary  bg-opacity-50 center'),
+            html.H1("Caeli", id='title', className='bg-primary display-1 bg-opacity-50 center'),
+            dcc.Location(id="url"),
             daq.DarkThemeProvider(theme=theme, children=[
                 html.Div(
                     children=[
@@ -29,16 +29,41 @@ def generate_layout():
                         ], className='center children-margin'),
                         ThemeSwitchAIO(aio_id="theme", themes=[dbc.themes.SUPERHERO, dbc.themes.MORPH],
                                        switch_props={"persistence": True}, icons=DaqConsts.ICONS),
-                    ], className='bg-info bg-opacity-50 space-between', style={'padding': '5px'}
+                    ], className='bg-info bg-opacity-50 space-between',
+                    style={'padding': '5px', 'align-items': 'center'}
                 ),
-                dcc.Tabs(id=TagIds.TABS, value='live',
-                         children=[
-                             dcc.Tab(label='Live Monitor Panel', value='live'),
-                             dcc.Tab(label='File Monitor Panel', value='file'),
-                         ]),
-                html.Div(id='page'),
-                dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
-                html.Div(id='placeholder', style={'display': None})
-            ]),
+                html.Div([
+                    html.Div(
+                        [
+                            html.H2("Data Input", className="display-7"),
+                            html.Hr(),
+                            dbc.Nav(
+                                [
+                                    dbc.NavLink(
+                                        [html.Div(className=f"fa {icon['icon']['icon']}", style={'padding': '10px'}),
+                                         icon['label']],
+                                        href=f"/{icon['icon']['id']}",
+                                        active="exact") for icon in TagIds.Icons.INPUT_MODES
+                                ],
+                                vertical=True,
+                                pills=True,
+                                key=f'/{TagIds.Icons.SERIAL["id"]}'
+                            ),
+                        ], className='side-nav'
+                    ),
+                    html.Div([
+                        dcc.Tabs(id=TagIds.TABS, value='monitor',
+                                 children=[
+                                     dcc.Tab(label='Monitor Panel', value='monitor'),
+                                     dcc.Tab(label='Graph Panel', value='graph'),
+                                 ]),
+                        html.Div(id='page'),
+                        dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
+                        html.Div(id='placeholder', style={'display': None})
+                    ], style={'width': '100%'}),
+                ],
+                    style={'display': 'flex'}),
+            ]
+                                  )
         ],
     )
