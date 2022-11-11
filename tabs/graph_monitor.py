@@ -1,6 +1,8 @@
+import plotly.express as px
 from dash import dcc, html
 
 from configurations import Settings
+from consts import Theme
 
 
 class GraphPage:
@@ -8,6 +10,7 @@ class GraphPage:
     def render():
         return [
             html.Div(id='graph-container', children=[
-                dcc.Graph(id=name + '_graph', animate=True) for name in Settings.GROUPS
+                dcc.Graph(id=name + '_graph', animate=True, figure=px.line([], template=Theme.FIGURE_DARK)) for name in
+                Settings.GROUPS
             ])
         ]

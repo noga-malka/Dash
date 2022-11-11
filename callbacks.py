@@ -1,14 +1,14 @@
 import base64
 from io import StringIO
 
-import dash_bootstrap_components as dbc
 import pandas
 import plotly.express as px
 from dash import Dash, Input, Output, callback_context, ALL, dcc, html
 from dash.exceptions import PreventUpdate
+from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
-from consts import TagIds
+from consts import TagIds, Theme
 from layout import generate_layout
 from realtime_data import realtime
 from stoppable_thread import StoppableThread
@@ -16,7 +16,7 @@ from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
 from utilities import generate_color, generate_sensor_output, activate_live, parse_time
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO], suppress_callback_exceptions=True)
+app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
 app.layout = generate_layout()
 
 pages = {
@@ -82,14 +82,18 @@ def load_file_data(content):
 
 
 @app.callback(*[Output(name + '_graph', 'figure') for name in Settings.GROUPS],
+              Input(ThemeSwitchAIO.ids.switch('theme'), 'value'),
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
-def create_graphs(interval):
+def create_graphs(toggle, interval):
+    if realtime.is_paused:
+        raise PreventUpdate
     figures = []
     for sensors in Settings.GROUPS.values():
         content = realtime.graph[list(set(realtime.graph.columns).intersection(set(sensors.keys())))]
         graph = px.line(content)
         if len(content) > 0:
             graph.update_layout({'yaxis': {'range': [min(content.min()), max(content.max())]},
-                                 'xaxis': {'range': [min(content.index), max(content.index)]}})
+                                 'xaxis': {'range': [min(content.index), max(content.index)]}},
+                                template=Theme.FIGURE_DARK if toggle else Theme.FIGURE_LIGHT)
         figures.append(graph)
     return figures

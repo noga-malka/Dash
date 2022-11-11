@@ -1,3 +1,6 @@
+import dash_bootstrap_components as dbc
+
+
 class GraphConsts:
     FIGURES = [
         ['CO2 sensor Temp', 'HTU21DF-1 sensor Temp', 'HTU21DF-2 sensor Temp'],
@@ -55,3 +58,10 @@ class Bluetooth:
 class DaqConsts:
     GRADIENT = {"gradient": True, "ranges": {"red": [0, 20], "yellow": [20, 50], "green": [50, 100]}}
     ICONS = {"right": "fa fa-moon", "left": "fa fa-sun"}
+
+
+class Theme:
+    FIGURE_LIGHT = 'lumen'
+    FIGURE_DARK = 'darkly'
+    DARK = dbc.themes.DARKLY
+    LIGHT = dbc.themes.LUMEN

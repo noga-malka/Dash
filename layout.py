@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from consts import TagIds, DaqConsts
+from consts import TagIds, DaqConsts, Theme
 
 theme = {
     'dark': True,
@@ -16,7 +16,7 @@ theme = {
 def generate_layout():
     return html.Div(
         children=[
-            html.H1("Caeli", id='title', className='bg-primary display-1 bg-opacity-50 center'),
+            html.H1("Caeli", id='title', className='bg-primary display-1 center'),
             dcc.Location(id="url"),
             daq.DarkThemeProvider(theme=theme, children=[
                 html.Div(
@@ -27,9 +27,10 @@ def generate_layout():
                             html.I(id={'type': 'icon', 'index': icon['id']}, className=f"fa {icon['icon']} fa-xl") for
                             icon in TagIds.Icons.ALL
                         ], className='center children-margin'),
-                        ThemeSwitchAIO(aio_id="theme", themes=[dbc.themes.SUPERHERO, dbc.themes.MORPH],
+                        ThemeSwitchAIO(aio_id="theme", themes=[Theme.DARK, Theme.LIGHT],
                                        switch_props={"persistence": True}, icons=DaqConsts.ICONS),
-                    ], className='bg-info bg-opacity-50 space-between',
+                        # ThemeChangerAIO(),
+                    ], className='bg-info space-between',
                     style={'padding': '5px', 'align-items': 'center'}
                 ),
                 html.Div([
