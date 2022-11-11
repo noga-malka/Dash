@@ -1,25 +1,49 @@
-import datetime
+import sys
 
-import pandas
+import dash_bootstrap_components as dbc
+from dash import html, Output
 
-from consts import DataConsts
-from handlers.handler import Handler
-from realtime_data import realtime
-
-
-def save_serial_data(handler: Handler):
-    while True:
-        try:
-            data = handler.read_line().strip().split('\t')
-            current_time = pandas.Timestamp.now()
-            sample = [
-                {DataConsts.TIME: current_time, DataConsts.SENSOR: data[index],
-                 DataConsts.VALUE: float(data[index + 1])}
-                for index in range(0, len(data), 2)]
-            realtime.add(sample)
-        except (KeyError, IndexError, ValueError):
-            pass
+from configurations import Sensor, Settings
+from daq_functions import generate_monitor
+from handlers.bluethooth_reader import BluetoothHandler
+from handlers.random_handler import RandomHandler
+from handlers.serial_reader import SerialHandler
 
 
-def get_time_now():
-    return datetime.datetime.now().strftime("%Y_%m_%d %H:%M:%S")
+def generate_grid(components):
+    grid = []
+    for group in components:
+        row = dbc.Row(
+            [dbc.Col(element, className='space-between', style={'flex-direction': 'column', 'align-items': 'center'})
+             for element in group]
+        )
+        grid.append(row)
+    return grid
+
+
+def create_card(group=''):
+    sensors = Settings.GROUPS[group]
+    return generate_grid([[generate_monitor(field, sensors[field]) for field in sensors]])
+
+
+def activate_live():
+    types = {'serial': SerialHandler, 'bluetooth': BluetoothHandler, 'random': RandomHandler}
+    types.get(sys.argv[1], RandomHandler)().run()
+
+
+def generate_color(value, sensor: Sensor):
+    return [value, value, '#ABE2FB' if sensor.low < value < sensor.high else 'red']
+
+
+def generate_sensor_output(key):
+    return [Output(key, 'value'), Output(key + '_led', 'value'), Output(key + '_led', 'color')]
+
+
+def generate_monitor_dashboard():
+    return html.Div(id='content', children=[dbc.Card(
+        [
+            dbc.CardHeader(group, className='center card-title'),
+            dbc.CardBody(create_card(group)),
+            dbc.CardFooter(id=group + '_time', className='center')
+        ], className='sensor-card') for group in Settings.GROUPS],
+                    className='children-margin')
