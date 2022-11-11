@@ -28,7 +28,7 @@ def create_card(group=''):
 
 def activate_live():
     types = {'serial': SerialHandler, 'bluetooth': BluetoothHandler, 'random': RandomHandler}
-    types.get(sys.argv[1], RandomHandler)().run()
+    types.get(sys.argv[1], RandomHandler)().extract_data()
 
 
 def generate_color(value, sensor: Sensor):
