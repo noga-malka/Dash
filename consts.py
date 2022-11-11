@@ -18,6 +18,16 @@ class TagIds:
     INTERVAL = 'interval'
     GRAPH = 'graph'
 
+    class Icons:
+        START = {'id': 'to-start', 'icon': 'fa-fast-backward'}
+        PLAY = {'id': 'play', 'icon': 'fa-play'}
+        PAUSE = {'id': 'pause', 'icon': 'fa-pause-circle'}
+        SAVE = {'id': 'save', 'icon': 'fa-bookmark'}
+        CLEAN = {'id': 'clean', 'icon': 'fa-eraser'}
+        END = {'id': 'to-end', 'icon': 'fa-fast-forward'}
+
+        ALL = [START, PLAY, PAUSE, SAVE, CLEAN, END]
+
 
 class DataConsts:
     SENSOR = 'sensor'
@@ -32,3 +42,8 @@ class Uart:
 
 class Bluetooth:
     DEFAULT_ADDRESS = 'B8:D6:1A:A7:43:32'
+
+
+class DaqConsts:
+    GRADIENT = {"gradient": True, "ranges": {"red": [0, 20], "yellow": [20, 50], "green": [50, 100]}}
+    ICONS = {"right": "fa fa-moon", "left": "fa fa-sun"}
