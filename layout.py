@@ -29,10 +29,11 @@ def generate_layout():
                         ], className='center children-margin'),
                         ThemeSwitchAIO(aio_id="theme", themes=[Theme.DARK, Theme.LIGHT],
                                        switch_props={"persistence": True}, icons=DaqConsts.ICONS),
-                        # ThemeChangerAIO(),
                     ], className='bg-info space-between',
                     style={'padding': '5px', 'align-items': 'center'}
                 ),
+                *[dbc.Tooltip(icon['id'], target={'type': 'icon', 'index': icon['id']}, placement="top") for icon in
+                  TagIds.Icons.ALL],
                 html.Div([
                     html.Div(
                         [
