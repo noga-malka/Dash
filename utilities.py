@@ -1,6 +1,5 @@
-import sys
-
 import dash_bootstrap_components as dbc
+import pandas
 from dash import html, Output
 
 from configurations import Sensor, Settings
@@ -26,9 +25,9 @@ def create_card(group=''):
     return generate_grid([[generate_monitor(field, sensors[field]) for field in sensors]])
 
 
-def activate_live():
+def activate_live(handler):
     types = {'serial': SerialHandler, 'bluetooth': BluetoothHandler, 'random': RandomHandler}
-    types.get(sys.argv[1], RandomHandler)().extract_data()
+    types.get(handler, RandomHandler)().extract_data()
 
 
 def generate_color(value, sensor: Sensor):
@@ -47,3 +46,7 @@ def generate_monitor_dashboard():
             dbc.CardFooter(id=group + '_time', className='center')
         ], className='sensor-card') for group in Settings.GROUPS],
                     className='children-margin')
+
+
+def parse_time(datetime, time_format='%Y-%m-%d %H:%M:%S'):
+    return pandas.Timestamp(datetime).strftime(time_format)

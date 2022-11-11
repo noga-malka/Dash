@@ -25,8 +25,16 @@ class TagIds:
         SAVE = {'id': 'save', 'icon': 'fa-bookmark'}
         CLEAN = {'id': 'clean', 'icon': 'fa-eraser'}
         END = {'id': 'to-end', 'icon': 'fa-fast-forward'}
+        SERIAL = {'id': 'serial', 'icon': 'fa-plug'}
+        BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
+        RANDOM = {'id': 'random', 'icon': 'fa-random'}
+        UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
 
         ALL = [START, PLAY, PAUSE, SAVE, CLEAN, END]
+        INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
+                       {'icon': BLUETOOTH, 'label': 'Bluetooth'},
+                       {'icon': RANDOM, 'label': 'Random Data'},
+                       {'icon': UPLOAD, 'label': 'Load File'}]
 
 
 class DataConsts:
