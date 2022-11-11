@@ -24,6 +24,7 @@ pages = {
     'graph': GraphPage()
 }
 thread = None
+last_handler = None
 
 
 @app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'))
@@ -33,8 +34,12 @@ def render_content(tab):
 
 @app.callback(Output('extra', 'children'), Input('url', 'pathname'))
 def activate_reader_thread(path: str):
-    path = path.strip('/')
     global thread
+    global last_handler
+    path = path.strip('/')
+    if last_handler == path:
+        raise PreventUpdate
+    last_handler = path
     if thread:
         thread.stop()
     if path != TagIds.Icons.UPLOAD['id']:
@@ -46,11 +51,8 @@ def activate_reader_thread(path: str):
 
 @app.callback(*sum([generate_sensor_output(sensor) for sensor in Settings.SENSORS], []),
               *[Output(group + '_time', 'children') for group in Settings.GROUPS],
-              Input(TagIds.INTERVAL, 'n_intervals'),
-              Input(TagIds.TABS, 'value'), prevent_initial_call=True)
-def update_sensors(n_intervals, tab):
-    if callback_context.triggered_id == TagIds.TABS:
-        raise PreventUpdate
+              Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
+def update_sensors(n_intervals):
     timestamp = None
     if len(realtime.graph) == 0:
         content = {name: sensor.minimum for name, sensor in Settings.SENSORS.items()}
