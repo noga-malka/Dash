@@ -2,6 +2,8 @@ import datetime
 
 import pandas
 
+from consts import TagIds
+
 
 class RealtimeData:
     def __init__(self):
@@ -10,20 +12,31 @@ class RealtimeData:
         self.is_paused = False
         self.clean()
         self.config = {
-            'to-start': self.go_to_start,
+            'to-start': lambda: self.set_index(0),
+            'forward': lambda: self.step(TagIds.Icons.GAP),
             'pause': self.pause,
             'play': self.play,
             'clean': self.clean,
             'save': self.save,
-            'to-end': self.go_to_end
+            'backward': lambda: self.step(-TagIds.Icons.GAP),
+            'to-end': lambda: self.set_index()
         }
+
+    def set_index(self, value=-1):
+        self.index = value
+
+    def step(self, gap: int):
+        if self.index == -1:
+            self.index = len(self.graph) - 1
+        new_index = self.index + gap
+        self.index = max(0, new_index) if gap < 0 else min(len(self.graph) - 1, new_index)
 
     def go_to_start(self):
         self.index = 0
 
     def pause(self):
         self.is_paused = True
-        self.index = len(self.graph) - 1
+        self.index = len(self.graph) - 1 if self.index == -1 else self.index
 
     def play(self):
         self.is_paused = False

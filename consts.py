@@ -22,18 +22,21 @@ class TagIds:
     GRAPH = 'graph'
 
     class Icons:
-        START = {'id': 'to-start', 'icon': 'fa-fast-backward'}
+        GAP = 210
+        BACKWARD = {'id': 'backward', 'icon': 'fa-fast-backward'}
+        START = {'id': 'to-start', 'icon': 'fa-step-backward'}
         PLAY = {'id': 'play', 'icon': 'fa-play'}
         PAUSE = {'id': 'pause', 'icon': 'fa-pause-circle'}
         SAVE = {'id': 'save', 'icon': 'fa-bookmark'}
         CLEAN = {'id': 'clean', 'icon': 'fa-eraser'}
-        END = {'id': 'to-end', 'icon': 'fa-fast-forward'}
+        FORWARD = {'id': 'forward', 'icon': 'fa-fast-forward'}
+        END = {'id': 'to-end', 'icon': 'fa-step-forward'}
         SERIAL = {'id': 'serial', 'icon': 'fa-plug'}
         BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
         RANDOM = {'id': 'random', 'icon': 'fa-random'}
         UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
 
-        ALL = [START, PLAY, PAUSE, SAVE, CLEAN, END]
+        ALL = [START, BACKWARD, PLAY, PAUSE, SAVE, CLEAN, FORWARD, END]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
                        {'icon': BLUETOOTH, 'label': 'Bluetooth'},
                        {'icon': RANDOM, 'label': 'Random Data'},
