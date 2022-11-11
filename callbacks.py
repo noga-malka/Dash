@@ -81,16 +81,16 @@ def load_file_data(content):
         realtime.load_data(pandas.read_csv(data, index_col='time'))
 
 
-@app.callback(*[Output(name + '_graph', 'figure') for name in Settings.GROUPS],
+@app.callback(*[Output(name + '_graph', 'figure') for name in Settings.GRAPHS],
               Input(ThemeSwitchAIO.ids.switch('theme'), 'value'),
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def create_graphs(toggle, interval):
     if realtime.is_paused:
         raise PreventUpdate
     figures = []
-    for sensors in Settings.GROUPS.values():
-        content = realtime.graph[list(set(realtime.graph.columns).intersection(set(sensors.keys())))]
-        graph = px.line(content)
+    for name, sensors in Settings.GRAPHS.items():
+        content = realtime.graph[list(set(realtime.graph.columns).intersection(set(sensors)))]
+        graph = px.line(content, title=name)
         if len(content) > 0:
             graph.update_layout({'yaxis': {'range': [min(content.min()), max(content.max())]},
                                  'xaxis': {'range': [min(content.index), max(content.index)]}},

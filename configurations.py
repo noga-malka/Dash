@@ -38,4 +38,19 @@ class Settings:
             'HTU21DF-2 sensor Temp': Temperature,
         }
     }
+    GRAPHS = {
+        'Temperature': [
+            'CO2 sensor Temp',
+            'HTU21DF-1 sensor Temp',
+            'HTU21DF-2 sensor Temp',
+        ],
+        'Humidity': [
+            'CO2 sensor Hum',
+            'HTU21DF-1 sensor Humidity',
+            'HTU21DF-2 sensor Humidity',
+        ],
+        'CO2': [
+            'CO2 sensor CO2',
+        ],
+    }
     SENSORS = functools.reduce(lambda x, y: x | y, GROUPS.values(), {})
