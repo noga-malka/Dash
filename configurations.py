@@ -17,9 +17,9 @@ class Settings:
     Humidity = Sensor(label='Humidity', minimum=30, low=40, high=70, maximum=80)
 
     TYPES = {
-        CO2.json(): ('slider', 120),
-        Temperature.json(): ('thermometer', 90),
-        Humidity.json(): ('gauge', 90),
+        CO2.label: ('slider', 120),
+        Temperature.label: ('thermometer', 90),
+        Humidity.label: ('gauge', 90),
     }
     LED_SIZE = 20
 

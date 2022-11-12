@@ -35,5 +35,5 @@ mapping = {
 
 
 def generate_monitor(field, sensor: Sensor):
-    monitor_type, size = Settings.TYPES[sensor.json()]
+    monitor_type, size = Settings.TYPES[sensor.label]
     return mapping[monitor_type](field, size, sensor) + generate_led(field, Settings.LED_SIZE, sensor)
