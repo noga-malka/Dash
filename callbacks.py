@@ -43,7 +43,7 @@ def activate_reader_thread(path: str):
     if thread:
         thread.stop()
     if path != TagIds.Icons.UPLOAD['id']:
-        thread = StoppableThread(target=activate_live, args=(path,), daemon=True, cleanup=lambda: realtime.clean())
+        thread = StoppableThread(setup=activate_live, args=(path,), daemon=True, cleanup=lambda: realtime.clean())
         thread.start()
     else:
         return dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop'])),

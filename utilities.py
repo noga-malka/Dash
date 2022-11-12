@@ -14,8 +14,7 @@ def generate_grid(components):
     for group in components:
         row = dbc.Row(
             [dbc.Col(element, className='space-between', style={'flex-direction': 'column', 'align-items': 'center'})
-             for element in group]
-        )
+             for element in group])
         grid.append(row)
     return grid
 
@@ -27,7 +26,7 @@ def create_card(group=''):
 
 def activate_live(handler):
     types = {'serial': SerialHandler, 'bluetooth': BluetoothHandler, 'random': RandomHandler}
-    types.get(handler, RandomHandler)().extract_data()
+    return types.get(handler, RandomHandler)().extract_data
 
 
 def generate_color(value, sensor: Sensor):

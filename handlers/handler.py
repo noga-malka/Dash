@@ -22,7 +22,7 @@ class Handler:
     def read_line(self):
         raise NotImplementedError()
 
-    def extract_data(self):
+    def extract_data(self, *args, **kwargs):
         if not self.is_connected:
             print(f'failed to connect to live stream. retry in {self.retry_delay} seconds')
             time.sleep(self.retry_delay)
