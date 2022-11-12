@@ -2,6 +2,7 @@ import dash_daq as daq
 from dash import html
 
 from configurations import Sensor, Settings
+from consts import TagIds
 
 
 def generate_slider(monitor_id, size, sensor):
@@ -13,7 +14,9 @@ def generate_slider(monitor_id, size, sensor):
 
 
 def generate_led(monitor_id, size, sensor):
-    return [daq.LEDDisplay(id=monitor_id + '_led', value=sensor.minimum, size=size, color='red')]
+    icon = html.Div(id=monitor_id + '_warning', className=f'fa {TagIds.Icons.WARNING["icon"]}')
+    return [html.Div([icon, daq.LEDDisplay(id=monitor_id + '_led', value=sensor.minimum, size=size, color='red')],
+                     className='center align children-margin-2')]
 
 
 def generate_thermometer(monitor_id, size, sensor):

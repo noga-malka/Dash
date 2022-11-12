@@ -35,8 +35,14 @@ margin: 10px;
     width: fit-content!important;
     min-width: 30%!important;
 }
+.children-margin-2 > *{
+margin: 2px;
+}
 .card-title{
     font-size: 20px;
+}
+.align{
+    align-items: center;
 }
 
 .label-style{
