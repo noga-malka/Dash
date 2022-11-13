@@ -58,6 +58,7 @@ def generate_layout():
                                  children=[
                                      dcc.Tab(label='Monitor Panel', value='monitor'),
                                      dcc.Tab(label='Graph Panel', value='graph'),
+                                     dcc.Tab(label='Configurations', value='config'),
                                  ]),
                         html.Div(id='page'),
                         dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),

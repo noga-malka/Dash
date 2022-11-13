@@ -4,7 +4,7 @@ from pydantic import Field, BaseModel
 
 
 class Sensor(BaseModel):
-    label: str = Field(...)
+    label: str = Field(..., editable=False)
     minimum: int = Field(...)
     low: int = Field(...)
     high: int = Field(...)
@@ -15,6 +15,7 @@ class Settings:
     CO2 = Sensor(label='CO2', minimum=300, low=500, high=3000, maximum=5000)
     Temperature = Sensor(label='Temperature', minimum=25, low=28, high=32, maximum=35)
     Humidity = Sensor(label='Humidity', minimum=30, low=40, high=70, maximum=80)
+    ALL_SENSORS = [CO2, Temperature, Humidity]
 
     TYPES = {
         CO2.label: ('slider', 120),

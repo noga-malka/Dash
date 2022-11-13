@@ -14,6 +14,7 @@ from realtime_data import realtime
 from stoppable_thread import StoppableThread
 from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
+from tabs.set_config import ConfigPage
 from utilities import generate_color, generate_sensor_output, activate_live, parse_time
 
 app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
@@ -21,7 +22,8 @@ app.layout = generate_layout()
 
 pages = {
     'monitor': LivePage(),
-    'graph': GraphPage()
+    'graph': GraphPage(),
+    'config': ConfigPage()
 }
 thread = None
 last_handler = None
