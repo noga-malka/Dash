@@ -12,7 +12,7 @@ class ConfigPage:
             [
                 dbc.CardHeader('Configurations', className='center card-title'),
                 dbc.CardBody(dash_table.DataTable(
-                    id='table-editing-simple',
+                    id='configuration',
                     columns=(create_columns()),
                     data=load_data(),
                     editable=True,
@@ -25,8 +25,8 @@ class ConfigPage:
 
 
 def create_columns():
-    return [{'id': key, 'name': field['title'], 'editable': field.get('editable', True)} for key, field in
-            Sensor.schema()['properties'].items()]
+    return [{'id': key, 'name': field['title'], 'editable': field.get('editable', True), 'type': field['content_type']}
+            for key, field in Sensor.schema()['properties'].items()]
 
 
 def load_data():

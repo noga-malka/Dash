@@ -4,11 +4,11 @@ from pydantic import Field, BaseModel
 
 
 class Sensor(BaseModel):
-    label: str = Field(..., editable=False)
-    minimum: int = Field(...)
-    low: int = Field(...)
-    high: int = Field(...)
-    maximum: int = Field(...)
+    label: str = Field(..., editable=False, content_type='text')
+    minimum: int = Field(..., content_type='numeric')
+    low: int = Field(..., content_type='numeric')
+    high: int = Field(..., content_type='numeric')
+    maximum: int = Field(..., content_type='numeric')
 
 
 class Settings:

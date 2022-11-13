@@ -3,7 +3,7 @@ from io import StringIO
 
 import pandas
 import plotly.express as px
-from dash import Dash, Input, Output, callback_context, ALL, dcc, html
+from dash import Dash, Input, Output, callback_context, ALL, dcc, html, State
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
@@ -101,3 +101,11 @@ def create_graphs(toggle, interval):
                                 template=Theme.FIGURE_DARK if toggle else Theme.FIGURE_LIGHT)
         figures.append(graph)
     return figures
+
+
+@app.callback(Output('placeholder', 'n_clicks'), State('configuration', 'data'), Input('save_config', 'n_clicks'),
+              prevent_initial_call=True)
+def load_file_data(config, click):
+    config = {row['label']: row for row in config}
+    for sensor in Settings.ALL_SENSORS:
+        sensor.__dict__.update(config[sensor.label])
