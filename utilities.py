@@ -3,6 +3,7 @@ import pandas
 from dash import html, Output
 
 from configurations import Sensor, Settings
+from consts import TagIds
 from daq_functions import generate_monitor
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.random_handler import RandomHandler
@@ -31,12 +32,13 @@ def activate_live(handler):
 
 def generate_color(value, sensor: Sensor):
     is_valid = sensor.low < value < sensor.high
-    return [value, value, '#ABE2FB' if is_valid else 'red', {'display': 'none' if is_valid else None}]
+    icon = f'{TagIds.Icons.CHECK} valid' if is_valid else f'{TagIds.Icons.WARNING} invalid'
+    return [value, value, '#ABE2FB' if is_valid else 'red', f'fa {icon}']
 
 
 def generate_sensor_output(key):
     return [Output(key, 'value'), Output(key + '_led', 'value'), Output(key + '_led', 'color'),
-            Output(key + '_warning', 'style')]
+            Output(key + '_icon', 'className')]
 
 
 def generate_monitor_dashboard():

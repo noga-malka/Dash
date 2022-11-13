@@ -65,3 +65,9 @@ width: 20rem;
 padding: 2rem 1rem;
 border-right: groove;
 }
+.valid{
+    color: green;
+}
+.invalid{
+    color: orange;
+}

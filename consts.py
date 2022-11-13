@@ -35,7 +35,8 @@ class TagIds:
         BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
         RANDOM = {'id': 'random', 'icon': 'fa-random'}
         UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
-        WARNING = {'id': 'warning', 'icon': 'fa-exclamation-circle'}
+        WARNING = 'fa-exclamation-circle'
+        CHECK = 'fa-check-circle'
 
         ALL = [START, BACKWARD, PLAY, PAUSE, SAVE, CLEAN, FORWARD, END]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},

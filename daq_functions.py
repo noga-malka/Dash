@@ -14,7 +14,7 @@ def generate_slider(monitor_id, size, sensor):
 
 
 def generate_led(monitor_id, size, sensor):
-    icon = html.Div(id=monitor_id + '_warning', className=f'fa {TagIds.Icons.WARNING["icon"]}')
+    icon = html.Div(id=monitor_id + '_icon', className=f'fa {TagIds.Icons.WARNING} invalid')
     return [html.Div([icon, daq.LEDDisplay(id=monitor_id + '_led', value=sensor.minimum, size=size, color='red')],
                      className='center align children-margin-2')]
 
