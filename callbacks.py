@@ -65,8 +65,19 @@ def update_sensors(n_intervals):
 def click_navigation_bar_buttons(button):
     clicked = callback_context.triggered_id['index']
     colors = [None if clicked != icon['id'] else 'red' for icon in TagIds.Icons.ALL]
-    realtime.config[clicked]()
+    realtime.config.get(clicked, lambda: None)()
     return [{'color': value} for value in colors]
+
+
+@app.callback(
+    Output("modal", "is_open"),
+    Input({'type': 'icon', 'index': 'terminal'}, 'n_clicks'),
+    [State("modal", "is_open")],
+)
+def toggle_modal(click, is_open):
+    if click:
+        return not is_open
+    return is_open
 
 
 @app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), prevent_initial_call=True)
