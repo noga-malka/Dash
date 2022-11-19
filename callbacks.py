@@ -61,7 +61,7 @@ def update_sensors(n_intervals):
     else:
         try:
             content = realtime.read_data()
-            timestamp = parse_time(realtime.graph.iloc[0].name) + " - " + parse_time(content.name)
+            timestamp = 'timer: ' + parse_time(content.name, realtime.graph.iloc[0].name)
         except IndexError:
             raise PreventUpdate
     timestamp = [timestamp] * len(Settings.GROUPS)
