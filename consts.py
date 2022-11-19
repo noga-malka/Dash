@@ -1,19 +1,6 @@
 import dash_bootstrap_components as dbc
 
 
-class GraphConsts:
-    FIGURES = [
-        ['CO2 sensor Temp', 'HTU21DF-1 sensor Temp', 'HTU21DF-2 sensor Temp'],
-        ['CO2 sensor Hum', 'HTU21DF-1 sensor Humidity', 'HTU21DF-2 sensor Humidity'],
-        ['CO2 sensor CO2'],
-    ]
-    ALL = sum(FIGURES, [])
-
-
-class DashConsts:
-    CSS = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
-
-
 class RealtimeConsts:
     GAP = 210
     STEP = 4
@@ -27,7 +14,6 @@ class TagIds:
     GRAPH = 'graph'
 
     class Icons:
-        GAP = 210
         BACKWARD = {'id': 'backward', 'icon': 'fa-fast-backward'}
         START = {'id': 'to-start', 'icon': 'fa-step-backward'}
         PLAY = {'id': 'play', 'icon': 'fa-play'}
@@ -48,12 +34,6 @@ class TagIds:
                        {'icon': BLUETOOTH, 'label': 'Bluetooth'},
                        {'icon': RANDOM, 'label': 'Random Data'},
                        {'icon': UPLOAD, 'label': 'Load File'}]
-
-
-class DataConsts:
-    SENSOR = 'sensor'
-    TIME = 'time'
-    VALUE = 'value'
 
 
 class Uart:
