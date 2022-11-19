@@ -4,12 +4,21 @@ from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme
+from tabs.graph_monitor import GraphPage
+from tabs.live_monitor import LivePage
+from tabs.set_config import ConfigPage
 
 theme = {
     'dark': True,
     'detail': '#8F8DF5',
     'primary': '#349FFC',
     'secondary': '#C0D0E2',
+}
+
+pages = {
+    'monitor': {'label': 'Monitor Panel', 'page': LivePage()},
+    'graph': {'label': 'Graph Panel', 'page': GraphPage()},
+    'config': {'label': 'Configurations', 'page': ConfigPage()}
 }
 
 
@@ -56,10 +65,7 @@ def generate_layout():
                     html.Div([
                         dcc.Tabs(id=TagIds.TABS, value='monitor',
                                  children=[
-                                     dcc.Tab(label='Monitor Panel', value='monitor'),
-                                     dcc.Tab(label='Graph Panel', value='graph'),
-                                     dcc.Tab(label='Configurations', value='config'),
-                                 ]),
+                                     dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
                         html.Div(id='page'),
                         dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
                         html.Div(id='placeholder', style={'display': None})

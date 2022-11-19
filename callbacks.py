@@ -9,29 +9,21 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
 from consts import TagIds, Theme
-from layout import generate_layout
+from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import StoppableThread
-from tabs.graph_monitor import GraphPage
-from tabs.live_monitor import LivePage
-from tabs.set_config import ConfigPage
 from utilities import generate_color, generate_sensor_output, activate_live, parse_time
 
 app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
 app.layout = generate_layout()
 
-pages = {
-    'monitor': LivePage(),
-    'graph': GraphPage(),
-    'config': ConfigPage()
-}
 thread = None
 last_handler = None
 
 
 @app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'))
 def render_content(tab):
-    return html.Div(id='extra'), *pages[tab].render()
+    return html.Div(id='extra'), *pages[tab]['page'].render()
 
 
 @app.callback(Output('extra', 'children'), Input('url', 'pathname'))
