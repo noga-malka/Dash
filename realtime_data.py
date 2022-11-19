@@ -48,7 +48,7 @@ class RealtimeData:
         current = self.graph.iloc[self.index]
         if self.index != -1 and not self.is_paused:
             self.index += step
-        return current
+        return current.astype(int)
 
     def add(self, rows):
         self.graph = pandas.concat([realtime.graph, rows])

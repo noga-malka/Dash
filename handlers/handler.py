@@ -30,7 +30,7 @@ class Handler:
         else:
             try:
                 data = self.read_line().strip().split('\t')
-                sample = {data[index]: int(float(data[index + 1])) for index in range(0, len(data), 2)}
+                sample = {data[index]: float(data[index + 1]) for index in range(0, len(data), 2)}
                 sample = pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
                 realtime.add(sample)
             except (KeyError, IndexError, ValueError) as error:
