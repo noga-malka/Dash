@@ -44,6 +44,5 @@ def generate_sensor_output(key):
 
 def parse_time(datetime, start):
     total = (pandas.Timestamp(datetime) - pandas.Timestamp(start)).seconds
-    parsed = map(int, [(total / 3600) % 60, (total / 60) % 60, total % 60])
-    parsed = ['{:0>2}'.format(number) for number in parsed if number != 0]
-    return ':'.join(parsed) if any(parsed) else '00'
+    parsed = map(lambda number: '{:0>2}'.format(int(number)), [(total / 3600) % 60, (total / 60) % 60, total % 60])
+    return ':'.join(parsed).replace('00:', '')
