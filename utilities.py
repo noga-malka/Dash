@@ -33,11 +33,12 @@ def activate_live(handler):
 def generate_color(value, sensor: Sensor):
     is_valid = sensor.low < value < sensor.high
     icon = f'{TagIds.Icons.CHECK} valid' if is_valid else f'{TagIds.Icons.WARNING} invalid'
-    return [value, value, '#ABE2FB' if is_valid else 'red', f'fa {icon}']
+    color = '#ABE2FB' if is_valid else 'red'
+    return [value, color, value, color, f'fa {icon}']
 
 
 def generate_sensor_output(key):
-    return [Output(key, 'value'), Output(key + '_led', 'value'), Output(key + '_led', 'color'),
+    return [Output(key, 'value'), Output(key, 'color'), Output(key + '_led', 'value'), Output(key + '_led', 'color'),
             Output(key + '_icon', 'className')]
 
 
@@ -51,5 +52,8 @@ def generate_monitor_dashboard():
                     className='children-margin')
 
 
-def parse_time(datetime, time_format='%H:%M:%S'):
-    return pandas.Timestamp(datetime).strftime(time_format)
+def parse_time(datetime, start):
+    total = (pandas.Timestamp(datetime) - pandas.Timestamp(start)).seconds
+    parsed = map(int, [(total / 3600) % 60, (total / 60) % 60, total % 60])
+    parsed = ['{:0>2}'.format(number) for number in parsed if number != 0]
+    return ':'.join(parsed) if any(parsed) else '00'
