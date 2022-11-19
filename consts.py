@@ -14,6 +14,11 @@ class DashConsts:
     CSS = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
 
 
+class RealtimeConsts:
+    GAP = 210
+    STEP = 4
+
+
 class TagIds:
     RANGE = 'range'
     CHECKLIST = 'checklist'

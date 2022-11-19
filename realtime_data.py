@@ -2,7 +2,7 @@ import datetime
 
 import pandas
 
-from consts import TagIds
+from consts import RealtimeConsts
 
 
 class RealtimeData:
@@ -13,12 +13,12 @@ class RealtimeData:
         self.clean()
         self.config = {
             'to-start': lambda: self.set_index(0),
-            'forward': lambda: self.step(TagIds.Icons.GAP),
+            'forward': lambda: self.step(RealtimeConsts.GAP),
             'pause': self.pause,
             'play': self.play,
             'clean': self.clean,
             'save': self.save,
-            'backward': lambda: self.step(-TagIds.Icons.GAP),
+            'backward': lambda: self.step(-RealtimeConsts.GAP),
             'to-end': lambda: self.set_index()
         }
 
@@ -44,7 +44,7 @@ class RealtimeData:
     def go_to_end(self):
         self.index = -1
 
-    def read_data(self, step=1):
+    def read_data(self, step=RealtimeConsts.STEP):
         current = self.graph.iloc[self.index]
         if self.index != -1 and not self.is_paused:
             self.index += step
