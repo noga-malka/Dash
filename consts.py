@@ -51,6 +51,12 @@ class DaqConsts:
 
 
 class Theme:
+    DAQ_THEME = {
+        'dark': True,
+        'detail': '#8F8DF5',
+        'primary': '#349FFC',
+        'secondary': '#C0D0E2',
+    }
     FIGURE_LIGHT = 'lumen'
     FIGURE_DARK = 'darkly'
     DARK = dbc.themes.DARKLY

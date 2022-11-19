@@ -8,13 +8,6 @@ from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
 from tabs.set_config import ConfigPage
 
-theme = {
-    'dark': True,
-    'detail': '#8F8DF5',
-    'primary': '#349FFC',
-    'secondary': '#C0D0E2',
-}
-
 pages = {
     'monitor': {'label': 'Monitor Panel', 'page': LivePage()},
     'graph': {'label': 'Graph Panel', 'page': GraphPage()},
@@ -27,7 +20,7 @@ def generate_layout():
         children=[
             html.H1("Caeli", id='title', className='bg-primary display-1 center'),
             dcc.Location(id="url"),
-            daq.DarkThemeProvider(theme=theme, children=[
+            daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=[
                 html.Div(
                     children=[
                         daq.GraduatedBar(max=100, value=100, step=10, size=80, style={'height': '25px'},
