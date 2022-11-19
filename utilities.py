@@ -1,6 +1,6 @@
 import dash_bootstrap_components as dbc
 import pandas
-from dash import html, Output
+from dash import Output
 
 from configurations import Sensor, Settings
 from consts import TagIds
@@ -40,16 +40,6 @@ def generate_color(value, sensor: Sensor):
 def generate_sensor_output(key):
     return [Output(key, 'value'), Output(key, 'color'), Output(key + '_led', 'value'), Output(key + '_led', 'color'),
             Output(key + '_icon', 'className')]
-
-
-def generate_monitor_dashboard():
-    return html.Div(id='content', children=[dbc.Card(
-        [
-            dbc.CardHeader(group, className='center card-title'),
-            dbc.CardBody(create_card(group)),
-            dbc.CardFooter(id=group + '_time', className='center')
-        ], className='sensor-card') for group in Settings.GROUPS],
-                    className='children-margin')
 
 
 def parse_time(datetime, start):
