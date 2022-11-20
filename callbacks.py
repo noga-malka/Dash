@@ -105,3 +105,10 @@ def load_file_data(config, click):
     config = {row['label']: row for row in config}
     for sensor in Settings.ALL_SENSORS:
         sensor.__dict__.update(config[sensor.label])
+
+
+@app.callback(Output('placeholder', 'title'), State('command_input', 'value'), State('command_menu', 'value'),
+              Input('send_command', 'n_clicks'))
+def send_command(content, command, click):
+    if click and command:
+        realtime.handler.send_command(command, content)

@@ -37,6 +37,13 @@ class TagIds:
                        {'icon': UPLOAD, 'label': 'Load File'}]
 
 
+class Commands:
+    HEADER = 'aa55aa'
+    SET_CO2 = '15'
+    COMMAND_DEFAULT = {SET_CO2: '0400'}
+    ALL = [SET_CO2]
+
+
 class Uart:
     BAUDRATE = 115200
     TIMEOUT = 1

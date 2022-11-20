@@ -1,7 +1,7 @@
 import serial
 from serial.tools import list_ports
 
-from consts import Uart
+from consts import Uart, Commands
 from handlers.handler import Handler
 
 
@@ -22,5 +22,5 @@ class SerialHandler(Handler):
 
     def send_command(self, command, content):
         payload = command + '{:0>2}'.format(int(len(content) / 2)) + content
-        packet = bytes.fromhex("aa55aa" + payload)
+        packet = bytes.fromhex(Commands.HEADER + payload)
         self.client.write(packet)
