@@ -9,6 +9,9 @@ class RandomHandler(Handler):
     def __init__(self):
         super(RandomHandler, self).__init__()
 
+    def send_command(self, command, content):
+        pass
+
     def connect(self):
         return True
 

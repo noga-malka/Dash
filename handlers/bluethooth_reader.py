@@ -25,3 +25,6 @@ class BluetoothHandler(Handler):
         while '\n' not in self.buffer:
             self.buffer += self.client.recv(1024).decode()
         return self.buffer
+
+    def send_command(self, command, content):
+        pass

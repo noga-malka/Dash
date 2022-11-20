@@ -18,4 +18,9 @@ class SerialHandler(Handler):
         return False
 
     def read_line(self) -> str:
-        return self.client.readline().decode()
+        return self.client.readline().decode().strip()
+
+    def send_command(self, command, content):
+        payload = command + '{:0>2}'.format(int(len(content) / 2)) + content
+        packet = bytes.fromhex("aa55aa" + payload)
+        self.client.write(packet)
