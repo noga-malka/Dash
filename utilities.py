@@ -5,9 +5,6 @@ from dash import Output
 from configurations import Sensor, Settings
 from consts import TagIds
 from daq_functions import generate_monitor
-from handlers.bluethooth_reader import BluetoothHandler
-from handlers.random_handler import RandomHandler
-from handlers.serial_reader import SerialHandler
 
 
 def generate_grid(components):
@@ -23,11 +20,6 @@ def generate_grid(components):
 def create_card(group=''):
     sensors = Settings.GROUPS[group]
     return generate_grid([[generate_monitor(field, sensors[field]) for field in sensors]])
-
-
-def activate_live(handler):
-    types = {'serial': SerialHandler, 'bluetooth': BluetoothHandler, 'random': RandomHandler}
-    return types.get(handler, RandomHandler)().extract_data
 
 
 def generate_color(value, sensor: Sensor):

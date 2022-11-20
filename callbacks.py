@@ -11,14 +11,10 @@ from configurations import Settings
 from consts import TagIds, Theme
 from layout import generate_layout, pages
 from realtime_data import realtime
-from stoppable_thread import StoppableThread
-from utilities import generate_color, generate_sensor_output, activate_live, parse_time
+from utilities import generate_color, generate_sensor_output, parse_time
 
 app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
 app.layout = generate_layout()
-
-thread = None
-last_handler = None
 
 
 @app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'))
@@ -28,17 +24,14 @@ def render_content(tab):
 
 @app.callback(Output('extra', 'children'), Input('url', 'pathname'))
 def activate_reader_thread(path: str):
-    global thread
-    global last_handler
     path = path.strip('/')
-    if last_handler == path:
+    if realtime.handler_name == path:
         raise PreventUpdate
-    last_handler = path
-    if thread:
-        thread.stop()
+    realtime.set_handler(path)
+    if realtime.thread:
+        realtime.thread.stop()
     if path != TagIds.Icons.UPLOAD['id']:
-        thread = StoppableThread(setup=activate_live, args=(path,), daemon=True, cleanup=lambda: realtime.clean())
-        thread.start()
+        realtime.start_loop()
     else:
         return dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop'])),
 
