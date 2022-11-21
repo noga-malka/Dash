@@ -92,7 +92,9 @@ def create_graphs(toggle, interval):
         content = realtime.graph[list(set(realtime.graph.columns).intersection(set(sensors)))]
         graph = px.line(content, title=name)
         if len(content) > 0:
-            graph.update_layout({'yaxis': {'range': [min(content.min()), max(content.max())]},
+            maximum = min(Settings.SENSORS[sensor].maximum for sensor in sensors)
+            minimum = min(Settings.SENSORS[sensor].minimum for sensor in sensors)
+            graph.update_layout({'yaxis': {'range': [minimum, maximum]},
                                  'xaxis': {'range': [min(content.index), max(content.index)]}},
                                 template=Theme.FIGURE_DARK if toggle else Theme.FIGURE_LIGHT)
         figures.append(graph)
