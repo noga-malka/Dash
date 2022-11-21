@@ -40,7 +40,7 @@ class TagIds:
 class Commands:
     HEADER = 'aa55aa'
     SET_CO2 = '15'
-    COMMAND_DEFAULT = {SET_CO2: '0400'}
+    COMMAND_DEFAULT = {SET_CO2: '400'}
     ALL = [SET_CO2]
 
 
@@ -65,7 +65,7 @@ class Theme:
         'primary': '#349FFC',
         'secondary': '#C0D0E2',
     }
-    FIGURE_LIGHT = 'lumen'
+    FIGURE_LIGHT = 'bootstrap'
     FIGURE_DARK = 'darkly'
     DARK = dbc.themes.DARKLY
-    LIGHT = dbc.themes.LUMEN
+    LIGHT = dbc.themes.BOOTSTRAP

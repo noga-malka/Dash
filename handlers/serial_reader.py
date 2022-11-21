@@ -21,6 +21,9 @@ class SerialHandler(Handler):
         return self.client.readline().decode().strip()
 
     def send_command(self, command, content):
+        content = hex(int(content)).replace('0x', '')
+        content = '0' + content if len(content) % 2 else content
         payload = command + '{:0>2}'.format(int(len(content) / 2)) + content
         packet = bytes.fromhex(Commands.HEADER + payload)
+        print(f'send packet: {packet}')
         self.client.write(packet)
