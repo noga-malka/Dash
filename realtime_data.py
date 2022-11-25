@@ -16,10 +16,10 @@ class RealtimeData:
         self.handler_name = 'random'
         self.handler = None
         self.thread = None
-        self.graph = None
-        self.index = None
+        self.graph = pandas.DataFrame()
+        self.index = -1
         self.is_paused = False
-        self.clean()
+        self.should_clean = False
         self.config = {
             'to-start': lambda: self.set_index(0),
             'forward': lambda: self.step(RealtimeConsts.GAP),
@@ -64,7 +64,11 @@ class RealtimeData:
         return current.astype(int)
 
     def add_data(self):
-        self.graph = pandas.concat([self.graph, self.handler.extract_data()])
+        if self.should_clean:
+            self.should_clean = False
+            self.graph = pandas.DataFrame()
+        else:
+            self.graph = pandas.concat([self.graph, self.handler.extract_data()])
 
     def read_setup(self):
         self.handler.is_connected = self.handler.connect()
@@ -78,8 +82,7 @@ class RealtimeData:
         self.graph.to_csv(f'output/data_{datetime.datetime.now().strftime("%Y_%m_%d %H-%M-%S")}.csv')
 
     def clean(self):
-        self.go_to_end()
-        self.graph = pandas.DataFrame()
+        self.should_clean = True
 
     def load_data(self, data):
         self.graph = data
