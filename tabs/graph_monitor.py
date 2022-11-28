@@ -10,7 +10,7 @@ class GraphPage:
     def render():
         return [
             html.Div(id='graph-container', children=[
-                dcc.Graph(id=name + '_graph', animate=True, figure=px.line([], template=Theme.FIGURE_DARK)) for name in
+                dcc.Graph(id=name + '_graph', figure=px.line([], template=Theme.FIGURE_DARK)) for name in
                 Settings.GRAPHS
             ])
         ]

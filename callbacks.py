@@ -17,12 +17,14 @@ app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_except
 app.layout = generate_layout()
 
 
-@app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'))
-def render_content(tab):
-    return html.Div(id='extra'), *pages[tab]['page'].render()
+@app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'), Input('url', 'pathname'))
+def render_content(tab, url):
+    upload = dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))
+    extra = [upload] if url.strip('/') == TagIds.Icons.UPLOAD['id'] else []
+    return *extra, *pages[tab]['page'].render()
 
 
-@app.callback(Output('extra', 'children'), Input('url', 'pathname'))
+@app.callback(Output('placeholder', 'className'), Input('url', 'pathname'))
 def activate_reader_thread(path: str):
     path = path.strip('/')
     if realtime.handler_name == path:
@@ -32,8 +34,6 @@ def activate_reader_thread(path: str):
         realtime.thread.stop()
     if path != TagIds.Icons.UPLOAD['id']:
         realtime.start_loop()
-    else:
-        return dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop'])),
 
 
 @app.callback(*sum([generate_sensor_output(sensor) for sensor in Settings.SENSORS], []),
@@ -78,7 +78,7 @@ def load_file_data(content):
     if content:
         data = content.encode("utf8").split(b";base64,")[1]
         data = StringIO(base64.decodebytes(data).decode('utf8'))
-        realtime.load_data(pandas.read_csv(data, index_col='time'))
+        realtime.load_data(pandas.read_csv(data, index_col=0))
 
 
 @app.callback(*[Output(name + '_graph', 'figure') for name in Settings.GRAPHS],
@@ -90,13 +90,7 @@ def create_graphs(toggle, interval):
     figures = []
     for name, sensors in Settings.GRAPHS.items():
         content = realtime.graph[list(set(realtime.graph.columns).intersection(set(sensors)))]
-        graph = px.line(content, title=name)
-        if len(content) > 0:
-            maximum = min(Settings.SENSORS[sensor].maximum for sensor in sensors)
-            minimum = min(Settings.SENSORS[sensor].minimum for sensor in sensors)
-            graph.update_layout({'yaxis': {'range': [minimum, maximum]},
-                                 'xaxis': {'range': [min(content.index), max(content.index)]}},
-                                template=Theme.FIGURE_DARK if toggle else Theme.FIGURE_LIGHT)
+        graph = px.line(content, title=name, template=Theme.FIGURE_DARK if toggle else Theme.FIGURE_LIGHT)
         figures.append(graph)
     return figures
 
