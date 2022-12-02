@@ -3,11 +3,12 @@ import datetime
 import pandas
 
 from consts import RealtimeConsts
+from handlers.bluethooth_reader import BluetoothHandler
 from handlers.random_handler import RandomHandler
 from handlers.serial_reader import SerialHandler
 from stoppable_thread import StoppableThread
 
-types = {'serial': SerialHandler(), 'random': RandomHandler()}
+types = {'serial': SerialHandler(), 'bluetooth': BluetoothHandler(), 'random': RandomHandler()}
 
 
 class RealtimeData:

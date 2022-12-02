@@ -32,6 +32,7 @@ class TagIds:
 
         ALL = [START, BACKWARD, PLAY, PAUSE, COMMAND, SAVE, CLEAN, FORWARD, END]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
+                       {'icon': BLUETOOTH, 'label': 'Bluetooth'},
                        {'icon': RANDOM, 'label': 'Random Data'},
                        {'icon': UPLOAD, 'label': 'Load File'}]
 
