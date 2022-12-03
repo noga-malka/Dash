@@ -1,5 +1,5 @@
 import plotly.express as px
-from dash import Dash, Input, Output, callback_context, ALL, dcc, html, State
+from dash import Dash, Input, Output, callback_context, ALL, State
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
@@ -7,6 +7,7 @@ from configurations import Settings
 from consts import TagIds, Theme
 from layout import generate_layout, pages
 from realtime_data import realtime
+from tabs.extras import EXTRA
 from utilities import generate_color, generate_sensor_output, parse_time
 
 app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
@@ -15,10 +16,7 @@ app.layout = generate_layout()
 
 @app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'), Input('url', 'pathname'))
 def render_content(tab, url):
-    extra = {
-        TagIds.Icons.UPLOAD['id']: [dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))]
-    }
-    return *extra.get(url.strip('/'), []), *pages[tab]['page'].render()
+    return *EXTRA.get(url.strip('/'), []), *pages[tab]['page'].render()
 
 
 @app.callback(Output('placeholder', 'className'), Input('url', 'pathname'))
@@ -65,6 +63,31 @@ def toggle_modal(click, is_open):
     if click:
         return not is_open
     return is_open
+
+
+@app.callback(
+    Output("bluetooth_modal", "is_open"),
+    Input('toggle_bluetooth', 'n_clicks'),
+    [State("bluetooth_modal", "is_open")],
+)
+def toggle_modal(click, is_open):
+    if click:
+        return not is_open
+    return is_open
+
+
+@app.callback(
+    Output("toggle_bluetooth", "children"),
+    Input('mac_button', 'n_clicks'),
+    [State("mac_input", "value")], prevent_initial_call=True
+)
+def toggle_modal(click, mac_address):
+    button_text = 'Failed to connect. Try again'
+    if mac_address:
+        realtime.thread.connect_handler(address=mac_address)
+        if realtime.thread.events.Finish.connect.is_set():
+            button_text = 'Connected to: ' + mac_address
+    return button_text
 
 
 @app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), prevent_initial_call=True)
