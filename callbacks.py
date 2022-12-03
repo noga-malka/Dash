@@ -1,7 +1,3 @@
-import base64
-from io import StringIO
-
-import pandas
 import plotly.express as px
 from dash import Dash, Input, Output, callback_context, ALL, dcc, html, State
 from dash.exceptions import PreventUpdate
@@ -19,21 +15,19 @@ app.layout = generate_layout()
 
 @app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'), Input('url', 'pathname'))
 def render_content(tab, url):
-    upload = dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))
-    extra = [upload] if url.strip('/') == TagIds.Icons.UPLOAD['id'] else []
-    return *extra, *pages[tab]['page'].render()
+    extra = {
+        TagIds.Icons.UPLOAD['id']: [dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))]
+    }
+    return *extra.get(url.strip('/'), []), *pages[tab]['page'].render()
 
 
 @app.callback(Output('placeholder', 'className'), Input('url', 'pathname'))
 def activate_reader_thread(path: str):
     path = path.strip('/')
-    if realtime.handler_name == path:
+    if realtime.thread.handler_name == path:
         raise PreventUpdate
-    realtime.set_handler(path)
-    if realtime.thread:
-        realtime.thread.stop()
-    if path != TagIds.Icons.UPLOAD['id']:
-        realtime.start_loop()
+    realtime.thread.set_handler(path)
+    realtime.thread.connect_handler()
 
 
 @app.callback(*sum([generate_sensor_output(sensor) for sensor in Settings.SENSORS], []),
@@ -76,9 +70,7 @@ def toggle_modal(click, is_open):
 @app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), prevent_initial_call=True)
 def load_file_data(content):
     if content:
-        data = content.encode("utf8").split(b";base64,")[1]
-        data = StringIO(base64.decodebytes(data).decode('utf8'))
-        realtime.load_data(pandas.read_csv(data, index_col=0))
+        realtime.thread.connect_handler(content=content)
 
 
 @app.callback(*[Output(name + '_graph', 'figure') for name in Settings.GRAPHS],
