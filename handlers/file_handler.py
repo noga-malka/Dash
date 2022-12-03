@@ -17,6 +17,7 @@ class FileHandler(Handler):
 
     def connect(self, content=None):
         if content:
+            self.is_loaded = False
             data = content.encode("utf8").split(b";base64,")[1]
             data = StringIO(base64.decodebytes(data).decode('utf8'))
             self.content = pandas.read_csv(data, index_col=0)
@@ -28,6 +29,7 @@ class FileHandler(Handler):
 
     def extract_data(self):
         if not self.is_loaded:
+            self.is_loaded = True
             return self.content
         else:
             return pandas.DataFrame()
