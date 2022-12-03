@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 
 class RealtimeConsts:
     GAP = 210
-    STEP = 4
+    STEP = 1
 
 
 class TagIds:
@@ -47,10 +47,6 @@ class Commands:
 class Uart:
     BAUDRATE = 115200
     TIMEOUT = 1
-
-
-class Bluetooth:
-    DEFAULT_ADDRESS = 'B8:D6:1A:A7:43:32'
 
 
 class DaqConsts:
