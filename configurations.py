@@ -37,6 +37,12 @@ class Settings:
         'HTU21DF-2 sensor': {
             'HTU21DF-2 sensor Humidity': Humidity,
             'HTU21DF-2 sensor Temp': Temperature,
+        },
+        'DS18B20-1 sensor': {
+            'DS18B20-1 sensor Temp': Temperature,
+        },
+        'DS18B20-2 sensor': {
+            'DS18B20-2 sensor Temp': Temperature
         }
     }
     GRAPHS = {
@@ -44,6 +50,8 @@ class Settings:
             'CO2 sensor Temp',
             'HTU21DF-1 sensor Temp',
             'HTU21DF-2 sensor Temp',
+            'DS18B20-1 sensor Temp',
+            'DS18B20-2 sensor Temp'
         ],
         'Humidity': [
             'CO2 sensor Hum',
