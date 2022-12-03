@@ -1,4 +1,4 @@
-import bluetooth
+import socket
 
 from consts import Bluetooth
 from handlers.handler import Handler
@@ -10,10 +10,10 @@ class BluetoothHandler(Handler):
         self.address = address
         super(BluetoothHandler, self).__init__()
 
-    def connect(self):
+    def connect(self, **kwargs):
         self.disconnect()
         try:
-            self.client = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+            self.client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
             self.client.connect((self.address, 1))
         except OSError:
             self.client = None
