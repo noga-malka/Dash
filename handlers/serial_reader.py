@@ -9,7 +9,7 @@ class SerialHandler(Handler):
     def __init__(self):
         super(SerialHandler, self).__init__()
 
-    def connect(self):
+    def connect(self, **kwargs):
         self.disconnect()
         usb_ports = list(filter(lambda port: "USB" in port[2], list(list_ports.comports())))
         if len(usb_ports) == 1:

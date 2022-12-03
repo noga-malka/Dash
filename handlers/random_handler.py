@@ -12,7 +12,7 @@ class RandomHandler(Handler):
     def send_command(self, command, content):
         pass
 
-    def connect(self):
+    def connect(self, **kwargs):
         return True
 
     def read_line(self) -> str:
