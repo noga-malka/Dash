@@ -53,4 +53,7 @@ class StoppableThread(Thread):
             if self.events.clean.is_set():
                 self.cleanup()
             elif self.events.Finish.connect.is_set():
-                self._target(*self._args, **self._kwargs)
+                try:
+                    self._target(*self._args, **self._kwargs)
+                except (OSError, AttributeError):
+                    self.events.Finish.connect.clear()
