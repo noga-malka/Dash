@@ -1,12 +1,10 @@
-import sys
-
 from webui import WebUI
 
 from callbacks import app
+from consts import IS_DEBUG
 
 if __name__ == '__main__':
-    is_debug = len(sys.argv) > 1 and sys.argv[1] == 'debug'
-    if is_debug:
+    if IS_DEBUG:
         app.run_server(debug=True)
     else:
         WebUI(app).run()

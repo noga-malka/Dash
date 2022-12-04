@@ -1,4 +1,8 @@
+import sys
+
 import dash_bootstrap_components as dbc
+
+IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 
 
 class RealtimeConsts:
@@ -33,8 +37,9 @@ class TagIds:
         ALL = [START, BACKWARD, PLAY, PAUSE, COMMAND, SAVE, CLEAN, FORWARD, END]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
                        {'icon': BLUETOOTH, 'label': 'Bluetooth'},
-                       {'icon': RANDOM, 'label': 'Random Data'},
                        {'icon': UPLOAD, 'label': 'Load File'}]
+        if IS_DEBUG:
+            INPUT_MODES.append({'icon': RANDOM, 'label': 'Random Data'})
 
 
 class Commands:

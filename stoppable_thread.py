@@ -1,12 +1,15 @@
 import time
 from threading import Thread, Event
 
+from consts import IS_DEBUG
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.file_handler import FileHandler
 from handlers.random_handler import RandomHandler
 from handlers.serial_reader import SerialHandler
 
-types = {'serial': SerialHandler(), 'bluetooth': BluetoothHandler(), 'random': RandomHandler(), 'upload': FileHandler()}
+types = {'serial': SerialHandler(), 'bluetooth': BluetoothHandler(), 'upload': FileHandler()}
+if IS_DEBUG:
+    types['random'] = RandomHandler()
 
 
 class Events:
