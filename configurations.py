@@ -26,7 +26,7 @@ class Settings:
 
     TYPES = {
         CO2.label: GaugeMonitor(CO2, 210, "PPM", False),
-        Temperature.label: TemperatureMonitor(Temperature, 150),
+        Temperature.label: TemperatureMonitor(Temperature, 150, 'C°'),
         Humidity.label: GaugeMonitor(Humidity, 160, '%'),
     }
     LED_SIZE = 20

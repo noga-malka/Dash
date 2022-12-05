@@ -6,8 +6,7 @@ from monitors.basic_monitor import Monitor
 class GaugeMonitor(Monitor):
 
     def __init__(self, sensor, size, units=None, show_label=True):
-        super(GaugeMonitor, self).__init__(sensor, size, show_label)
-        self.units = units
+        super(GaugeMonitor, self).__init__(sensor, size, units, show_label)
         if show_label:
             self.extra_kwargs['label'] = self.sensor.label
 

@@ -5,10 +5,11 @@ from consts import TagIds
 
 
 class Monitor:
-    def __init__(self, sensor, size, show_label=False):
+    def __init__(self, sensor, size, units=None, show_label=False):
         self.size = size
         self.sensor = sensor
         self.show_label = show_label
+        self.units = units
         self.extra_kwargs = {}
 
     def generate_daq(self, monitor_id):
