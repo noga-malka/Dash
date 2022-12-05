@@ -9,7 +9,7 @@ from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
 from tabs.extras import EXTRA
-from utilities import generate_color, generate_sensor_output, parse_time
+from utilities import parse_time, generate_sensors_output
 
 app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
 app.layout = generate_layout()
@@ -29,7 +29,7 @@ def activate_reader_thread(path: str):
     realtime.thread.connect_handler()
 
 
-@app.callback(*sum([generate_sensor_output(sensor) for sensor in Settings.SENSORS], []),
+@app.callback(*generate_sensors_output(),
               *[Output(group + '_time', 'children') for group in Settings.GROUPS],
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
@@ -43,7 +43,9 @@ def update_sensors(n_intervals):
         except IndexError:
             raise PreventUpdate
     timestamp = [timestamp] * len(Settings.GROUPS)
-    return sum([generate_color(content[name], sensor) for name, sensor in Settings.SENSORS.items()], []) + timestamp
+    outputs = [Settings.TYPES[sensor.label].generate_output_values(content[name]) for name, sensor in
+               Settings.SENSORS.items()]
+    return sum(outputs, []) + timestamp
 
 
 @app.callback(Output({'type': 'icon', 'index': ALL}, 'style'),
