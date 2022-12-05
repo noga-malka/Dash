@@ -47,3 +47,10 @@ def modal_generator(modal_id: str, title: str, button_id: str, button_text: str,
             dbc.ModalBody([*inputs, dbc.Button(button_text, id=button_id)],
                           className='center align children-margin')], id=modal_id, centered=True, is_open=is_open)]
     )
+
+
+def generate_sensors_output():
+    outputs = []
+    for name, sensor in Settings.SENSORS.items():
+        outputs += Settings.TYPES[sensor.label].generate_output_list(name)
+    return outputs
