@@ -19,7 +19,9 @@ pages = {
 def generate_layout():
     return html.Div(
         children=[
-            html.H1("Caeli", id='title', className='bg-primary display-1 center'),
+            html.Div(
+                html.Img(src='assets/logo.png', width=200),
+                className='bg-primary center', style={'padding': '10px'}),
             dcc.Location(id="url"),
             daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=[
                 html.Div(
