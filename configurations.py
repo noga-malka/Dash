@@ -1,6 +1,10 @@
 import functools
+import logging.config
 
 from pydantic import Field, BaseModel
+
+logging.config.fileConfig('logger.conf')
+logger = logging.getLogger('caeli')
 
 
 class Sensor(BaseModel):
@@ -18,7 +22,7 @@ class Settings:
     ALL_SENSORS = [CO2, Temperature, Humidity]
 
     TYPES = {
-        CO2.label: ('slider', 120),
+        CO2.label: ('gauge', 120),
         Temperature.label: ('thermometer', 90),
         Humidity.label: ('gauge', 120),
     }

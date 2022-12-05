@@ -1,6 +1,7 @@
 import time
 from threading import Thread, Event
 
+from configurations import logger
 from consts import IS_DEBUG
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.file_handler import FileHandler
@@ -37,11 +38,15 @@ class StoppableThread(Thread):
             is_connected = types[self.handler_name].connect(**kwargs)
             if is_connected:
                 self.events.Finish.connect.set()
+                logger.debug(f'connected to handler {self.handler_name}')
+            else:
+                logger.error(f'Failed to connect to handler {self.handler_name}')
 
     def cleanup(self):
         if not self.events.clean.is_set():
             self.events.clean.set()
         self._target(*self._args, **self._kwargs)
+        logger.debug('clean current data')
         self.events.Finish.clean.wait()
         self.events.clean.clear()
         self.events.Finish.clean.clear()
@@ -59,4 +64,5 @@ class StoppableThread(Thread):
                 try:
                     self._target(*self._args, **self._kwargs)
                 except (OSError, AttributeError):
+                    logger.warning('connection to handler failed, stop continuous reading')
                     self.events.Finish.connect.clear()

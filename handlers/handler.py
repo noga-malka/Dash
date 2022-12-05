@@ -1,6 +1,6 @@
 import pandas
 
-from configurations import Settings
+from configurations import Settings, logger
 
 
 class Handler:
@@ -28,10 +28,11 @@ class Handler:
         try:
             data = line.split('\t')
             sample = {data[index]: float(data[index + 1]) for index in range(0, len(data), 2)}
-            if any(key not in Settings.SENSORS for key in sample):
-                raise ValueError()
+            invalid_keys = [key for key in sample if key not in Settings.SENSORS]
+            if len(invalid_keys):
+                logger.warning(f'Unknown sensors: {invalid_keys}')
             sample = pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
             return sample
-        except (KeyError, IndexError, ValueError) as error:
-            print(line)
+        except (KeyError, IndexError, ValueError):
+            logger.warning(f'Failed to parse row: {line}')
             return pandas.DataFrame()

@@ -1,6 +1,7 @@
 import serial
 from serial.tools import list_ports
 
+from configurations import logger
 from consts import Uart, Commands
 from handlers.handler import Handler
 
@@ -25,5 +26,5 @@ class SerialHandler(Handler):
         content = '0' + content if len(content) % 2 else content
         payload = command + '{:0>2}'.format(int(len(content) / 2)) + content
         packet = bytes.fromhex(Commands.HEADER + payload)
-        print(f'send packet: {packet}')
+        logger.info(f'send packet: {packet}')
         self.client.write(packet)
