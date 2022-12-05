@@ -40,9 +40,11 @@ class RealtimeData:
     def pause(self):
         self.is_paused = True
         self.index = len(self.graph) - 1 if self.index == -1 else self.index
+        self.thread.events.Finish.connect.clear()
 
     def play(self):
         self.is_paused = False
+        self.thread.events.Finish.connect.set()
 
     def go_to_end(self):
         self.index = -1
