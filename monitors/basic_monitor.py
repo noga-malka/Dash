@@ -29,11 +29,11 @@ class Monitor:
         for (minimum, maximum), level in ValueRange.LEVEL_COMPARE.items():
             if sensor_dict[minimum] <= value <= sensor_dict[maximum]:
                 current_level = level
-        return [value, current_level, value, current_level, self._get_icon(current_level == Colors.GOOD)]
+        return [value, current_level.value, value, current_level.value, self._get_icon(current_level == Colors.GOOD)]
 
     def generate_led(self, led_id, label=None):
         icon = html.Div(id=led_id + '_icon', className=self._get_icon(False))
         label = label if label else self.units
         return html.Div([icon, daq.LEDDisplay(id=led_id + '_led', value=self.sensor.minimum, label=label,
-                                              labelPosition='bottom', size=30, color=Colors.ERROR)],
+                                              labelPosition='bottom', size=25, color=Colors.ERROR.value)],
                         className='center align children-margin-2')

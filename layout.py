@@ -20,7 +20,7 @@ def generate_layout():
     return html.Div(
         children=[
             html.Div(
-                html.Img(src='assets/logo.png', width=200),
+                html.Img(src='assets/logo.png', width=120),
                 className='bg-primary center', style={'padding': '10px'}),
             dcc.Location(id="url"),
             daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=[

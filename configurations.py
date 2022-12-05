@@ -38,8 +38,6 @@ class Settings:
     GROUPS = {
         'CO2 sensor': {
             'CO2 sensor CO2': CO2,
-        },
-        'CO2 extra sensors': {
             'CO2 sensor Hum': Humidity,
             'CO2 sensor Temp': Temperature,
         },
