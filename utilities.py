@@ -1,10 +1,8 @@
 import dash_bootstrap_components as dbc
 import pandas
-from dash import Output, html
+from dash import html
 
-from configurations import Sensor, Settings
-from consts import TagIds
-from daq_functions import generate_monitor
+from configurations import Settings
 
 
 def generate_grid(components):
@@ -19,19 +17,7 @@ def generate_grid(components):
 
 def create_card(group=''):
     sensors = Settings.GROUPS[group]
-    return generate_grid([[generate_monitor(field, sensors[field]) for field in sensors]])
-
-
-def generate_color(value, sensor: Sensor):
-    is_valid = sensor.low < value < sensor.high
-    icon = f'{TagIds.Icons.CHECK} valid' if is_valid else f'{TagIds.Icons.WARNING} invalid'
-    color = '#ABE2FB' if is_valid else 'red'
-    return [value, color, value, color, f'fa {icon}']
-
-
-def generate_sensor_output(key):
-    return [Output(key, 'value'), Output(key, 'color'), Output(key + '_led', 'value'), Output(key + '_led', 'color'),
-            Output(key + '_icon', 'className')]
+    return generate_grid([[Settings.TYPES[sensor.label].generate_daq(field) for field, sensor in sensors.items()]])
 
 
 def parse_time(datetime, start):
