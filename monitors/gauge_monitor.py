@@ -1,7 +1,6 @@
 import dash_daq as daq
 from dash import html, Output
 
-from consts import Colors
 from monitors.basic_monitor import Monitor
 
 
@@ -19,7 +18,7 @@ class GaugeMonitor(Monitor):
                           showCurrentValue=True, min=self.sensor.minimum, max=self.sensor.maximum, **self.extra_kwargs)
         led = self.generate_led(monitor_id)
         if self.show_percentage:
-            led = html.Div([led, self.generate_led(monitor_id + '_percent', color=Colors.GOOD, is_valid=True)],
+            led = html.Div([led, self.generate_led(monitor_id + '_percent', label='%')],
                            style={'width': 'inherit', 'display': 'flex', 'justify-content': 'space-around'})
         return [gauge, led]
 
