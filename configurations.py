@@ -13,19 +13,23 @@ logger = logging.getLogger('caeli')
 class Sensor(BaseModel):
     label: str = Field(..., editable=False, content_type='text')
     minimum: int = Field(..., content_type='numeric')
-    low: int = Field(..., content_type='numeric')
-    high: int = Field(..., content_type='numeric')
+    low_error: int = Field(..., content_type='numeric')
+    low_warning: int = Field(..., content_type='numeric')
+    high_warning: int = Field(..., content_type='numeric')
+    high_error: int = Field(..., content_type='numeric')
     maximum: int = Field(..., content_type='numeric')
 
 
 class Settings:
-    CO2 = Sensor(label='CO2', minimum=0, low=200, high=7000, maximum=10000)
-    Temperature = Sensor(label='Temperature', minimum=20, low=28, high=32, maximum=35)
-    Humidity = Sensor(label='Humidity', minimum=0, low=10, high=90, maximum=100)
+    CO2 = Sensor(label='CO2', minimum=0, low_error=0, low_warning=0, high_warning=6000, high_error=8000, maximum=10000)
+    Temperature = Sensor(label='Temperature', minimum=10, low_error=20, low_warning=25, high_warning=35, high_error=40,
+                         maximum=50)
+    Humidity = Sensor(label='Humidity', minimum=0, low_error=10, low_warning=20, high_warning=80, high_error=90,
+                      maximum=100)
     ALL_SENSORS = [CO2, Temperature, Humidity]
 
     TYPES = {
-        CO2.label: GaugeMonitor(CO2, 210, "PPM", False),
+        CO2.label: GaugeMonitor(CO2, 210, "PPM", False, show_percentage=True, max_percent=1000000),
         Temperature.label: TemperatureMonitor(Temperature, 150, 'C°'),
         Humidity.label: GaugeMonitor(Humidity, 160, '%'),
     }
