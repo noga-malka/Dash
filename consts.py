@@ -1,4 +1,5 @@
 import sys
+from enum import Enum
 
 import dash_bootstrap_components as dbc
 
@@ -59,6 +60,12 @@ class DaqConsts:
     ICONS = {"right": "fa fa-moon", "left": "fa fa-sun"}
 
 
+class Colors(Enum):
+    GOOD = '#69c569'
+    WARNING = 'orange'
+    ERROR = 'red'
+
+
 class Theme:
     DAQ_THEME = {
         'dark': True,
@@ -70,3 +77,13 @@ class Theme:
     FIGURE_DARK = 'darkly'
     DARK = dbc.themes.DARKLY
     LIGHT = dbc.themes.BOOTSTRAP
+
+
+class ValueRange:
+    LEVEL_COMPARE = {
+        ('minimum', 'low_error'): Colors.ERROR,
+        ('low_error', 'low_warning'): Colors.WARNING,
+        ('low_warning', 'high_warning'): Colors.GOOD,
+        ('high_warning', 'high_error'): Colors.WARNING,
+        ('high_error', 'maximum'): Colors.ERROR,
+    }
