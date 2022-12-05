@@ -3,6 +3,9 @@ import logging.config
 
 from pydantic import Field, BaseModel
 
+from monitors.gauge_monitor import GaugeMonitor
+from monitors.temperature_monitor import TemperatureMonitor
+
 logging.config.fileConfig('logger.conf')
 logger = logging.getLogger('caeli')
 
@@ -16,21 +19,23 @@ class Sensor(BaseModel):
 
 
 class Settings:
-    CO2 = Sensor(label='CO2', minimum=300, low=500, high=3000, maximum=5000)
+    CO2 = Sensor(label='CO2', minimum=0, low=200, high=7000, maximum=10000)
     Temperature = Sensor(label='Temperature', minimum=20, low=28, high=32, maximum=35)
-    Humidity = Sensor(label='Humidity', minimum=0, low=40, high=70, maximum=80)
+    Humidity = Sensor(label='Humidity', minimum=0, low=10, high=90, maximum=100)
     ALL_SENSORS = [CO2, Temperature, Humidity]
 
     TYPES = {
-        CO2.label: ('gauge', 120),
-        Temperature.label: ('thermometer', 90),
-        Humidity.label: ('gauge', 120),
+        CO2.label: GaugeMonitor(CO2, 210, "PPM", False),
+        Temperature.label: TemperatureMonitor(Temperature, 150),
+        Humidity.label: GaugeMonitor(Humidity, 160, '%'),
     }
     LED_SIZE = 20
 
     GROUPS = {
         'CO2 sensor': {
             'CO2 sensor CO2': CO2,
+        },
+        'CO2 extra sensors': {
             'CO2 sensor Hum': Humidity,
             'CO2 sensor Temp': Temperature,
         },
