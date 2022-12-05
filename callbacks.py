@@ -7,6 +7,7 @@ from configurations import Settings
 from consts import TagIds, Theme
 from layout import generate_layout, pages
 from realtime_data import realtime
+from stoppable_thread import types
 from tabs.extras import EXTRA
 from utilities import generate_color, generate_sensor_output, parse_time
 
@@ -122,4 +123,4 @@ def load_file_data(config, click):
               Input('send_command', 'n_clicks'))
 def send_command(content, command, click):
     if click and command:
-        realtime.handler.send_command(command, content)
+        types[realtime.thread.handler_name].send_command(command, content)
