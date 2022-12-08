@@ -31,6 +31,7 @@ class Handler:
             invalid_keys = [key for key in sample if key not in Settings.SENSORS]
             if len(invalid_keys):
                 logger.warning(f'Unknown sensors: {invalid_keys}')
+                return pandas.DataFrame()
             sample = pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
             return sample
         except (KeyError, IndexError, ValueError):
