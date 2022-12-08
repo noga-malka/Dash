@@ -108,3 +108,9 @@ class UnitTypes:
         CELSIUS: lambda value: value,
         FAHRENHEIT: to_fahrenheit
     }
+    CANCEL = {
+        PERCENTAGE: lambda value: value,
+        PPM: lambda value: value,
+        CELSIUS: lambda value: value,
+        FAHRENHEIT: to_celsius
+    }

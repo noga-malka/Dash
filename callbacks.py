@@ -121,7 +121,10 @@ def load_file_data(config, click):
         raise PreventUpdate
     config = {row['label']: row for row in config}
     for sensor in Settings.ALL_SENSORS:
-        sensor.__dict__.update(config[sensor.label])
+        current_values = config[sensor.label]
+        updates = {key: UnitTypes.CANCEL[sensor.unit_type](value) for key, value in current_values.items() if
+                   type(value) == int}
+        sensor.__dict__.update(updates)
 
 
 @app.callback(Output('configuration', 'data'), Input('temperature_switch', 'on'))
