@@ -6,15 +6,15 @@ from monitors.basic_monitor import Monitor
 
 class GaugeMonitor(Monitor):
 
-    def __init__(self, sensor, size, units=None, show_label=True, show_percentage=False, max_percent=None):
-        super(GaugeMonitor, self).__init__(sensor, size, units, show_label)
+    def __init__(self, sensor, size, show_label=True, show_percentage=False, max_percent=None):
+        super(GaugeMonitor, self).__init__(sensor, size, show_label)
         self.show_percentage = show_percentage
         self.max_percent = max_percent
         if show_label:
             self.extra_kwargs['label'] = self.sensor.label
 
     def generate_daq(self, monitor_id):
-        gauge = daq.Gauge(id=monitor_id, value=self.sensor.minimum, size=self.size, units=self.units,
+        gauge = daq.Gauge(id=monitor_id, value=self.sensor.minimum, size=self.size, units=self.sensor.unit_type,
                           showCurrentValue=True, min=self.sensor.minimum, max=self.sensor.maximum, **self.extra_kwargs)
         led = self.generate_led(monitor_id)
         if self.show_percentage:

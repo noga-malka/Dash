@@ -5,11 +5,10 @@ from consts import TagIds, Colors, ValueRange
 
 
 class Monitor:
-    def __init__(self, sensor, size, units=None, show_label=False):
+    def __init__(self, sensor, size, show_label=False):
         self.size = size
         self.sensor = sensor
         self.show_label = show_label
-        self.units = units
         self.extra_kwargs = {}
 
     def generate_daq(self, monitor_id):
@@ -33,7 +32,7 @@ class Monitor:
 
     def generate_led(self, led_id, label=None):
         icon = html.Div(id=led_id + '_icon', className=self._get_icon(False))
-        label = label if label else self.units
+        label = label if label else self.sensor.unit_type
         return html.Div([icon, daq.LEDDisplay(id=led_id + '_led', value=self.sensor.minimum, label=label,
                                               labelPosition='bottom', size=25, color=Colors.ERROR.value)],
                         className='center align children-margin-2')

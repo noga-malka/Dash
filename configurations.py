@@ -18,20 +18,22 @@ class Sensor(BaseModel):
     high_warning: int = Field(..., content_type='numeric')
     high_error: int = Field(..., content_type='numeric')
     maximum: int = Field(..., content_type='numeric')
+    unit_type: str = Field(..., editable=False, content_type='text')
 
 
 class Settings:
-    CO2 = Sensor(label='CO2', minimum=0, low_error=0, low_warning=0, high_warning=6000, high_error=8000, maximum=10000)
+    CO2 = Sensor(label='CO2', minimum=0, low_error=0, low_warning=0, high_warning=6000, high_error=8000, maximum=10000,
+                 unit_type='PPM')
     Temperature = Sensor(label='Temperature', minimum=10, low_error=20, low_warning=25, high_warning=35, high_error=40,
-                         maximum=50)
+                         maximum=50, unit_type='C°')
     Humidity = Sensor(label='Humidity', minimum=0, low_error=10, low_warning=20, high_warning=80, high_error=90,
-                      maximum=100)
+                      maximum=100, unit_type='%')
     ALL_SENSORS = [CO2, Temperature, Humidity]
 
     TYPES = {
-        CO2.label: GaugeMonitor(CO2, 210, "PPM", False, show_percentage=True, max_percent=1000000),
-        Temperature.label: TemperatureMonitor(Temperature, 150, 'C°'),
-        Humidity.label: GaugeMonitor(Humidity, 160, '%'),
+        CO2.label: GaugeMonitor(CO2, 210, show_label=False, show_percentage=True, max_percent=1000000),
+        Temperature.label: TemperatureMonitor(Temperature, 150),
+        Humidity.label: GaugeMonitor(Humidity, 160),
     }
     LED_SIZE = 20
 
