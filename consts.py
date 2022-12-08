@@ -97,10 +97,14 @@ def to_fahrenheit(value):
     return int(value * 1.8 + 32)
 
 
-class TempTypes:
+class UnitTypes:
     CELSIUS = 'C°'
     FAHRENHEIT = 'F°'
+    PPM = 'PPM'
+    PERCENTAGE = '%'
     CONVERT = {
-        True: (CELSIUS, lambda value: value),
-        False: (FAHRENHEIT, to_fahrenheit)
+        PERCENTAGE: lambda value: value,
+        PPM: lambda value: value,
+        CELSIUS: lambda value: value,
+        FAHRENHEIT: to_fahrenheit
     }

@@ -18,8 +18,8 @@ class Sensor(BaseModel):
     high_warning: int = Field(..., content_type='numeric')
     high_error: int = Field(..., content_type='numeric')
     maximum: int = Field(..., content_type='numeric')
-    possible_units: list[str] = Field(..., editable=False, content_type='text')
     unit_type: str = Field(..., editable=False, content_type='text')
+    possible_units: list[str] = Field(..., editable=False, hidden=True)
 
 
 class Settings:
@@ -29,6 +29,11 @@ class Settings:
                          maximum=50, unit_type='C°', possible_units=['C°', 'F°'])
     Humidity = Sensor(label='Humidity', minimum=0, low_error=10, low_warning=20, high_warning=80, high_error=90,
                       maximum=100, unit_type='%', possible_units=['%'])
+
+    SENSOR_SCHEMA = Sensor.schema()['properties']
+
+    HIDDEN_FIELDS = {key for key, field in Sensor.schema()['properties'].items() if field.get('hidden')}
+
     ALL_SENSORS = [CO2, Temperature, Humidity]
 
     TYPES = {

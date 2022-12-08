@@ -5,7 +5,7 @@ from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
-from consts import TagIds, Theme, TempTypes
+from consts import TagIds, Theme, UnitTypes
 from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
@@ -123,16 +123,19 @@ def load_file_data(config, click):
 
 @app.callback([[Output(sensor_key, 'min'), Output(sensor_key, 'max'), Output(sensor_key, 'units'),
                 Output(sensor_key + '_led', 'label')] for sensor_key in Settings.SENSORS],
-              Input('temperature_switch', 'on'),
-              prevent_initial_call=True)
+              Input('temperature_switch', 'on'))
 def change_unit_type(is_celsius):
-    unit_type, change_function = TempTypes.CONVERT[is_celsius]
+    unit_type = UnitTypes.CELSIUS if is_celsius else UnitTypes.FAHRENHEIT
+    change_function = UnitTypes.CONVERT[unit_type]
     outputs = []
     for name, sensor in Settings.SENSORS.items():
         changes = [dash.no_update] * 4
-        if unit_type in sensor.possible_units:
+        if unit_type in sensor.possible_units and sensor.unit_type != unit_type:
             changes = [change_function(sensor.minimum), change_function(sensor.maximum), unit_type, unit_type]
         outputs.append(changes)
+    for sensor in Settings.ALL_SENSORS:
+        if unit_type in sensor.possible_units:
+            sensor.unit_type = unit_type
     return outputs
 
 
