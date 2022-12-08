@@ -1,7 +1,7 @@
 import dash_daq as daq
 from dash import html, Output
 
-from consts import TagIds, Colors, ValueRange
+from consts import TagIds, Colors, ValueRange, UnitTypes
 
 
 class Monitor:
@@ -28,6 +28,7 @@ class Monitor:
         for (minimum, maximum), level in ValueRange.LEVEL_COMPARE.items():
             if sensor_dict[minimum] <= value <= sensor_dict[maximum]:
                 current_level = level
+        value = UnitTypes.CONVERT[self.sensor.unit_type](value)
         return [value, current_level.value, value, current_level.value, self._get_icon(current_level == Colors.GOOD)]
 
     def generate_led(self, led_id, label=None):

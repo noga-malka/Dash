@@ -10,6 +10,7 @@ from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
 from tabs.extras import EXTRA
+from tabs.set_config import load_data
 from utilities import parse_time, generate_sensors_output
 
 app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
@@ -116,9 +117,20 @@ def create_graphs(toggle, interval):
 @app.callback(Output('placeholder', 'n_clicks'), State('configuration', 'data'), Input('save_config', 'n_clicks'),
               prevent_initial_call=True)
 def load_file_data(config, click):
+    if not click:
+        raise PreventUpdate
     config = {row['label']: row for row in config}
     for sensor in Settings.ALL_SENSORS:
         sensor.__dict__.update(config[sensor.label])
+
+
+@app.callback(Output('configuration', 'data'), Input('temperature_switch', 'on'))
+def load_file_data(is_celsius):
+    unit_type = UnitTypes.CELSIUS if is_celsius else UnitTypes.FAHRENHEIT
+    for sensor in Settings.ALL_SENSORS:
+        if unit_type in sensor.possible_units:
+            sensor.unit_type = unit_type
+    return load_data()
 
 
 @app.callback([[Output(sensor_key, 'min'), Output(sensor_key, 'max'), Output(sensor_key, 'units'),

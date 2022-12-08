@@ -15,7 +15,7 @@ class ConfigPage:
                 dbc.CardBody(dash_table.DataTable(
                     id='configuration',
                     columns=(create_columns()),
-                    data=load_data(),
+                    data=[],
                     editable=True,
                     style_cell={'textAlign': 'left', 'padding': '10px'},
                     style_header={'backgroundColor': 'rgb(30, 30, 30)', 'color': 'white'},
