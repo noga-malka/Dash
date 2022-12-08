@@ -36,7 +36,6 @@ def modal_generator(modal_id: str, title: str, button_id: str, button_text: str,
 
 
 def generate_sensors_output():
-    outputs = []
-    for name, sensor in Settings.SENSORS.items():
-        outputs += Settings.TYPES[sensor.label].generate_output_list(name)
-    return outputs
+    a = [Settings.TYPES[sensor.label].generate_output_list(name) for name, sensor in Settings.SENSORS.items()]
+    print(a)
+    return a

@@ -26,8 +26,7 @@ class GaugeMonitor(Monitor):
         values = super(GaugeMonitor, self).generate_output_values(value)
         if self.show_percentage:
             percent = value / self.max_percent * 100 if self.max_percent else -1
-            extra = ['{:.2f}'.format(percent)] + values[-2:]
-            values += extra
+            values.append(['{:.2f}'.format(percent)] + values[-2:])
         return values
 
     def generate_output_list(self, sensor_key):

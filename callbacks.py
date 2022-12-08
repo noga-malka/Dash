@@ -30,7 +30,7 @@ def activate_reader_thread(path: str):
     realtime.thread.connect_handler()
 
 
-@app.callback(*generate_sensors_output(),
+@app.callback(generate_sensors_output(),
               *[Output(group + '_time', 'children') for group in Settings.GROUPS],
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
@@ -43,10 +43,9 @@ def update_sensors(n_intervals):
             timestamp = 'timer: ' + parse_time(content.name, realtime.graph.iloc[0].name)
         except IndexError:
             raise PreventUpdate
-    timestamp = [timestamp] * len(Settings.GROUPS)
     outputs = [Settings.TYPES[sensor.label].generate_output_values(content[name]) for name, sensor in
                Settings.SENSORS.items()]
-    return sum(outputs, []) + timestamp
+    return outputs + [timestamp] * len(Settings.GROUPS)
 
 
 @app.callback(Output({'type': 'icon', 'index': ALL}, 'style'),
