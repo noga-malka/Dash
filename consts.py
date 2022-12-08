@@ -87,3 +87,20 @@ class ValueRange:
         ('high_warning', 'high_error'): Colors.WARNING,
         ('high_error', 'maximum'): Colors.ERROR,
     }
+
+
+def to_celsius(value):
+    return int((value - 32) * 5 / 9)
+
+
+def to_fahrenheit(value):
+    return int(value * 1.8 + 32)
+
+
+class TempTypes:
+    CELSIUS = 'C°'
+    FAHRENHEIT = 'F°'
+    CONVERT = {
+        True: (CELSIUS, lambda value: value),
+        False: (FAHRENHEIT, to_fahrenheit)
+    }

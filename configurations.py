@@ -18,16 +18,17 @@ class Sensor(BaseModel):
     high_warning: int = Field(..., content_type='numeric')
     high_error: int = Field(..., content_type='numeric')
     maximum: int = Field(..., content_type='numeric')
+    possible_units: list[str] = Field(..., editable=False, content_type='text')
     unit_type: str = Field(..., editable=False, content_type='text')
 
 
 class Settings:
     CO2 = Sensor(label='CO2', minimum=0, low_error=0, low_warning=0, high_warning=6000, high_error=8000, maximum=10000,
-                 unit_type='PPM')
+                 unit_type='PPM', possible_units=['PPM'])
     Temperature = Sensor(label='Temperature', minimum=10, low_error=20, low_warning=25, high_warning=35, high_error=40,
-                         maximum=50, unit_type='C°')
+                         maximum=50, unit_type='C°', possible_units=['C°', 'F°'])
     Humidity = Sensor(label='Humidity', minimum=0, low_error=10, low_warning=20, high_warning=80, high_error=90,
-                      maximum=100, unit_type='%')
+                      maximum=100, unit_type='%', possible_units=['%'])
     ALL_SENSORS = [CO2, Temperature, Humidity]
 
     TYPES = {

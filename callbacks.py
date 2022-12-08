@@ -1,10 +1,11 @@
+import dash
 import plotly.express as px
 from dash import Dash, Input, Output, callback_context, ALL, State
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
-from consts import TagIds, Theme
+from consts import TagIds, Theme, TempTypes
 from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
@@ -119,6 +120,21 @@ def load_file_data(config, click):
     config = {row['label']: row for row in config}
     for sensor in Settings.ALL_SENSORS:
         sensor.__dict__.update(config[sensor.label])
+
+
+@app.callback([[Output(sensor_key, 'min'), Output(sensor_key, 'max'), Output(sensor_key, 'units'),
+                Output(sensor_key + '_led', 'label')] for sensor_key in Settings.SENSORS],
+              Input('temperature_switch', 'on'),
+              prevent_initial_call=True)
+def change_unit_type(is_celsius):
+    unit_type, change_function = TempTypes.CONVERT[is_celsius]
+    outputs = []
+    for name, sensor in Settings.SENSORS.items():
+        changes = [dash.no_update] * 4
+        if unit_type in sensor.possible_units:
+            changes = [change_function(sensor.minimum), change_function(sensor.maximum), unit_type, unit_type]
+        outputs.append(changes)
+    return outputs
 
 
 @app.callback(Output('placeholder', 'title'), State('command_input', 'value'), State('command_menu', 'value'),
