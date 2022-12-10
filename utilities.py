@@ -26,12 +26,13 @@ def parse_time(datetime, start):
     return ':'.join(parsed).replace('00:', '')
 
 
-def modal_generator(modal_id: str, title: str, button_id: str, button_text: str, inputs: list, is_open=False):
+def modal_generator(modal_id: str, title: str, inputs: list, is_centered=True):
+    class_name = f'flex {"align" if is_centered else ""} center children-margin'
     return html.Div([
         dbc.Modal([
             dbc.ModalHeader(html.H3(title)),
-            dbc.ModalBody([*inputs, dbc.Button(button_text, id=button_id)],
-                          className='center align children-margin')], id=modal_id, centered=True, is_open=is_open)]
+            dbc.ModalBody([*inputs],
+                          className=class_name, style={'flex-direction': 'column'})], id=modal_id, centered=True)]
     )
 
 

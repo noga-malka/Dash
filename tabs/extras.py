@@ -6,8 +6,8 @@ from utilities import modal_generator
 
 
 def bluetooth_extra():
-    inputs = [dbc.Input(id='mac_input', style={'width': 'auto'})]
-    modal = modal_generator('bluetooth_modal', 'Enter Mac Address', 'mac_button', 'Connect', inputs)
+    inputs = [dbc.Input(id='mac_input', style={'width': 'auto'}), dbc.Button('Connect', id='mac_button')]
+    modal = modal_generator('bluetooth_modal', 'Enter Mac Address', inputs)
     button = dbc.Button(id='toggle_bluetooth', children='Connect To Bluetooth',
                         style={'padding': '10px', 'margin': '5px'})
     return [button, modal]
@@ -23,7 +23,7 @@ def command_modal():
         dbc.Input(id='command_input', value=Commands.COMMAND_DEFAULT.get(Commands.ALL[0]),
                   style={'width': 'auto'}),
     ]
-    return modal_generator('modal', 'Command Sender', 'send_command', 'Send Command', inputs)
+    return modal_generator('modal', 'Command Sender', inputs, is_centered=False)
 
 
 EXTRA = {
