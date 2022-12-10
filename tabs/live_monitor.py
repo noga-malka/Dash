@@ -10,8 +10,8 @@ class LivePage:
     def render():
         return [html.Div(id='content', children=[dbc.Card(
             [
-                dbc.CardHeader(group, className='center card-title'),
+                dbc.CardHeader(group, className='flex center card-title'),
                 dbc.CardBody(create_card(group)),
-                dbc.CardFooter(id=group + '_time', className='center')
+                dbc.CardFooter(id=group + '_time', className='flex center')
             ], className='sensor-card') for group in Settings.GROUPS],
                          className='children-margin')]

@@ -20,8 +20,10 @@ margin: 10px;
     color:var(--bs-body-body)!important
 }
 .center{
-    display: flex;
     justify-content: center;
+}
+.flex{
+ display: flex;
 }
 
 .space-between{
@@ -40,6 +42,9 @@ margin: 2px;
 }
 .card-title{
     font-size: 20px;
+}
+.full-width{
+width: 100%;
 }
 .align{
     align-items: center;

@@ -21,22 +21,20 @@ def generate_layout():
         children=[
             html.Div(
                 html.Img(src='assets/logo.png', width=120),
-                className='bg-primary center', style={'padding': '10px'}),
+                className='bg-primary flex center', style={'padding': '10px'}),
             dcc.Location(id="url"),
             daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=[
                 html.Div(
                     children=[
-                        daq.GraduatedBar(max=100, value=100, step=10, size=80, style={'height': '25px'},
-                                         showCurrentValue=True, color=DaqConsts.GRADIENT),
                         html.Div([
                             html.Label('F°'),
                             daq.BooleanSwitch(id='temperature_switch', on=True),
                             html.Label('C°'),
-                        ], className='center align children-margin-2'),
+                        ], className='flex center align children-margin-2'),
                         html.Div([
                             html.I(id={'type': 'icon', 'index': icon['id']}, className=f"fa {icon['icon']} fa-xl") for
                             icon in TagIds.Icons.ALL
-                        ], className='center children-margin'),
+                        ], className='flex center children-margin'),
                         ThemeSwitchAIO(aio_id="theme", themes=[Theme.DARK, Theme.LIGHT],
                                        switch_props={"persistence": True}, icons=DaqConsts.ICONS),
                     ], className='bg-info space-between',

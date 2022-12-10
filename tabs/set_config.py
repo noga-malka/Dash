@@ -11,7 +11,7 @@ class ConfigPage:
     def render():
         return [html.Div(id='content', children=dbc.Card(
             [
-                dbc.CardHeader('Configurations', className='center card-title'),
+                dbc.CardHeader('Configurations', className='flex center card-title'),
                 dbc.CardBody(dash_table.DataTable(
                     id='configuration',
                     columns=(create_columns()),
@@ -21,7 +21,8 @@ class ConfigPage:
                     style_header={'backgroundColor': 'rgb(30, 30, 30)', 'color': 'white'},
                     style_data={'backgroundColor': 'rgb(50, 50, 50)', 'color': 'white'},
                 )),
-                dbc.CardFooter(className='center', children=dbc.Button('Save Config', id='save_config', n_clicks=0))
+                dbc.CardFooter(className='flex center',
+                               children=dbc.Button('Save Config', id='save_config', n_clicks=0))
             ], className='sensor-card'), className='children-margin')]
 
 
