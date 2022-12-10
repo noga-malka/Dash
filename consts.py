@@ -17,6 +17,8 @@ class TagIds:
     TABS = 'tabs'
     INTERVAL = 'interval'
     GRAPH = 'graph'
+    CO2_BUTTON = 'set_co2'
+    FAN_BUTTON = 'set_fan'
 
     class Icons:
         BACKWARD = {'id': 'backward', 'icon': 'fa-fast-backward'}

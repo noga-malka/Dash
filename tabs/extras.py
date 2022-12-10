@@ -20,10 +20,10 @@ def file_extra():
 def command_modal():
     inputs = [
         html.Div(
-            dbc.Button('Reset CO2 sensors', id='set_co2'),
+            dbc.Button('Reset CO2 sensors', id=TagIds.CO2_BUTTON),
         ),
         html.Div([
-            dbc.Button('Change fan speed', id='set_fan'),
+            dbc.Button('Change fan speed', id=TagIds.FAN_BUTTON),
             dcc.Slider(0, 100, value=50, id='fan_slider', tooltip={'placement': 'bottom', 'always_visible': True},
                        className='full-width'),
         ], style={'width': '100%'}, className='flex align')
