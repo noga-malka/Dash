@@ -5,7 +5,7 @@ from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
-from consts import TagIds, Theme, UnitTypes
+from consts import TagIds, Theme, UnitTypes, Commands
 from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
@@ -154,8 +154,15 @@ def change_unit_type(is_celsius):
     return outputs
 
 
-@app.callback(Output('placeholder', 'title'), State('command_input', 'value'), State('command_menu', 'value'),
-              Input('send_command', 'n_clicks'))
-def send_command(content, command, click):
-    if click and command:
-        types[realtime.thread.handler_name].send_command(command, content)
+@app.callback(Output('placeholder', 'title'), Input('set_co2', 'n_clicks'), Input('set_fan', 'n_clicks'),
+              State('fan_slider', 'value'))
+def send_command(co2_click, fan_click, fan_value):
+    if not co2_click and not fan_click:
+        raise PreventUpdate
+    command = None
+    value = None
+    if callback_context.triggered_id == 'set_co2':
+        command, value = Commands.SET_CO2, Commands.COMMAND_DEFAULT[Commands.SET_CO2]
+    if callback_context.triggered_id == 'set_fan':
+        command, value = Commands.SET_FAN, fan_value
+    types[realtime.thread.handler_name].send_command(str(command), str(value))
