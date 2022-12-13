@@ -3,6 +3,9 @@ display: flex;
 flex-wrap: wrap;
 justify-content: center;
 }
+.column{
+flex-direction: column;
+}
 .children-margin > *{
 margin: 10px;
 }
@@ -35,7 +38,6 @@ margin: 10px;
 }
 .sensor-card{
     width: fit-content!important;
-    min-width: 30%!important;
 }
 .children-margin-2 > *{
 margin: 2px;
@@ -66,7 +68,7 @@ width: 100%;
     margin: 10px;
 }
 .side-nav{
-width: 20rem;
+width: 15rem;
 padding: 2rem 1rem;
 border-right: groove;
 }

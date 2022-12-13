@@ -21,10 +21,12 @@ class SerialHandler(Handler):
     def read_line(self) -> str:
         return self.client.readline().decode().strip()
 
-    def send_command(self, command, content):
-        content = hex(int(content)).replace('0x', '')
-        content = '0' + content if len(content) % 2 else content
+    def send_command(self, command: str, content: str):
+        content = '{:0>4}'.format(hex(int(content)).replace('0x', ''))
         payload = command + '{:0>2}'.format(int(len(content) / 2)) + content
         packet = bytes.fromhex(Commands.HEADER + payload)
-        logger.info(f'send packet: {packet}')
-        self.client.write(packet)
+        if self.client:
+            logger.info(f'send packet: {packet}')
+            self.client.write(packet)
+        else:
+            logger.warning(f'no connection. could not send {packet}')

@@ -17,22 +17,19 @@ def file_extra():
     return [dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))]
 
 
-def command_modal():
-    inputs = [
-        html.Div(
-            dbc.Button('Reset CO2 sensors', id=TagIds.CO2_BUTTON),
-        ),
+def serial_extra():
+    return [html.Div([
+        dbc.Button('Reset CO2 sensors', id=TagIds.CO2_BUTTON),
         html.Div([
-            dbc.Button('Change fan speed', id=TagIds.FAN_BUTTON),
-            dcc.Slider(0, 100, value=50, id='fan_slider', tooltip={'placement': 'bottom', 'always_visible': True},
+            html.Label('Change fan speed'),
+            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON, tooltip={'placement': 'bottom', 'always_visible': True},
                        className='full-width'),
-        ], style={'width': '100%'}, className='flex align')
-
-    ]
-    return modal_generator('modal', 'Command Sender', inputs, is_centered=False)
+        ], style={'width': '50%'}, className='column flex align')
+    ], className='flex align children-margin center')]
 
 
 EXTRA = {
-    TagIds.Icons.UPLOAD['id']: [dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))],
-    TagIds.Icons.BLUETOOTH['id']: bluetooth_extra()
+    TagIds.Icons.UPLOAD['id']: file_extra(),
+    TagIds.Icons.BLUETOOTH['id']: bluetooth_extra(),
+    TagIds.Icons.SERIAL['id']: serial_extra()
 }

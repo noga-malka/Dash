@@ -59,17 +59,6 @@ def click_navigation_bar_buttons(button):
 
 
 @app.callback(
-    Output("modal", "is_open"),
-    Input({'type': 'icon', 'index': 'terminal'}, 'n_clicks'),
-    [State("modal", "is_open")],
-)
-def toggle_modal(click, is_open):
-    if click:
-        return not is_open
-    return is_open
-
-
-@app.callback(
     Output("bluetooth_modal", "is_open"),
     Input('toggle_bluetooth', 'n_clicks'),
     [State("bluetooth_modal", "is_open")],
@@ -155,9 +144,9 @@ def change_unit_type(is_celsius):
 
 
 @app.callback(Output('placeholder', 'title'), Input(TagIds.CO2_BUTTON, 'n_clicks'),
-              Input(TagIds.FAN_BUTTON, 'n_clicks'), State('fan_slider', 'value'))
-def send_command(co2_click, fan_click, fan_value):
-    if not co2_click and not fan_click:
+              Input(TagIds.FAN_BUTTON, 'value'), prevent_initial_call=True)
+def send_command(co2_click, fan_value):
+    if not co2_click and not fan_value:
         raise PreventUpdate
     command = None
     value = None
