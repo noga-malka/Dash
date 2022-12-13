@@ -4,6 +4,7 @@ from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme
+from tabs.extras import download_session, are_you_sure
 from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
 from tabs.set_config import ConfigPage
@@ -64,6 +65,8 @@ def generate_layout():
                         dcc.Tabs(id=TagIds.TABS, value='monitor',
                                  children=[
                                      dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
+                        download_session(),
+                        are_you_sure(),
                         html.Div(id='page', style={'display': 'flex', 'flex-direction': 'column'}),
                         dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
                         html.Div(id='placeholder', style={'display': None})

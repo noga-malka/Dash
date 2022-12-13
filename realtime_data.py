@@ -1,5 +1,3 @@
-import datetime
-
 import pandas
 
 from consts import RealtimeConsts
@@ -19,8 +17,6 @@ class RealtimeData:
             'forward': lambda: self.step(RealtimeConsts.GAP),
             'pause': self.pause,
             'play': self.play,
-            'clean': self.clean,
-            'save': self.save,
             'backward': lambda: self.step(-RealtimeConsts.GAP),
             'to-end': lambda: self.set_index()
         }
@@ -61,9 +57,6 @@ class RealtimeData:
             self.thread.events.Finish.clean.set()
         else:
             self.graph = pandas.concat([self.graph, types[self.thread.handler_name].extract_data()])
-
-    def save(self):
-        self.graph.to_csv(f'output/data_{datetime.datetime.now().strftime("%Y_%m_%d %H-%M-%S")}.csv')
 
     def clean(self):
         self.thread.events.clean.set()

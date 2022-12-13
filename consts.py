@@ -36,7 +36,7 @@ class TagIds:
         WARNING = 'fa-exclamation-circle'
         CHECK = 'fa-check-circle'
 
-        ALL = [START, BACKWARD, PLAY, PAUSE, SAVE, CLEAN, FORWARD, END]
+        ALL = [START, BACKWARD, SAVE, PLAY, PAUSE, CLEAN, FORWARD, END]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
                        {'icon': BLUETOOTH, 'label': 'Bluetooth'},
                        {'icon': UPLOAD, 'label': 'Load File'}]

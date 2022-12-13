@@ -21,11 +21,22 @@ def serial_extra():
     return [html.Div([
         dbc.Button('Reset CO2 sensors', id=TagIds.CO2_BUTTON),
         html.Div([
-            html.Label('Change fan speed'),
+            html.Label('Change Fan Speed'),
             dcc.Slider(0, 100, id=TagIds.FAN_BUTTON, tooltip={'placement': 'bottom', 'always_visible': True},
                        className='full-width'),
         ], style={'width': '50%'}, className='column flex align')
     ], className='flex align children-margin center')]
+
+
+def download_session():
+    return modal_generator('save_file', 'Download Session',
+                           [dcc.Download(id='download_text'), dbc.Button('Download csv', id='save_session')])
+
+
+def are_you_sure():
+    return modal_generator('are_you_sure', 'Are You Sure?',
+                           [html.Div([dbc.Button('No', id='sure_no'), dbc.Button('Yes', id='sure_yes')],
+                                     className='flex children-margin')])
 
 
 EXTRA = {
