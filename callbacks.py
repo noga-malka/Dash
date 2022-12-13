@@ -4,7 +4,7 @@ from dash import Dash, Input, Output, callback_context, ALL, State
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from configurations import Settings
+from configurations import Settings, Schema
 from consts import TagIds, Theme, UnitTypes, Commands
 from layout import generate_layout, pages
 from realtime_data import realtime
@@ -44,7 +44,7 @@ def update_sensors(n_intervals):
             timestamp = 'timer: ' + parse_time(content.name, realtime.graph.iloc[0].name)
         except IndexError:
             raise PreventUpdate
-    outputs = [Settings.TYPES[sensor.label].generate_output_values(content[name]) for name, sensor in
+    outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(content[name]) for name, sensor in
                Settings.SENSORS.items()]
     return outputs + [timestamp] * len(Settings.GROUPS)
 
@@ -109,7 +109,7 @@ def load_file_data(config, click):
     if not click:
         raise PreventUpdate
     config = {row['label']: row for row in config}
-    for sensor in Settings.ALL_SENSORS:
+    for sensor in Schema.ALL:
         current_values = config[sensor.label]
         updates = {key: UnitTypes.CANCEL[sensor.unit_type](value) for key, value in current_values.items() if
                    type(value) == int}
@@ -119,7 +119,7 @@ def load_file_data(config, click):
 @app.callback(Output('configuration', 'data'), Input('temperature_switch', 'on'))
 def load_file_data(is_celsius):
     unit_type = UnitTypes.CELSIUS if is_celsius else UnitTypes.FAHRENHEIT
-    for sensor in Settings.ALL_SENSORS:
+    for sensor in Schema.ALL:
         if unit_type in sensor.possible_units:
             sensor.unit_type = unit_type
     return load_data()
@@ -137,7 +137,7 @@ def change_unit_type(is_celsius):
         if unit_type in sensor.possible_units and sensor.unit_type != unit_type:
             changes = [change_function(sensor.minimum), change_function(sensor.maximum), unit_type, unit_type]
         outputs.append(changes)
-    for sensor in Settings.ALL_SENSORS:
+    for sensor in Schema.ALL:
         if unit_type in sensor.possible_units:
             sensor.unit_type = unit_type
     return outputs

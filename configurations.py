@@ -22,46 +22,70 @@ class Sensor(BaseModel):
     possible_units: list[str] = Field(..., editable=False, hidden=True)
 
 
-class Settings:
-    CO2 = Sensor(label='CO2', minimum=0, low_error=0, low_warning=0, high_warning=6000, high_error=8000, maximum=10000,
-                 unit_type='PPM', possible_units=['PPM'])
-    Temperature = Sensor(label='Temperature', minimum=10, low_error=20, low_warning=25, high_warning=35, high_error=40,
-                         maximum=50, unit_type='C°', possible_units=['C°', 'F°'])
-    Humidity = Sensor(label='Humidity', minimum=0, low_error=10, low_warning=20, high_warning=80, high_error=90,
-                      maximum=100, unit_type='%', possible_units=['%'])
+class SensorInstance:
+    CO2 = Sensor(label='CO2',
+                 minimum=0,
+                 low_error=0,
+                 low_warning=0,
+                 high_warning=6000,
+                 high_error=8000,
+                 maximum=10000,
+                 unit_type='PPM',
+                 possible_units=['PPM'])
 
+    Temperature = Sensor(label='Temperature',
+                         minimum=10,
+                         low_error=20,
+                         low_warning=25,
+                         high_warning=35,
+                         high_error=40,
+                         maximum=50,
+                         unit_type='C°',
+                         possible_units=['C°', 'F°'])
+
+    Humidity = Sensor(label='Humidity',
+                      minimum=0,
+                      low_error=10,
+                      low_warning=20,
+                      high_warning=80,
+                      high_error=90,
+                      maximum=100,
+                      unit_type='%',
+                      possible_units=['%'])
+
+
+class Schema:
+    ALL = [SensorInstance.CO2, SensorInstance.Temperature, SensorInstance.Humidity]
     SENSOR_SCHEMA = Sensor.schema()['properties']
-
     HIDDEN_FIELDS = {key for key, field in Sensor.schema()['properties'].items() if field.get('hidden')}
 
-    ALL_SENSORS = [CO2, Temperature, Humidity]
-
-    TYPES = {
-        CO2.label: GaugeMonitor(CO2, 210, show_label=False, show_percentage=True, max_percent=1000000),
-        Temperature.label: TemperatureMonitor(Temperature, 150),
-        Humidity.label: GaugeMonitor(Humidity, 160),
+    MONITOR_TYPES = {
+        SensorInstance.CO2.label: GaugeMonitor(SensorInstance.CO2, 210, False, True, max_percent=1000000),
+        SensorInstance.Temperature.label: TemperatureMonitor(SensorInstance.Temperature, 150),
+        SensorInstance.Humidity.label: GaugeMonitor(SensorInstance.Humidity, 160),
     }
-    LED_SIZE = 20
 
+
+class Settings:
     GROUPS = {
         'CO2 sensor': {
-            'CO2 sensor CO2': CO2,
-            'CO2 sensor Hum': Humidity,
-            'CO2 sensor Temp': Temperature,
+            'CO2 sensor CO2': SensorInstance.CO2,
+            'CO2 sensor Hum': SensorInstance.Humidity,
+            'CO2 sensor Temp': SensorInstance.Temperature,
         },
         'HTU21DF-1 sensor': {
-            'HTU21DF-1 sensor Humidity': Humidity,
-            'HTU21DF-1 sensor Temp': Temperature,
+            'HTU21DF-1 sensor Humidity': SensorInstance.Humidity,
+            'HTU21DF-1 sensor Temp': SensorInstance.Temperature,
         },
         'HTU21DF-2 sensor': {
-            'HTU21DF-2 sensor Humidity': Humidity,
-            'HTU21DF-2 sensor Temp': Temperature,
+            'HTU21DF-2 sensor Humidity': SensorInstance.Humidity,
+            'HTU21DF-2 sensor Temp': SensorInstance.Temperature,
         },
         'DS18B20-1 sensor': {
-            'DS18B20-1 sensor Temp': Temperature,
+            'DS18B20-1 sensor Temp': SensorInstance.Temperature,
         },
         'DS18B20-2 sensor': {
-            'DS18B20-2 sensor Temp': Temperature
+            'DS18B20-2 sensor Temp': SensorInstance.Temperature
         }
     }
     GRAPHS = {

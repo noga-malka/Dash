@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import dash_table
 from dash import html
 
-from configurations import Settings, Sensor
+from configurations import Sensor, Schema
 from consts import UnitTypes
 
 
@@ -28,14 +28,14 @@ class ConfigPage:
 
 def create_columns():
     return [{'id': key, 'name': field['title'], 'editable': field.get('editable', True), 'type': field['content_type']}
-            for key, field in Sensor.schema()['properties'].items() if key not in Settings.HIDDEN_FIELDS]
+            for key, field in Sensor.schema()['properties'].items() if key not in Schema.HIDDEN_FIELDS]
 
 
 def load_data():
-    numeric = {key for key, field in Settings.SENSOR_SCHEMA.items() if field.get('content_type') == 'numeric'}
+    numeric = {key for key, field in Schema.SENSOR_SCHEMA.items() if field.get('content_type') == 'numeric'}
     parsed_data = []
-    for sensor in Settings.ALL_SENSORS:
-        data = sensor.dict(exclude=Settings.HIDDEN_FIELDS)
+    for sensor in Schema.ALL:
+        data = sensor.dict(exclude=Schema.HIDDEN_FIELDS)
         for key in numeric:
             data[key] = UnitTypes.CONVERT[sensor.unit_type](data[key])
         parsed_data.append(data)

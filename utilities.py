@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 import pandas
 from dash import html
 
-from configurations import Settings
+from configurations import Settings, Schema
 
 
 def generate_grid(components):
@@ -17,7 +17,8 @@ def generate_grid(components):
 
 def create_card(group=''):
     sensors = Settings.GROUPS[group]
-    return generate_grid([[Settings.TYPES[sensor.label].generate_daq(field) for field, sensor in sensors.items()]])
+    return generate_grid(
+        [[Schema.MONITOR_TYPES[sensor.label].generate_daq(field) for field, sensor in sensors.items()]])
 
 
 def parse_time(datetime, start):
@@ -37,4 +38,4 @@ def modal_generator(modal_id: str, title: str, inputs: list, is_centered=True):
 
 
 def generate_sensors_output():
-    return [Settings.TYPES[sensor.label].generate_output_list(name) for name, sensor in Settings.SENSORS.items()]
+    return [Schema.MONITOR_TYPES[sensor.label].generate_output_list(name) for name, sensor in Settings.SENSORS.items()]
