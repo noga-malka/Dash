@@ -1,8 +1,9 @@
 from datetime import datetime
 
 import dash
+import dash_daq as daq
 import plotly.express as px
-from dash import Dash, Input, Output, callback_context, ALL, State
+from dash import Dash, Input, Output, callback_context, ALL, State, dcc, html
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
@@ -196,3 +197,13 @@ def send_command(co2_click, fan_value):
     if callback_context.triggered_id == TagIds.FAN_BUTTON:
         command, value = Commands.SET_FAN, fan_value
     types[realtime.thread.handler_name].send_command(command, value)
+
+
+@app.callback(Output('theme_div', 'children'), Input(ThemeSwitchAIO.ids.switch('theme'), 'value'))
+def change_theme(theme):
+    Theme.DAQ_THEME['dark'] = theme
+    return daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=[
+        dcc.Tabs(id=TagIds.TABS, value='monitor',
+                 children=[dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
+        html.Div(id='page', style={'display': 'flex', 'flex-direction': 'column'}),
+    ]),

@@ -70,7 +70,7 @@ class Colors(Enum):
 
 class Theme:
     DAQ_THEME = {
-        'dark': True,
+        'dark': False,
         'detail': '#8F8DF5',
         'primary': '#349FFC',
         'secondary': '#C0D0E2',
