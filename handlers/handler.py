@@ -1,3 +1,5 @@
+from typing import Union
+
 import pandas
 
 from configurations import Settings, logger
@@ -37,3 +39,8 @@ class Handler:
         except (KeyError, IndexError, ValueError):
             logger.warning(f'Failed to parse row: {line}')
             return pandas.DataFrame()
+
+    @staticmethod
+    def format(value: Union[str, int], byte_number: int = 1):
+        formatter = f'{{:0>{byte_number * 2}}}'
+        return formatter.format(value)

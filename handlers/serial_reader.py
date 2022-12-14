@@ -22,9 +22,10 @@ class SerialHandler(Handler):
         return self.client.readline().decode().strip()
 
     def send_command(self, command: str, content: str):
-        content = '{:0>4}'.format(hex(int(content)).replace('0x', ''))
-        payload = command + '{:0>2}'.format(int(len(content) / 2)) + content
-        packet = bytes.fromhex(Commands.HEADER + payload)
+        content = self.format(hex(int(content)).replace('0x', ''), byte_number=2)
+        command = self.format(command)
+        length = self.format(int(len(content) / 2))
+        packet = bytes.fromhex(Commands.HEADER + command + length + content)
         if self.client:
             logger.info(f'send packet: {packet}')
             self.client.write(packet)

@@ -195,4 +195,4 @@ def send_command(co2_click, fan_value):
         command, value = Commands.SET_CO2, Commands.COMMAND_DEFAULT[Commands.SET_CO2]
     if callback_context.triggered_id == TagIds.FAN_BUTTON:
         command, value = Commands.SET_FAN, fan_value
-    types[realtime.thread.handler_name].send_command(str(command), str(value))
+    types[realtime.thread.handler_name].send_command(command, value)
