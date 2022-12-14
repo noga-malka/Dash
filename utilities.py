@@ -9,7 +9,7 @@ def generate_grid(components):
     grid = []
     for group in components:
         row = dbc.Row(
-            [dbc.Col(element, className='space-between', style={'flex-direction': 'column', 'align-items': 'center'})
+            [dbc.Col(element, className='space-between align column')
              for element in group])
         grid.append(row)
     return grid
