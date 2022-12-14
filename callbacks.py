@@ -3,7 +3,7 @@ from datetime import datetime
 import dash
 import dash_daq as daq
 import plotly.express as px
-from dash import Dash, Input, Output, callback_context, ALL, State, dcc, html
+from dash import Dash, Input, Output, callback_context, ALL, State, html
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
@@ -203,7 +203,14 @@ def send_command(co2_click, fan_value):
 def change_theme(theme):
     Theme.DAQ_THEME['dark'] = theme
     return daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=[
-        dcc.Tabs(id=TagIds.TABS, value='monitor',
-                 children=[dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
         html.Div(id='page', style={'display': 'flex', 'flex-direction': 'column'}),
-    ]),
+    ])
+
+
+@app.callback(Output('configuration', 'style_header'), Output('configuration', 'style_data'),
+              Input(ThemeSwitchAIO.ids.switch('theme'), 'value'))
+def change_theme(theme):
+    color = 'white' if theme else 'black'
+    style_header = {'backgroundColor': 'var(--bs-primary)', 'color': color}
+    style_data = {'backgroundColor': 'var(--bs-secondary)', 'color': color}
+    return style_header, style_data

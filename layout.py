@@ -74,7 +74,10 @@ def generate_layout():
                 are_you_sure(),
                 dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
                 html.Div(id='placeholder', style={'display': None}),
-                html.Div(style={'width': '100%'}, id='theme_div')
+                html.Div([dcc.Tabs(id=TagIds.TABS, value='monitor',
+                                   children=[dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
+                          html.Div(id='theme_div')],
+                         style={'width': '100%'})
             ], style={'display': 'flex'}),
         ],
     )

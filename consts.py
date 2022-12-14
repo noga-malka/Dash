@@ -75,7 +75,7 @@ class Theme:
         'primary': '#349FFC',
         'secondary': '#C0D0E2',
     }
-    FIGURE_LIGHT = 'CERULEAN'
+    FIGURE_LIGHT = 'cerulean'
     FIGURE_DARK = 'darkly'
     DARK = dbc.themes.DARKLY
     LIGHT = dbc.themes.CERULEAN
