@@ -17,6 +17,21 @@ pages = {
 }
 
 
+def generate_buttons():
+    buttons = [
+        dbc.Button([
+            html.I(className=f"fa {icon['icon']} fa-xl", style=spacing(5, margin=True)),
+            icon['id']
+        ], id={'type': 'icon', 'index': icon['id']})
+        for icon in TagIds.Icons.ALL
+    ]
+    return [html.Div([dbc.Button('Timer:', id='timer'), *buttons],
+                     className='flex center children-margin-2'),
+            *[dbc.Tooltip(icon['id'], target={'type': 'icon', 'index': icon['id']}, placement="top") for icon in
+              TagIds.Icons.ALL],
+            ]
+
+
 def generate_layout():
     return html.Div(
         children=[
@@ -31,18 +46,12 @@ def generate_layout():
                             html.Label('F°'),
                             daq.BooleanSwitch(id='temperature_switch', on=True),
                             html.Label('C°'),
-                            dbc.Button('Timer:', id='timer'),
                         ], className='flex center align children-margin-2'),
-                        html.Div([
-                            html.I(id={'type': 'icon', 'index': icon['id']}, className=f"fa {icon['icon']} fa-xl") for
-                            icon in TagIds.Icons.ALL
-                        ], className='flex center children-margin'),
+                        *generate_buttons(),
                         ThemeSwitchAIO(aio_id="theme", themes=[Theme.DARK, Theme.LIGHT],
                                        switch_props={"persistence": True}, icons=DaqConsts.ICONS),
                     ], className='bg-info space-between align', style=spacing(5)
                 ),
-                *[dbc.Tooltip(icon['id'], target={'type': 'icon', 'index': icon['id']}, placement="top") for icon in
-                  TagIds.Icons.ALL],
                 html.Div([
                     html.Div(
                         [
@@ -71,7 +80,7 @@ def generate_layout():
                         html.Div(id='page', className='flex column'),
                         dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
                         html.Div(id='placeholder', style={'display': None})
-                    ], style=width()),
+                    ], style=width('100%')),
                 ],
                     className='flex'),
             ]
