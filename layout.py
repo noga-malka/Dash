@@ -30,6 +30,7 @@ def generate_layout():
                             html.Label('F°'),
                             daq.BooleanSwitch(id='temperature_switch', on=True),
                             html.Label('C°'),
+                            dbc.Button('Timer:', id='timer'),
                         ], className='flex center align children-margin-2'),
                         html.Div([
                             html.I(id={'type': 'icon', 'index': icon['id']}, className=f"fa {icon['icon']} fa-xl") for

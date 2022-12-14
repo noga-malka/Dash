@@ -34,21 +34,29 @@ def activate_reader_thread(path: str):
 
 
 @app.callback(generate_sensors_output(),
-              *[Output(group + '_time', 'children') for group in Settings.GROUPS],
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
-    timestamp = None
     if len(realtime.graph) == 0:
         content = {name: sensor.minimum for name, sensor in Settings.SENSORS.items()}
     else:
         try:
             content = realtime.read_data()
-            timestamp = 'timer: ' + parse_time(content.name, realtime.graph.iloc[0].name)
         except IndexError:
             raise PreventUpdate
     outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(content[name]) for name, sensor in
                Settings.SENSORS.items()]
-    return outputs + [timestamp] * len(Settings.GROUPS)
+    return outputs
+
+
+@app.callback(Output('timer', 'children'),
+              Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
+def update_sensors(n_intervals):
+    timestamp = 'Timer: '
+    try:
+        timestamp += parse_time(realtime.graph.iloc[-1].name, realtime.graph.iloc[0].name)
+    except IndexError:
+        raise PreventUpdate
+    return timestamp
 
 
 @app.callback(Output({'type': 'icon', 'index': ALL}, 'style'),

@@ -12,6 +12,5 @@ class LivePage:
             [
                 dbc.CardHeader(group, className='flex center card-title'),
                 dbc.CardBody(create_card(group)),
-                dbc.CardFooter(id=group + '_time', className='flex center')
             ], className='sensor-card') for group in Settings.GROUPS],
                          className='children-margin')]
