@@ -75,10 +75,10 @@ class Theme:
         'primary': '#349FFC',
         'secondary': '#C0D0E2',
     }
-    FIGURE_LIGHT = 'bootstrap'
+    FIGURE_LIGHT = 'CERULEAN'
     FIGURE_DARK = 'darkly'
     DARK = dbc.themes.DARKLY
-    LIGHT = dbc.themes.BOOTSTRAP
+    LIGHT = dbc.themes.CERULEAN
 
 
 class ValueRange:

@@ -1,7 +1,6 @@
 import dash_daq as daq
 from dash import html, Output
 
-from css_utils import width
 from monitors.basic_monitor import Monitor
 
 
@@ -20,7 +19,7 @@ class GaugeMonitor(Monitor):
         led = self.generate_led(monitor_id)
         if self.show_percentage:
             led = html.Div([led, self.generate_led(monitor_id + '_percent', label='%')],
-                           className='flex', style={'justify-content': 'space-around'} | width())
+                           style={'width': 'inherit', 'display': 'flex', 'justify-content': 'space-around'})
         return [gauge, led]
 
     def generate_output_values(self, value):

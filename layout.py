@@ -4,7 +4,6 @@ from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme
-from css_utils import spacing, width
 from tabs.extras import download_session, are_you_sure
 from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
@@ -20,7 +19,7 @@ pages = {
 def generate_buttons():
     buttons = [
         dbc.Button([
-            html.I(className=f"fa {icon['icon']} fa-xl", style=spacing(5, margin=True)),
+            html.I(className=f"fa {icon['icon']} fa-xl", style={'margin': '5px'}),
             icon['id']
         ], id={'type': 'icon', 'index': icon['id']})
         for icon in TagIds.Icons.ALL
@@ -37,7 +36,7 @@ def generate_layout():
         children=[
             html.Div(
                 html.Img(src='assets/logo.png', width=120),
-                className='bg-primary flex center', style=spacing(10)),
+                className='bg-primary flex center', style={'padding': '10px'}),
             dcc.Location(id="url"),
             daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=[
                 html.Div(
@@ -50,7 +49,8 @@ def generate_layout():
                         *generate_buttons(),
                         ThemeSwitchAIO(aio_id="theme", themes=[Theme.DARK, Theme.LIGHT],
                                        switch_props={"persistence": True}, icons=DaqConsts.ICONS),
-                    ], className='bg-info space-between align', style=spacing(5)
+                    ], className='bg-info space-between',
+                    style={'padding': '5px', 'align-items': 'center'}
                 ),
                 html.Div([
                     html.Div(
@@ -60,7 +60,7 @@ def generate_layout():
                             dbc.Nav(
                                 [
                                     dbc.NavLink(
-                                        [html.Div(className=f"fa {icon['icon']['icon']}", style=spacing(10)),
+                                        [html.Div(className=f"fa {icon['icon']['icon']}", style={'padding': '10px'}),
                                          icon['label']],
                                         href=f"/{icon['icon']['id']}",
                                         active="exact") for icon in TagIds.Icons.INPUT_MODES
@@ -77,12 +77,12 @@ def generate_layout():
                                      dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
                         download_session(),
                         are_you_sure(),
-                        html.Div(id='page', className='flex column'),
+                        html.Div(id='page', style={'display': 'flex', 'flex-direction': 'column'}),
                         dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
                         html.Div(id='placeholder', style={'display': None})
-                    ], style=width('100%')),
+                    ], style={'width': '100%'}),
                 ],
-                    className='flex'),
+                    style={'display': 'flex'}),
             ]
                                   )
         ],
