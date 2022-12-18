@@ -144,17 +144,19 @@ def toggle_modal(click):
 
 
 @app.callback(
-    Output("toggle_bluetooth", "children"),
+    Output("toggle_bluetooth", "children"), Output("toggle_bluetooth", "color"),
     Input('mac_button', 'n_clicks'),
     [State("mac_input", "value")], prevent_initial_call=True
 )
 def toggle_modal(click, mac_address):
+    color = 'warning'
     button_text = 'Failed to connect. Try again'
     if mac_address:
         realtime.thread.connect_handler(address=mac_address)
         if realtime.thread.events.Finish.connect.is_set():
+            color = 'success'
             button_text = 'Connected to: ' + mac_address
-    return button_text
+    return button_text, color
 
 
 @app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), prevent_initial_call=True)
