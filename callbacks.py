@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import bluetooth
 import dash
 import dash_daq as daq
 import plotly.express as px
@@ -49,6 +50,13 @@ def update_sensors(n_intervals):
     return outputs
 
 
+@app.callback(Output('mac_input', 'options'), Input('scan_bluetooth', 'n_clicks'))
+def scan_bluetooth(clicked):
+    devices = {name: mac for (mac, name) in bluetooth.discover_devices(lookup_names=True)}
+    types[realtime.thread.handler_name].devices = devices
+    return list(devices.keys())
+
+
 @app.callback(Output('timer', 'children'),
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
@@ -71,10 +79,12 @@ def click_navigation_bar_buttons(button):
 
 @app.callback(
     Output("bluetooth_modal", "is_open"),
-    Input('toggle_bluetooth', 'n_clicks'),
+    Input('toggle_bluetooth', 'n_clicks'), Input('mac_button', 'n_clicks'),
     [State("bluetooth_modal", "is_open")],
 )
-def toggle_modal(click, is_open):
+def toggle_modal(click, connect, is_open):
+    if callback_context.triggered_id == 'mac_button':
+        return False
     if click:
         return not is_open
     return is_open

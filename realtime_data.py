@@ -49,7 +49,7 @@ class RealtimeData:
         current = self.graph.iloc[self.index]
         if self.index != -1 and not self.is_paused:
             self.index += step
-        return current.astype(int)
+        return current
 
     def add_data(self):
         if self.thread.events.clean.is_set():
