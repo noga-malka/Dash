@@ -68,8 +68,8 @@ class DaqConsts:
 
 class Colors(Enum):
     GOOD = '#69c569'
-    WARNING = '#fdde00'
-    ERROR = '#ff6e00'
+    WARNING = 'orange'
+    ERROR = '#ff4900'
     DISCONNECTED = 'red'
 
 

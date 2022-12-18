@@ -3,13 +3,14 @@ from datetime import datetime
 import bluetooth
 import dash
 import dash_daq as daq
+import numpy
 import plotly.express as px
 from dash import Dash, Input, Output, callback_context, ALL, State, html
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings, Schema
-from consts import TagIds, Theme, UnitTypes, Commands
+from consts import TagIds, Theme, UnitTypes, Commands, Colors
 from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
@@ -55,6 +56,22 @@ def scan_bluetooth(clicked):
     devices = {name: mac for (mac, name) in bluetooth.discover_devices(lookup_names=True)}
     types[realtime.thread.handler_name].devices = devices
     return list(devices.keys())
+
+
+@app.callback([Output(group, 'style') for group in Settings.GROUPS], Input(TagIds.INTERVAL, 'n_intervals'))
+def scan_bluetooth(clicked):
+    try:
+        content = realtime.read_data()
+    except IndexError:
+        raise PreventUpdate
+    disconnected = {sensor for sensor in content.index if numpy.isnan(content[sensor])}
+    output = []
+    for group_name, sensors in Settings.GROUPS.items():
+        color = 'var(--bs-primary)'
+        if disconnected.intersection(sensors):
+            color = Colors.DISCONNECTED.value
+        output.append({'background-color': color})
+    return output
 
 
 @app.callback(Output('timer', 'children'),

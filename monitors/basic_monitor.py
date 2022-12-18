@@ -21,7 +21,7 @@ class Monitor:
 
     @staticmethod
     def _get_icon(level):
-        return f'fa {ValueRange.ICONS[level]}'
+        return f'fa {ValueRange.ICONS[level]} fa-lg'
 
     def generate_output_values(self, value):
         sensor_dict = self.sensor.dict()
