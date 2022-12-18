@@ -3,6 +3,7 @@ from typing import Union
 import pandas
 
 from configurations import Settings, logger
+from consts import Commands
 
 
 class Handler:
@@ -44,3 +45,9 @@ class Handler:
     def format(value: Union[str, int], byte_number: int = 1):
         formatter = f'{{:0>{byte_number * 2}}}'
         return formatter.format(value)
+
+    def build_command(self, command, content):
+        content = self.format(hex(int(content)).replace('0x', ''), byte_number=2)
+        command = self.format(command)
+        length = self.format(int(len(content) / 2))
+        return bytes.fromhex(Commands.HEADER + command + length + content)

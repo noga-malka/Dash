@@ -12,7 +12,7 @@ def bluetooth_extra():
     modal = modal_generator('bluetooth_modal', 'Enter Mac Address', inputs, is_centered=False)
     button = dbc.Button(id='toggle_bluetooth', children='Connect To Bluetooth',
                         style={'padding': '10px', 'margin': '5px'})
-    return [button, modal]
+    return [button, modal, *serial_extra()]
 
 
 def file_extra():

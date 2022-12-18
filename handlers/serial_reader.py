@@ -2,7 +2,7 @@ import serial
 from serial.tools import list_ports
 
 from configurations import logger
-from consts import Uart, Commands
+from consts import Uart
 from handlers.handler import Handler
 
 
@@ -22,10 +22,7 @@ class SerialHandler(Handler):
         return self.client.readline().decode().strip()
 
     def send_command(self, command: str, content: str):
-        content = self.format(hex(int(content)).replace('0x', ''), byte_number=2)
-        command = self.format(command)
-        length = self.format(int(len(content) / 2))
-        packet = bytes.fromhex(Commands.HEADER + command + length + content)
+        packet = self.build_command(command, content)
         if self.client:
             logger.info(f'send packet: {packet}')
             self.client.write(packet)

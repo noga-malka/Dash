@@ -1,5 +1,6 @@
 import socket
 
+from configurations import logger
 from handlers.handler import Handler
 
 
@@ -26,4 +27,9 @@ class BluetoothHandler(Handler):
         return self.buffer
 
     def send_command(self, command, content):
-        pass
+        packet = self.build_command(command, content)
+        if self.client:
+            logger.info(f'send packet: {packet}')
+            self.client.send(packet)
+        else:
+            logger.warning(f'no connection. could not send {packet}')
