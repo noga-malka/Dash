@@ -76,11 +76,14 @@ width: 17rem;
 padding: 2rem 1rem;
 border-right: groove;
 }
-.valid{
+.fa-check-circle{
     color: green;
 }
-.invalid{
+.fa-exclamation-circle{
     color: orange;
+}
+.fa-times-circle{
+    color: red;
 }
 .Select-menu-outer{
     color: black

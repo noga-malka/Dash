@@ -33,8 +33,6 @@ class TagIds:
         BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
         RANDOM = {'id': 'random', 'icon': 'fa-random'}
         UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
-        WARNING = 'fa-exclamation-circle'
-        CHECK = 'fa-check-circle'
 
         ALL = [SAVE, PLAY, PAUSE, CLEAN]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
@@ -42,6 +40,12 @@ class TagIds:
                        {'icon': UPLOAD, 'label': 'Load File'}]
         if IS_DEBUG:
             INPUT_MODES.append({'icon': RANDOM, 'label': 'Random Data'})
+
+
+class StatusIcons:
+    CHECK = 'fa-check-circle'
+    WARNING = 'fa-exclamation-circle'
+    ERROR = 'fa-times-circle'
 
 
 class Commands:
@@ -64,8 +68,9 @@ class DaqConsts:
 
 class Colors(Enum):
     GOOD = '#69c569'
-    WARNING = 'orange'
-    ERROR = 'red'
+    WARNING = '#fdde00'
+    ERROR = '#ff6e00'
+    DISCONNECTED = 'red'
 
 
 class Theme:
@@ -88,6 +93,12 @@ class ValueRange:
         ('low_warning', 'high_warning'): Colors.GOOD,
         ('high_warning', 'high_error'): Colors.WARNING,
         ('high_error', 'maximum'): Colors.ERROR,
+    }
+    ICONS = {
+        Colors.GOOD: StatusIcons.CHECK,
+        Colors.WARNING: StatusIcons.WARNING,
+        Colors.ERROR: StatusIcons.WARNING,
+        Colors.DISCONNECTED: StatusIcons.ERROR,
     }
 
 
