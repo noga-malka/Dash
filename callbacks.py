@@ -217,15 +217,15 @@ def change_unit_type(is_celsius):
     return outputs
 
 
-@app.callback(Output('placeholder', 'title'), Input(TagIds.CO2_BUTTON, 'n_clicks'),
+@app.callback(Output('placeholder', 'title'), Input(TagIds.CO2_BUTTON, 'n_clicks'), State('co2_value', 'value'),
               Input(TagIds.FAN_BUTTON, 'value'), prevent_initial_call=True)
-def send_command(co2_click, fan_value):
+def send_command(co2_click, co2_value, fan_value):
     if not co2_click and not fan_value:
         raise PreventUpdate
     command = None
     value = None
     if callback_context.triggered_id == TagIds.CO2_BUTTON:
-        command, value = Commands.SET_CO2, Commands.COMMAND_DEFAULT[Commands.SET_CO2]
+        command, value = Commands.SET_CO2, co2_value
     if callback_context.triggered_id == TagIds.FAN_BUTTON:
         command, value = Commands.SET_FAN, fan_value
     types[realtime.thread.handler_name].send_command(command, value)
