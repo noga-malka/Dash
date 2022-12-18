@@ -32,8 +32,8 @@ class Monitor:
             for (minimum, maximum), level in ValueRange.LEVEL_COMPARE.items():
                 if sensor_dict[minimum] <= value <= sensor_dict[maximum]:
                     current_level = level
-        value = UnitTypes.CONVERT[self.sensor.unit_type](value)
-        return [value, current_level.value, value, current_level.value, self._get_icon(current_level)]
+            value = UnitTypes.CONVERT[self.sensor.unit_type](value)
+        return [value, current_level.value, '{:.2f}'.format(value), current_level.value, self._get_icon(current_level)]
 
     def generate_led(self, led_id, label=None):
         icon = html.Div(id=led_id + '_icon', className=self._get_icon(Colors.WARNING))
