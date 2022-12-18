@@ -12,6 +12,19 @@ margin: 10px;
 .rc-slider-rail, .rc-slider-track{
     height: 10px
 }
+.dash-spreadsheet-container table {
+    --accent: #1EAEDB !important;
+    --selected-background: #FF4136 !important;
+    --selected-color: #3C3C3C !important;
+}
+table.cell-table th:hover {
+    background-color: var(--bs-primary)!important;
+}
+table.cell-table{
+text-align: left!important;
+padding: 10px|important;
+font-family: var(--bs-body-font-family)!important
+}
 .cell--selected{
     background-color:var(--bs-body-bg)!important;
     border-color:var(--bs-info)!important;

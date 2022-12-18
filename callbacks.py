@@ -58,7 +58,12 @@ def scan_bluetooth(clicked):
     return list(devices.keys())
 
 
-@app.callback([Output(group, 'style') for group in Settings.GROUPS], Input(TagIds.INTERVAL, 'n_intervals'))
+@app.callback(Output('placeholder', 'n_clicks_timestamp'), [Input(group, 'columns') for group in Settings.GROUPS])
+def scan_bluetooth(*titles):
+    pages['monitor']['page'].saved_names = {title[0]['id']: title[0]['name'] for title in titles}
+
+
+@app.callback([Output(group + 'header', 'style') for group in Settings.GROUPS], Input(TagIds.INTERVAL, 'n_intervals'))
 def scan_bluetooth(clicked):
     try:
         content = realtime.read_data()
