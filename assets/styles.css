@@ -37,6 +37,10 @@ margin: 10px;
     display: flex;
     justify-content: space-between;
 }
+.space-around{
+    display: flex;
+    justify-content: space-around;
+}
 #title{
     margin: 0;
 }
