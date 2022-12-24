@@ -59,9 +59,11 @@ def generate_layout():
                         dbc.Nav(
                             [
                                 dbc.NavLink(
-                                    [html.Div(className=f"fa {icon['icon']['icon']}", style={'padding': '10px'}),
-                                     icon['label']],
-                                    href=f"/{icon['icon']['id']}",
+                                    [html.Div(
+                                        [html.Div(className=f"fa {icon['icon']['icon']}", style={'padding': '10px'}),
+                                         html.Label(icon['label'])]),
+                                        html.Label(id=f"{icon['icon']['id']}_label")],
+                                    href=f"/{icon['icon']['id']}", id=f"{icon['icon']['id']}_link",
                                     active="exact") for icon in TagIds.Icons.INPUT_MODES
                             ],
                             vertical=True,
