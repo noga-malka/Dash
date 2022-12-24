@@ -77,29 +77,29 @@ class Settings:
             'HTU21DF-1 sensor Humidity': SensorInstance.Humidity,
             'HTU21DF-1 sensor Temp': SensorInstance.Temperature,
         },
-        'HTU21DF-2 sensor': {
-            'HTU21DF-2 sensor Humidity': SensorInstance.Humidity,
-            'HTU21DF-2 sensor Temp': SensorInstance.Temperature,
-        },
         'DS18B20-1 sensor': {
             'DS18B20-1 sensor Temp': SensorInstance.Temperature,
         },
         'DS18B20-2 sensor': {
             'DS18B20-2 sensor Temp': SensorInstance.Temperature
+        },
+        'DS18B20-3 sensor': {
+            'DS18B20-3 sensor Temp': SensorInstance.Temperature
+        },
+        'DS18B20-4 sensor': {
+            'DS18B20-4 sensor Temp': SensorInstance.Temperature
         }
     }
     GRAPHS = {
         'Temperature': [
             'CO2 sensor Temp',
             'HTU21DF-1 sensor Temp',
-            'HTU21DF-2 sensor Temp',
             'DS18B20-1 sensor Temp',
             'DS18B20-2 sensor Temp'
         ],
         'Humidity': [
             'CO2 sensor Hum',
             'HTU21DF-1 sensor Humidity',
-            'HTU21DF-2 sensor Humidity',
         ],
         'CO2': [
             'CO2 sensor CO2',
