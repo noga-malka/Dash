@@ -2,17 +2,19 @@ import socket
 
 from configurations import logger
 from handlers.handler import Handler
+from handlers.handler_exception import DisconnectionEvent
 
 
 class BluetoothHandler(Handler):
     def __init__(self):
-        self.buffer = ''
+        self.buffer = b''
         self.devices = {}
         super(BluetoothHandler, self).__init__(False)
 
     def connect(self, address='', **kwargs):
         self.disconnect()
         try:
+            self.buffer = b''
             self.current = address
             self.client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
             self.client.connect((self.devices.get(address, ''), 1))
@@ -22,10 +24,15 @@ class BluetoothHandler(Handler):
         return True
 
     def read_line(self) -> str:
-        self.buffer = ''
-        while '\n' not in self.buffer:
-            self.buffer += self.client.recv(1024).decode()
-        return self.buffer
+        while b'\n' not in self.buffer:
+            new_data = self.client.recv(4096)
+            if new_data == b'':
+                raise DisconnectionEvent(self.__class__.__name__)
+            self.buffer += new_data
+        end_line = self.buffer.find(b'\n')
+        output = self.buffer[:end_line]
+        self.buffer = self.buffer[end_line + 1:]
+        return output.decode()
 
     def send_command(self, command, content):
         packet = self.build_command(command, content)

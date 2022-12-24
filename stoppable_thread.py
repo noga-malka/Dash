@@ -5,6 +5,7 @@ from configurations import logger
 from consts import IS_DEBUG
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.file_handler import FileHandler
+from handlers.handler_exception import DisconnectionEvent
 from handlers.random_handler import RandomHandler
 from handlers.serial_reader import SerialHandler
 
@@ -60,9 +61,16 @@ class StoppableThread(Thread):
         while True:
             time.sleep(0.001)
             if self.events.change_input.is_set():
-                self.cleanup()
+                self.events.clean.set()
+                self.events.disconnect.clear()
                 self.events.change_input.clear()
             if self.events.clean.is_set():
                 self.cleanup()
             elif self.events.Finish.connect.is_set():
-                self._target(*self._args, **self._kwargs)
+                try:
+                    self._target(*self._args, **self._kwargs)
+                except DisconnectionEvent as disconnect:
+                    logger.error(disconnect)
+                    self.events.clean.set()
+                    self.events.disconnect.set()
+                    self.events.Finish.connect.clear()

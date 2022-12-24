@@ -4,6 +4,7 @@ from serial.tools import list_ports
 from configurations import logger
 from consts import Uart
 from handlers.handler import Handler
+from handlers.handler_exception import DisconnectionEvent
 
 
 class SerialHandler(Handler):
@@ -20,7 +21,10 @@ class SerialHandler(Handler):
         return False
 
     def read_line(self) -> str:
-        return self.client.readline().decode().strip()
+        try:
+            return self.client.readline().decode().strip()
+        except serial.SerialException:
+            raise DisconnectionEvent(self.__class__.__name__)
 
     def send_command(self, command: str, content: str):
         packet = self.build_command(command, content)
