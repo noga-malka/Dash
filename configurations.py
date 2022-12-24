@@ -53,6 +53,16 @@ class SensorInstance:
                       unit_type='%',
                       possible_units=['%'])
 
+    Pressure = Sensor(label='Pressure',
+                      minimum=0,
+                      low_error=10,
+                      low_warning=20,
+                      high_warning=80,
+                      high_error=90,
+                      maximum=100,
+                      unit_type='PSI',
+                      possible_units=['PSI'])
+
 
 class Schema:
     ALL = [SensorInstance.CO2, SensorInstance.Temperature, SensorInstance.Humidity]
@@ -63,6 +73,7 @@ class Schema:
         SensorInstance.CO2.label: GaugeMonitor(SensorInstance.CO2, 210, False, True, max_percent=1000000),
         SensorInstance.Temperature.label: TemperatureMonitor(SensorInstance.Temperature, 150),
         SensorInstance.Humidity.label: GaugeMonitor(SensorInstance.Humidity, 160),
+        SensorInstance.Pressure.label: GaugeMonitor(SensorInstance.Pressure, 160),
     }
 
 
@@ -88,11 +99,18 @@ class Settings:
         },
         'DS18B20-4 sensor': {
             'DS18B20-4 sensor Temp': SensorInstance.Temperature
+        },
+        'Pressure-1 sensor': {
+            'pressure-1 sensor': SensorInstance.Pressure
+        },
+        'Pressure-2 sensor': {
+            'pressure-2 sensor': SensorInstance.Pressure
         }
     }
     CARD_ORDER = [
         ['CO2 sensor', 'HTU21DF-1 sensor'],
-        ['DS18B20-1 sensor', 'DS18B20-2 sensor', 'DS18B20-3 sensor', 'DS18B20-4 sensor']
+        ['DS18B20-1 sensor', 'DS18B20-2 sensor', 'DS18B20-3 sensor', 'DS18B20-4 sensor'],
+        ['Pressure-1 sensor', 'Pressure-2 sensor'],
     ]
     GRAPHS = {
         'Temperature': [

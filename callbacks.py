@@ -51,8 +51,8 @@ def update_sensors(n_intervals):
             content = realtime.read_data()
         except IndexError:
             raise PreventUpdate
-    outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(content[name]) for name, sensor in
-               Settings.SENSORS.items()]
+    outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(content.get(name, numpy.NaN)) for name, sensor
+               in Settings.SENSORS.items()]
     return outputs
 
 
@@ -74,7 +74,7 @@ def scan_bluetooth(clicked):
         content = realtime.read_data()
     except IndexError:
         raise PreventUpdate
-    disconnected = {sensor for sensor in content.index if numpy.isnan(content[sensor])}
+    disconnected = {sensor for sensor in Settings.SENSORS if numpy.isnan(content.get(sensor, numpy.NaN))}
     output = []
     for group_name, sensors in Settings.GROUPS.items():
         color = 'var(--bs-primary)'
