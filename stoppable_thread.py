@@ -17,6 +17,7 @@ class Events:
     change_input = Event()
     connect = Event()
     clean = Event()
+    disconnect = Event()
 
     class Finish:
         connect = Event()
@@ -30,17 +31,21 @@ class StoppableThread(Thread):
         self.handler_name = ''
 
     def set_handler(self, handler_name):
-        self.handler_name = handler_name if handler_name in types else ''
         self.events.change_input.set()
+        self.events.Finish.connect.clear()
+        self.handler_name = handler_name if handler_name in types else ''
+        return types[self.handler_name].auto_connect
 
     def connect_handler(self, **kwargs):
         if self.handler_name:
-            is_connected = types[self.handler_name].connect(**kwargs)
-            if is_connected:
+            self.events.disconnect.clear()
+            types[self.handler_name].is_connected = types[self.handler_name].connect(**kwargs)
+            if types[self.handler_name].is_connected:
                 self.events.Finish.connect.set()
                 logger.debug(f'connected to handler {self.handler_name}')
             else:
                 logger.error(f'Failed to connect to handler {self.handler_name}')
+                self.events.disconnect.set()
 
     def cleanup(self):
         if not self.events.clean.is_set():
@@ -57,12 +62,7 @@ class StoppableThread(Thread):
             if self.events.change_input.is_set():
                 self.cleanup()
                 self.events.change_input.clear()
-                self.events.Finish.connect.wait()
             if self.events.clean.is_set():
                 self.cleanup()
             elif self.events.Finish.connect.is_set():
-                try:
-                    self._target(*self._args, **self._kwargs)
-                except (OSError, AttributeError):
-                    logger.warning('connection to handler failed, stop continuous reading')
-                    self.events.Finish.connect.clear()
+                self._target(*self._args, **self._kwargs)
