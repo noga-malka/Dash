@@ -8,11 +8,12 @@ class BluetoothHandler(Handler):
     def __init__(self):
         self.buffer = ''
         self.devices = {}
-        super(BluetoothHandler, self).__init__()
+        super(BluetoothHandler, self).__init__(False)
 
     def connect(self, address='', **kwargs):
         self.disconnect()
         try:
+            self.current = address
             self.client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
             self.client.connect((self.devices.get(address, ''), 1))
         except OSError:

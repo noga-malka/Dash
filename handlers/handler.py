@@ -7,9 +7,11 @@ from consts import Commands
 
 
 class Handler:
-    def __init__(self):
+    def __init__(self, auto_connect=True):
         self.client = None
         self.is_connected = False
+        self.current = ''
+        self.auto_connect = auto_connect
 
     def connect(self, **kwargs):
         raise NotImplementedError()
@@ -26,6 +28,8 @@ class Handler:
         raise NotImplementedError()
 
     def extract_data(self):
+        if not self.is_connected:
+            return pandas.DataFrame()
         line = self.read_line()
         try:
             data = line.split('\t')

@@ -14,6 +14,7 @@ class SerialHandler(Handler):
         self.disconnect()
         usb_ports = list(filter(lambda port: "USB" in port[2], list(list_ports.comports())))
         if len(usb_ports) == 1:
+            self.current = usb_ports[0][0]
             self.client = serial.Serial(usb_ports[0][0], Uart.BAUDRATE, timeout=Uart.TIMEOUT)
             return True
         return False
