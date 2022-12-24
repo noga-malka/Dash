@@ -9,7 +9,7 @@ from consts import UnitTypes
 class ConfigPage:
     @staticmethod
     def render():
-        return [html.Div(id='content', children=dbc.Card(
+        return [html.Div(children=dbc.Card(
             [
                 dbc.CardHeader('Configurations', className='flex center card-title'),
                 dbc.CardBody(dash_table.DataTable(
@@ -23,7 +23,7 @@ class ConfigPage:
                 )),
                 dbc.CardFooter(className='flex center',
                                children=dbc.Button('Save Config', id='save_config', n_clicks=0))
-            ], className='sensor-card'), className='children-margin')]
+            ], className='sensor-card'), className='children-margin flex center')]
 
 
 def create_columns():
