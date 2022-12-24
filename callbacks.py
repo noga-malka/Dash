@@ -10,7 +10,7 @@ from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings, Schema
-from consts import TagIds, Theme, UnitTypes, Commands, Colors
+from consts import TagIds, Theme, UnitTypes, Commands, Colors, NavButtons
 from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
@@ -18,13 +18,18 @@ from tabs.extras import EXTRA
 from tabs.set_config import load_data
 from utilities import parse_time, generate_sensors_output
 
-app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True)
+app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_exceptions=True, title='Caeli')
 app.layout = generate_layout()
 
 
-@app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'), Input('url', 'pathname'))
-def render_content(tab, url):
-    return *EXTRA.get(url.strip('/'), []), *pages[tab]['page'].render()
+@app.callback(Output('extra', 'children'), Input('url', 'pathname'))
+def render_content(url):
+    return EXTRA.get(url.strip('/'), [])
+
+
+@app.callback(Output('page', 'children'), Input(TagIds.TABS, 'value'))
+def render_content(tab):
+    return pages[tab]['page'].render()
 
 
 @app.callback(Output('placeholder', 'className'), Input('url', 'pathname'))
@@ -32,8 +37,8 @@ def activate_reader_thread(path: str):
     path = path.strip('/')
     if realtime.thread.handler_name == path:
         raise PreventUpdate
-    realtime.thread.set_handler(path)
-    realtime.thread.connect_handler()
+    if realtime.thread.set_handler(path):
+        realtime.thread.connect_handler()
 
 
 @app.callback(generate_sensors_output(),
@@ -83,10 +88,8 @@ def scan_bluetooth(clicked):
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
     timestamp = 'Timer: '
-    try:
+    if len(realtime.graph):
         timestamp += parse_time(realtime.graph.iloc[-1].name, realtime.graph.iloc[0].name)
-    except IndexError:
-        raise PreventUpdate
     return timestamp
 
 
@@ -100,13 +103,9 @@ def click_navigation_bar_buttons(button):
 
 
 @app.callback(
-    Output("bluetooth_modal", "is_open"),
-    Input('toggle_bluetooth', 'n_clicks'), Input('mac_button', 'n_clicks'),
-    [State("bluetooth_modal", "is_open")],
-)
-def toggle_modal(click, connect, is_open):
-    if callback_context.triggered_id == 'mac_button':
-        return False
+    Output("bluetooth_modal", "is_open"), Input('bluetooth_link', 'n_clicks'), State("bluetooth_modal", "is_open"),
+    prevent_initial_call=True)
+def toggle_modal(click, is_open):
     if click:
         return not is_open
     return is_open
@@ -144,25 +143,43 @@ def toggle_modal(click):
 
 
 @app.callback(
-    Output("toggle_bluetooth", "children"), Output("toggle_bluetooth", "color"),
+    Output("mac_button", "children"),
     Input('mac_button', 'n_clicks'),
     [State("mac_input", "value")], prevent_initial_call=True
 )
 def toggle_modal(click, mac_address):
-    color = 'warning'
-    button_text = 'Failed to connect. Try again'
     if mac_address:
         realtime.thread.connect_handler(address=mac_address)
-        if realtime.thread.events.Finish.connect.is_set():
-            color = 'success'
-            button_text = 'Connected to: ' + mac_address
-    return button_text, color
+    raise PreventUpdate
 
 
-@app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), prevent_initial_call=True)
-def load_file_data(content):
+@app.callback(
+    [[Output(f"{icon['icon']['id']}_label", "children"), Output(f"{icon['icon']['id']}_link", "style")] for icon in
+     TagIds.Icons.INPUT_MODES], Input('url', 'pathname'),
+    Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True
+)
+def toggle_modal(path, interval):
+    path = path.strip('/')
+    output = []
+    current = types[realtime.thread.handler_name].current
+    for icon in TagIds.Icons.INPUT_MODES:
+        option = NavButtons.DEFAULT
+        if icon['icon']['id'] == path:
+            option = NavButtons.CLICKED
+            if realtime.thread.events.Finish.connect.is_set():
+                option = NavButtons.CONNECTED
+            elif realtime.thread.events.disconnect.is_set():
+                option = NavButtons.DISCONNECTED
+        message = NavButtons.OPTIONS[option]['message'].format(current=current)
+        output.append([message, {'background-color': NavButtons.OPTIONS[option]['color']}])
+    return output
+
+
+@app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), State('upload-file', 'filename'),
+              prevent_initial_call=True)
+def load_file_data(content, file_name):
     if content:
-        realtime.thread.connect_handler(content=content)
+        realtime.thread.connect_handler(content=content, file_name=file_name)
 
 
 @app.callback(*[Output(name + '_graph', 'figure') for name in Settings.GRAPHS],

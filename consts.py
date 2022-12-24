@@ -127,3 +127,16 @@ class UnitTypes:
         CELSIUS: lambda value: value,
         FAHRENHEIT: to_celsius
     }
+
+
+class NavButtons:
+    DEFAULT = 'default'
+    CLICKED = 'clicked'
+    CONNECTED = 'connected'
+    DISCONNECTED = 'disconnected'
+    OPTIONS = {
+        DEFAULT: {'color': 'inherit', 'message': ''},
+        CLICKED: {'color': 'var(--bs-primary)', 'message': ''},
+        CONNECTED: {'color': 'var(--bs-success)', 'message': 'Connected: {current}'},
+        DISCONNECTED: {'color': 'var(--bs-warning)', 'message': 'Failed to Connect: {current}'},
+    }
