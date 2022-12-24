@@ -15,13 +15,18 @@ class LivePage:
     def render(self):
         return [
             html.Div(id='extra'),
-            html.Div(id='content', children=[dbc.Card(
-                [
-                    dbc.CardHeader(
-                        children=[dash_table.DataTable(id=group, columns=self.generate_title(group),
-                                                       style_header={'backgroundColor': 'transparent',
-                                                                     'border': 'none'})],
-                        className='flex center align card-title', id=group + 'header'),
-                    dbc.CardBody(create_card(group)),
-                ], className='sensor-card') for group in Settings.GROUPS],
-                     className='children-margin')]
+            *[
+                html.Div(children=[dbc.Card(
+                    [
+                        dbc.CardHeader(id=group + 'header',
+                                       children=[dash_table.DataTable(id=group, columns=self.generate_title(group),
+                                                                      style_header={'backgroundColor': 'transparent',
+                                                                                    'border': 'none'})],
+                                       className='flex center align card-title',
+                                       style={'background-color': 'var(--bs-primary)'}),
+                        dbc.CardBody(create_card(group)),
+                    ], className='sensor-card') for group in row],
+                    className='children-margin flex center grow')
+                for row in Settings.CARD_ORDER
+            ]
+        ]

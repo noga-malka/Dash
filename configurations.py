@@ -90,6 +90,10 @@ class Settings:
             'DS18B20-4 sensor Temp': SensorInstance.Temperature
         }
     }
+    CARD_ORDER = [
+        ['CO2 sensor', 'HTU21DF-1 sensor'],
+        ['DS18B20-1 sensor', 'DS18B20-2 sensor', 'DS18B20-3 sensor', 'DS18B20-4 sensor']
+    ]
     GRAPHS = {
         'Temperature': [
             'CO2 sensor Temp',

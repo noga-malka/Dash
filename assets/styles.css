@@ -1,13 +1,11 @@
-#content{
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-}
 .column{
 flex-direction: column;
 }
 .children-margin > *{
 margin: 10px;
+}
+.grow > *{
+    flex-grow:1
 }
 .rc-slider-rail, .rc-slider-track{
     height: 10px
