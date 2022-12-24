@@ -9,15 +9,16 @@ from monitors.temperature_monitor import TemperatureMonitor
 logging.config.fileConfig('logger.conf')
 logger = logging.getLogger('caeli')
 
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 class Sensor(BaseModel):
     label: str = Field(..., editable=False, content_type='text')
-    minimum: int = Field(..., content_type='numeric')
-    low_error: int = Field(..., content_type='numeric')
-    low_warning: int = Field(..., content_type='numeric')
-    high_warning: int = Field(..., content_type='numeric')
-    high_error: int = Field(..., content_type='numeric')
-    maximum: int = Field(..., content_type='numeric')
+    minimum: float = Field(..., content_type='numeric')
+    low_error: float = Field(..., content_type='numeric')
+    low_warning: float = Field(..., content_type='numeric')
+    high_warning: float = Field(..., content_type='numeric')
+    high_error: float = Field(..., content_type='numeric')
+    maximum: float = Field(..., content_type='numeric')
     unit_type: str = Field(..., editable=False, content_type='text')
     possible_units: list[str] = Field(..., editable=False, hidden=True)
 
@@ -38,7 +39,7 @@ class SensorInstance:
                          low_error=20,
                          low_warning=25,
                          high_warning=35,
-                         high_error=40,
+                         high_error=38,
                          maximum=50,
                          unit_type='C°',
                          possible_units=['C°', 'F°'])
@@ -55,17 +56,17 @@ class SensorInstance:
 
     Pressure = Sensor(label='Pressure',
                       minimum=0,
-                      low_error=10,
-                      low_warning=20,
-                      high_warning=80,
-                      high_error=90,
-                      maximum=100,
+                      low_error=0.5,
+                      low_warning=0.8,
+                      high_warning=1.2,
+                      high_error=1.5,
+                      maximum=2,
                       unit_type='PSI',
                       possible_units=['PSI'])
 
 
 class Schema:
-    ALL = [SensorInstance.CO2, SensorInstance.Temperature, SensorInstance.Humidity]
+    ALL = [SensorInstance.CO2, SensorInstance.Temperature, SensorInstance.Humidity, SensorInstance.Pressure]
     SENSOR_SCHEMA = Sensor.schema()['properties']
     HIDDEN_FIELDS = {key for key, field in Sensor.schema()['properties'].items() if field.get('hidden')}
 

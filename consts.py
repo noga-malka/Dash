@@ -34,7 +34,7 @@ class TagIds:
         RANDOM = {'id': 'random', 'icon': 'fa-random'}
         UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
 
-        ALL = [SAVE, PLAY, PAUSE, CLEAN]
+        ALL = [SAVE, CLEAN]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
                        {'icon': BLUETOOTH, 'label': 'Bluetooth'},
                        {'icon': UPLOAD, 'label': 'Load File'}]
@@ -115,13 +115,16 @@ class UnitTypes:
     FAHRENHEIT = 'F°'
     PPM = 'PPM'
     PERCENTAGE = '%'
+    PRESSURE = 'PSI'
     CONVERT = {
+        PRESSURE: lambda value: value,
         PERCENTAGE: lambda value: value,
         PPM: lambda value: value,
         CELSIUS: lambda value: value,
         FAHRENHEIT: to_fahrenheit
     }
     CANCEL = {
+        PRESSURE: lambda value: value,
         PERCENTAGE: lambda value: value,
         PPM: lambda value: value,
         CELSIUS: lambda value: value,
