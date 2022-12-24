@@ -10,9 +10,7 @@ def bluetooth_extra():
         dcc.Loading(children=[dcc.Dropdown(options=[], id='mac_input', className='full-width')]),
         dbc.Button('Search', id='scan_bluetooth'), dbc.Button('Connect', id='mac_button')]
     modal = modal_generator('bluetooth_modal', 'Enter Mac Address', inputs, is_centered=False)
-    button = dbc.Button(id='toggle_bluetooth', children='Connect To Bluetooth',
-                        style={'padding': '10px', 'margin': '5px'})
-    return [button, modal, *serial_extra()]
+    return [modal, *serial_extra()]
 
 
 def file_extra():
