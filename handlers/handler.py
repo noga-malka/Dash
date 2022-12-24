@@ -10,7 +10,6 @@ class Handler:
     def __init__(self):
         self.client = None
         self.is_connected = False
-        self.retry_delay = 60
 
     def connect(self, **kwargs):
         raise NotImplementedError()
@@ -31,12 +30,8 @@ class Handler:
         try:
             data = line.split('\t')
             sample = {data[index]: float(data[index + 1]) for index in range(0, len(data), 2)}
-            invalid_keys = [key for key in sample if key not in Settings.SENSORS]
-            if len(invalid_keys):
-                logger.warning(f'Unknown sensors: {invalid_keys}')
-                return pandas.DataFrame()
-            sample = pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
-            return sample
+            sample = {key: value for key, value in sample.items() if key in Settings.SENSORS}
+            return pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
         except (KeyError, IndexError, ValueError):
             logger.warning(f'Failed to parse row: {line}')
             return pandas.DataFrame()
