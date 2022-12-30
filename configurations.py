@@ -11,6 +11,7 @@ logger = logging.getLogger('caeli')
 
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
+
 class Sensor(BaseModel):
     label: str = Field(..., editable=False, content_type='text')
     minimum: float = Field(..., content_type='numeric')
@@ -79,53 +80,78 @@ class Schema:
 
 
 class Settings:
+    class InputNames:
+        CO2 = 'CO2 sensor CO2'
+        CO2_HUMIDITY = 'CO2 sensor Hum'
+        CO2_TEMP = 'CO2 sensor Temp'
+        HTU_HUMIDITY = 'HTU21DF-1 sensor Humidity'
+        HTU_TEMP = 'HTU21DF-1 sensor Temp'
+        DS_TEMP_1 = 'DS18B20-1 sensor Temp'
+        DS_TEMP_2 = 'DS18B20-2 sensor Temp'
+        DS_TEMP_3 = 'DS18B20-3 sensor Temp'
+        DS_TEMP_4 = 'DS18B20-4 sensor Temp'
+        PRESSURE_1 = 'pressure 1'
+        PRESSURE_2 = 'pressure 2'
+
+    class SensorNames:
+        CO2 = 'CO2 sensor'
+        HTU = 'HTU21DF-1 sensor'
+        DS1 = 'DS18B20-1 sensor'
+        DS2 = 'DS18B20-2 sensor'
+        DS3 = 'DS18B20-3 sensor'
+        DS4 = 'DS18B20-4 sensor'
+        PRESSURE1 = 'Pressure-1'
+        PRESSURE2 = 'Pressure-2'
+
     GROUPS = {
-        'CO2 sensor': {
-            'CO2 sensor CO2': SensorInstance.CO2,
-            'CO2 sensor Hum': SensorInstance.Humidity,
-            'CO2 sensor Temp': SensorInstance.Temperature,
+        SensorNames.CO2: {
+            InputNames.CO2: SensorInstance.CO2,
+            InputNames.CO2_HUMIDITY: SensorInstance.Humidity,
+            InputNames.CO2_TEMP: SensorInstance.Temperature,
         },
-        'HTU21DF-1 sensor': {
-            'HTU21DF-1 sensor Humidity': SensorInstance.Humidity,
-            'HTU21DF-1 sensor Temp': SensorInstance.Temperature,
+        SensorNames.HTU: {
+            InputNames.HTU_HUMIDITY: SensorInstance.Humidity,
+            InputNames.HTU_TEMP: SensorInstance.Temperature,
         },
-        'DS18B20-1 sensor': {
-            'DS18B20-1 sensor Temp': SensorInstance.Temperature,
+        SensorNames.DS1: {
+            InputNames.DS_TEMP_1: SensorInstance.Temperature,
         },
-        'DS18B20-2 sensor': {
-            'DS18B20-2 sensor Temp': SensorInstance.Temperature
+        SensorNames.DS2: {
+            InputNames.DS_TEMP_2: SensorInstance.Temperature
         },
-        'DS18B20-3 sensor': {
-            'DS18B20-3 sensor Temp': SensorInstance.Temperature
+        SensorNames.DS3: {
+            InputNames.DS_TEMP_3: SensorInstance.Temperature
         },
-        'DS18B20-4 sensor': {
-            'DS18B20-4 sensor Temp': SensorInstance.Temperature
+        SensorNames.DS4: {
+            InputNames.DS_TEMP_4: SensorInstance.Temperature
         },
-        'Pressure-1 sensor': {
-            'pressure-1 sensor': SensorInstance.Pressure
+        SensorNames.PRESSURE1: {
+            InputNames.PRESSURE_1: SensorInstance.Pressure
         },
-        'Pressure-2 sensor': {
-            'pressure-2 sensor': SensorInstance.Pressure
+        SensorNames.PRESSURE2: {
+            InputNames.PRESSURE_2: SensorInstance.Pressure
         }
     }
     CARD_ORDER = [
-        ['CO2 sensor', 'HTU21DF-1 sensor'],
-        ['DS18B20-1 sensor', 'DS18B20-2 sensor', 'DS18B20-3 sensor', 'DS18B20-4 sensor'],
-        ['Pressure-1 sensor', 'Pressure-2 sensor'],
+        [SensorNames.CO2, SensorNames.HTU],
+        [SensorNames.DS1, SensorNames.DS2, SensorNames.DS3, SensorNames.DS4],
+        [SensorNames.PRESSURE1, SensorNames.PRESSURE2],
     ]
     GRAPHS = {
         'Temperature': [
-            'CO2 sensor Temp',
-            'HTU21DF-1 sensor Temp',
-            'DS18B20-1 sensor Temp',
-            'DS18B20-2 sensor Temp'
+            InputNames.CO2_TEMP,
+            InputNames.HTU_TEMP,
+            InputNames.DS_TEMP_1,
+            InputNames.DS_TEMP_2,
+            InputNames.DS_TEMP_3,
+            InputNames.DS_TEMP_4,
         ],
         'Humidity': [
-            'CO2 sensor Hum',
-            'HTU21DF-1 sensor Humidity',
+            InputNames.CO2_HUMIDITY,
+            InputNames.HTU_HUMIDITY,
         ],
         'CO2': [
-            'CO2 sensor CO2',
+            InputNames.CO2,
         ],
     }
     SENSORS = functools.reduce(lambda x, y: x | y, GROUPS.values(), {})
