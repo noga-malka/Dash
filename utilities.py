@@ -18,7 +18,7 @@ def generate_grid(components):
 def create_card(group=''):
     sensors = Settings.GROUPS[group]
     return generate_grid(
-        [[Schema.MONITOR_TYPES[sensor.label].generate_daq(field) for field, sensor in sensors.items()]])
+        [[Schema.MONITOR_TYPES[sensor.label].generate_daq(sensor, field) for field, sensor in sensors.items()]])
 
 
 def parse_time(datetime, start):

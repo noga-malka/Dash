@@ -52,8 +52,8 @@ def update_sensors(n_intervals):
             content = realtime.read_data()
         except IndexError:
             raise PreventUpdate
-    outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(content.get(name, numpy.NaN)) for name, sensor
-               in Settings.SENSORS.items()]
+    outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(sensor, content.get(name, numpy.NaN)) for
+               name, sensor in Settings.SENSORS.items()]
     return outputs
 
 

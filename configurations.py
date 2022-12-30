@@ -104,10 +104,10 @@ class Schema:
     HIDDEN_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('hidden')}
 
     MONITOR_TYPES = {
-        Labels.CO2: GaugeMonitor(SensorInstance.CO2, 210, False, True, max_percent=1000000),
-        Labels.TEMP: TemperatureMonitor(SensorInstance.Temperature, 150),
-        Labels.HUMIDITY: GaugeMonitor(SensorInstance.Humidity, 160),
-        Labels.PRESSURE: GaugeMonitor(SensorInstance.Pressure, 160),
+        Labels.CO2: GaugeMonitor(210, False, True, max_percent=1000000),
+        Labels.TEMP: TemperatureMonitor(150),
+        Labels.HUMIDITY: GaugeMonitor(160),
+        Labels.PRESSURE: GaugeMonitor(160),
     }
 
 
