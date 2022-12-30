@@ -12,6 +12,31 @@ logger = logging.getLogger('caeli')
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 
+class InputNames:
+    CO2 = 'CO2 sensor CO2'
+    CO2_HUMIDITY = 'CO2 sensor Hum'
+    CO2_TEMP = 'CO2 sensor Temp'
+    HTU_HUMIDITY = 'HTU21DF-1 sensor Humidity'
+    HTU_TEMP = 'HTU21DF-1 sensor Temp'
+    DS_TEMP_1 = 'DS18B20-1 sensor Temp'
+    DS_TEMP_2 = 'DS18B20-2 sensor Temp'
+    DS_TEMP_3 = 'DS18B20-3 sensor Temp'
+    DS_TEMP_4 = 'DS18B20-4 sensor Temp'
+    PRESSURE_1 = 'pressure 1'
+    PRESSURE_2 = 'pressure 2'
+
+
+class SensorNames:
+    CO2 = 'CO2 sensor'
+    HTU = 'HTU21DF-1 sensor'
+    DS1 = 'DS18B20-1 sensor'
+    DS2 = 'DS18B20-2 sensor'
+    DS3 = 'DS18B20-3 sensor'
+    DS4 = 'DS18B20-4 sensor'
+    PRESSURE1 = 'Pressure-1'
+    PRESSURE2 = 'Pressure-2'
+
+
 class Sensor(BaseModel):
     label: str = Field(..., editable=False, content_type='text')
     minimum: float = Field(..., content_type='numeric')
@@ -24,8 +49,15 @@ class Sensor(BaseModel):
     possible_units: list[str] = Field(..., editable=False, hidden=True)
 
 
+class Labels:
+    CO2 = 'CO2'
+    TEMP = 'Temperature'
+    HUMIDITY = 'Humidity'
+    PRESSURE = 'Pressure'
+
+
 class SensorInstance:
-    CO2 = Sensor(label='CO2',
+    CO2 = Sensor(label=Labels.CO2,
                  minimum=0,
                  low_error=0,
                  low_warning=0,
@@ -35,7 +67,7 @@ class SensorInstance:
                  unit_type='PPM',
                  possible_units=['PPM'])
 
-    Temperature = Sensor(label='Temperature',
+    Temperature = Sensor(label=Labels.TEMP,
                          minimum=10,
                          low_error=20,
                          low_warning=25,
@@ -45,7 +77,7 @@ class SensorInstance:
                          unit_type='C°',
                          possible_units=['C°', 'F°'])
 
-    Humidity = Sensor(label='Humidity',
+    Humidity = Sensor(label=Labels.HUMIDITY,
                       minimum=0,
                       low_error=10,
                       low_warning=20,
@@ -55,7 +87,7 @@ class SensorInstance:
                       unit_type='%',
                       possible_units=['%'])
 
-    Pressure = Sensor(label='Pressure',
+    Pressure = Sensor(label=Labels.PRESSURE,
                       minimum=0,
                       low_error=0.5,
                       low_warning=0.8,
@@ -69,40 +101,17 @@ class SensorInstance:
 class Schema:
     ALL = [SensorInstance.CO2, SensorInstance.Temperature, SensorInstance.Humidity, SensorInstance.Pressure]
     SENSOR_SCHEMA = Sensor.schema()['properties']
-    HIDDEN_FIELDS = {key for key, field in Sensor.schema()['properties'].items() if field.get('hidden')}
+    HIDDEN_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('hidden')}
 
     MONITOR_TYPES = {
-        SensorInstance.CO2.label: GaugeMonitor(SensorInstance.CO2, 210, False, True, max_percent=1000000),
-        SensorInstance.Temperature.label: TemperatureMonitor(SensorInstance.Temperature, 150),
-        SensorInstance.Humidity.label: GaugeMonitor(SensorInstance.Humidity, 160),
-        SensorInstance.Pressure.label: GaugeMonitor(SensorInstance.Pressure, 160),
+        Labels.CO2: GaugeMonitor(SensorInstance.CO2, 210, False, True, max_percent=1000000),
+        Labels.TEMP: TemperatureMonitor(SensorInstance.Temperature, 150),
+        Labels.HUMIDITY: GaugeMonitor(SensorInstance.Humidity, 160),
+        Labels.PRESSURE: GaugeMonitor(SensorInstance.Pressure, 160),
     }
 
 
 class Settings:
-    class InputNames:
-        CO2 = 'CO2 sensor CO2'
-        CO2_HUMIDITY = 'CO2 sensor Hum'
-        CO2_TEMP = 'CO2 sensor Temp'
-        HTU_HUMIDITY = 'HTU21DF-1 sensor Humidity'
-        HTU_TEMP = 'HTU21DF-1 sensor Temp'
-        DS_TEMP_1 = 'DS18B20-1 sensor Temp'
-        DS_TEMP_2 = 'DS18B20-2 sensor Temp'
-        DS_TEMP_3 = 'DS18B20-3 sensor Temp'
-        DS_TEMP_4 = 'DS18B20-4 sensor Temp'
-        PRESSURE_1 = 'pressure 1'
-        PRESSURE_2 = 'pressure 2'
-
-    class SensorNames:
-        CO2 = 'CO2 sensor'
-        HTU = 'HTU21DF-1 sensor'
-        DS1 = 'DS18B20-1 sensor'
-        DS2 = 'DS18B20-2 sensor'
-        DS3 = 'DS18B20-3 sensor'
-        DS4 = 'DS18B20-4 sensor'
-        PRESSURE1 = 'Pressure-1'
-        PRESSURE2 = 'Pressure-2'
-
     GROUPS = {
         SensorNames.CO2: {
             InputNames.CO2: SensorInstance.CO2,
