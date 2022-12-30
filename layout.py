@@ -74,6 +74,7 @@ def generate_layout():
                 ),
                 download_session(),
                 are_you_sure(),
+                dcc.Interval(id='save_data', interval=60000, n_intervals=0),
                 dcc.Interval(id=TagIds.INTERVAL, interval=1000, n_intervals=0),
                 html.Div(id='placeholder', style={'display': None}),
                 html.Div([dcc.Tabs(id=TagIds.TABS, value='monitor',

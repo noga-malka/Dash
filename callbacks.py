@@ -1,3 +1,4 @@
+import os.path
 from datetime import datetime
 
 import bluetooth
@@ -265,3 +266,11 @@ def change_theme(theme):
     style_header = {'backgroundColor': 'var(--bs-primary)', 'color': color}
     style_data = {'backgroundColor': 'var(--bs-secondary)', 'color': color}
     return style_header, style_data
+
+
+@app.callback(Output('placeholder', 'lang'), Input('save_data', 'n_intervals'))
+def save_temporary_file(intervals):
+    if not os.path.exists('output'):
+        os.mkdir('output')
+    realtime.graph.to_csv(f'output/temporary.csv')
+    raise PreventUpdate
