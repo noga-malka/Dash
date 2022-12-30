@@ -38,6 +38,7 @@ class SensorNames:
 
 
 class Sensor(BaseModel):
+    name: str = Field('', editable=False, content_type='text')
     label: str = Field(..., editable=False, content_type='text')
     minimum: float = Field(..., content_type='numeric')
     low_error: float = Field(..., content_type='numeric')
@@ -99,7 +100,6 @@ class SensorInstance:
 
 
 class Schema:
-    ALL = [SensorInstance.CO2, SensorInstance.Temperature, SensorInstance.Humidity, SensorInstance.Pressure]
     SENSOR_SCHEMA = Sensor.schema()['properties']
     HIDDEN_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('hidden')}
 
@@ -109,6 +109,15 @@ class Schema:
         Labels.HUMIDITY: GaugeMonitor(160),
         Labels.PRESSURE: GaugeMonitor(160),
     }
+
+
+def parse_sensors(groups):
+    for group_name, group in groups.items():
+        for key, sensor in group.items():
+            current = group[key].copy()
+            current.name = group_name
+            group[key] = current
+    return functools.reduce(lambda x, y: x | y, groups.values(), {})
 
 
 class Settings:
@@ -163,4 +172,4 @@ class Settings:
             InputNames.CO2,
         ],
     }
-    SENSORS = functools.reduce(lambda x, y: x | y, GROUPS.values(), {})
+    SENSORS = parse_sensors(GROUPS)

@@ -203,7 +203,7 @@ def load_file_data(config, click):
     if not click:
         raise PreventUpdate
     config = {row['label']: row for row in config}
-    for sensor in Schema.ALL:
+    for sensor in Settings.SENSORS.values():
         current_values = config[sensor.label]
         updates = {key: UnitTypes.CANCEL[sensor.unit_type](value) for key, value in current_values.items() if
                    type(value) == int}
@@ -213,7 +213,7 @@ def load_file_data(config, click):
 @app.callback(Output('configuration', 'data'), Input('temperature_switch', 'on'))
 def load_file_data(is_celsius):
     unit_type = UnitTypes.CELSIUS if is_celsius else UnitTypes.FAHRENHEIT
-    for sensor in Schema.ALL:
+    for sensor in Settings.SENSORS.values():
         if unit_type in sensor.possible_units:
             sensor.unit_type = unit_type
     return load_data()
@@ -231,7 +231,7 @@ def change_unit_type(is_celsius):
         if unit_type in sensor.possible_units and sensor.unit_type != unit_type:
             changes = [change_function(sensor.minimum), change_function(sensor.maximum), unit_type, unit_type]
         outputs.append(changes)
-    for sensor in Schema.ALL:
+    for sensor in Settings.SENSORS.values():
         if unit_type in sensor.possible_units:
             sensor.unit_type = unit_type
     return outputs

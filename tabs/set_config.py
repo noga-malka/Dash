@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import dash_table
 from dash import html
 
-from configurations import Sensor, Schema
+from configurations import Sensor, Schema, Settings
 from consts import UnitTypes
 
 
@@ -17,6 +17,7 @@ class ConfigPage:
                     columns=(create_columns()),
                     data=[],
                     editable=True,
+                    sort_action='native',
                     style_cell={'textAlign': 'left', 'padding': '10px'},
                     style_header={'backgroundColor': 'rgb(30, 30, 30)', 'color': 'white'},
                     style_data={'backgroundColor': 'rgb(50, 50, 50)', 'color': 'white'},
@@ -34,7 +35,7 @@ def create_columns():
 def load_data():
     numeric = {key for key, field in Schema.SENSOR_SCHEMA.items() if field.get('content_type') == 'numeric'}
     parsed_data = []
-    for sensor in Schema.ALL:
+    for sensor in Settings.SENSORS.values():
         data = sensor.dict(exclude=Schema.HIDDEN_FIELDS)
         for key in numeric:
             data[key] = UnitTypes.CONVERT[sensor.unit_type](data[key])
