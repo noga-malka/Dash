@@ -49,7 +49,8 @@ def configurate_board():
         rows.append(html.Div([
             html.Label(sensor.name),
             daq.BooleanSwitch(id=f'check_{sensor.name}'),
-            html.Div(style={'margin': '5px'}, id=f'check_{sensor.name}_icon')
+            html.Div(style={'margin': '5px'}, id=f'check_{sensor.name}_icon'),
+            html.Label(id=f'check_{sensor.name}_address'),
         ], className='flex children-margin align'))
     container = html.Div([dbc.Button('scan sensor', id='scan_board'), html.Div(rows)], id='board_configurator',
                          className='flex column center')
