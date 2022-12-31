@@ -9,7 +9,8 @@ from monitors.temperature_monitor import TemperatureMonitor
 logging.config.fileConfig('logger.conf')
 logger = logging.getLogger('caeli')
 
-logging.getLogger('werkzeug').propagate = False
+logging.getLogger('werkzeug').disabled = True
+logging.getLogger('callbacks').disabled = True
 
 
 class InputNames:
