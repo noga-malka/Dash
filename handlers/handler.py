@@ -33,7 +33,7 @@ class Handler:
         line = self.read_line()
         try:
             data = line.split('\t')
-            if data[0] in ['setup', 'scan']:
+            if data[0] in ['setup']:
                 return data, False
             sample = {data[index]: float(data[index + 1]) for index in range(0, len(data), 2)}
             sample = {key: value for key, value in sample.items() if key in Settings.SENSORS}

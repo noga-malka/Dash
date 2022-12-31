@@ -52,6 +52,7 @@ class Commands:
     HEADER = 'aa55aa'
     SET_CO2 = 15
     SET_FAN = 16
+    SCAN = '1c'
     COMMAND_DEFAULT = {SET_CO2: '400'}
     ALL = [SET_CO2]
 

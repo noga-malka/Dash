@@ -106,6 +106,7 @@ def click_navigation_bar_buttons(button):
 @app.callback(
     [Output(f'check_{sensor.name}_icon', 'className') for sensor in SetupConsts.DS_TEMP],
     [Output(f'check_{sensor.name}_address', 'children') for sensor in SetupConsts.DS_TEMP],
+    Output('scan_board', 'disabled'),
     [Input(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
     prevent_initial_call=True)
 def toggle_modal(*args):
@@ -128,14 +129,17 @@ def toggle_modal(*args):
                     icon = StatusIcons.ERROR
                 icons[index] = f'fa {icon} fa-xl'
             break
-    return *icons, *addresses
+    return *icons, *addresses, not all(args)
 
 
 @app.callback(
     Output("config_board", "is_open"), Input('open_config_board', 'n_clicks'),
-    State("config_board", "is_open"),
+    State("config_board", "is_open"), Input('scan_board', 'n_clicks'),
     prevent_initial_call=True)
-def toggle_modal(click, is_open):
+def toggle_modal(click, is_open, scan):
+    if callback_context.triggered_id == 'scan_board':
+        types[realtime.thread.handler_name].send_command(Commands.SCAN, 0)
+        return False
     if click:
         return not is_open
     return is_open

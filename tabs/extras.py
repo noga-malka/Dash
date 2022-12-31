@@ -52,8 +52,8 @@ def configurate_board():
             html.Div(style={'margin': '5px'}, id=f'check_{sensor.name}_icon'),
             html.Label(id=f'check_{sensor.name}_address'),
         ], className='flex children-margin align'))
-    container = html.Div([dbc.Button('scan sensor', id='scan_board'), html.Div(rows)], id='board_configurator',
-                         className='flex column center')
+    container = html.Div([html.Div(rows), dbc.Button('scan sensor', id='scan_board', disabled=True)],
+                         id='board_configurator', className='flex column center')
     return modal_generator('config_board', 'Set board sensors',
                            [dcc.Loading(container)])
 
