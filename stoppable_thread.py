@@ -19,6 +19,7 @@ class Events:
     connect = Event()
     clean = Event()
     disconnect = Event()
+    set_device = Event()
 
     class Finish:
         connect = Event()

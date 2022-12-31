@@ -10,8 +10,8 @@ from dash import Dash, Input, Output, callback_context, ALL, State, html
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from configurations import Settings, Schema
-from consts import TagIds, Theme, UnitTypes, Commands, Colors, NavButtons
+from configurations import Settings, Schema, SetupConsts
+from consts import TagIds, Theme, UnitTypes, Commands, Colors, NavButtons, StatusIcons
 from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
@@ -104,11 +104,23 @@ def click_navigation_bar_buttons(button):
 
 
 @app.callback(
-    Output('board_configurator', "className"), Input('scan_board', 'n_clicks'),
-    [Input(f'check_{sensor.name}', 'on') for sensor in Settings.DS_TEMP],
+    [Output(f'check_{sensor.name}_icon', 'className') for sensor in SetupConsts.DS_TEMP],
+    [Input(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
     prevent_initial_call=True)
 def toggle_modal(*args):
-    raise PreventUpdate
+    trigger = callback_context.triggered_id
+    icons = [dash.no_update] * len(SetupConsts.DS_TEMP)
+    for index, sensor in enumerate(SetupConsts.DS_TEMP):
+        if trigger == f'check_{sensor.name}':
+            if not args[index]:
+                icons[index] = ''
+            else:
+                types[realtime.thread.handler_name].send_command(SetupConsts.COMMANDS[sensor.name], 0)
+                realtime.thread.events.set_device.wait(timeout=5)
+                icon = StatusIcons.CHECK if realtime.thread.events.set_device.is_set() else StatusIcons.ERROR
+                icons[index] = f'fa {icon} fa-xl'
+            break
+    return icons
 
 
 @app.callback(
