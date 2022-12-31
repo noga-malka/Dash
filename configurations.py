@@ -9,7 +9,7 @@ from monitors.temperature_monitor import TemperatureMonitor
 logging.config.fileConfig('logger.conf')
 logger = logging.getLogger('caeli')
 
-logging.getLogger('werkzeug').setLevel(logging.ERROR)
+logging.getLogger('werkzeug').propagate = False
 
 
 class InputNames:
