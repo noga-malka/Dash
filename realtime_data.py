@@ -9,6 +9,7 @@ class RealtimeData:
         self.thread = StoppableThread(target=self.add_data, daemon=True)
         self.thread.start()
         self.graph = pandas.DataFrame()
+        self.command_outputs = {}
         self.index = -1
         self.is_paused = False
         self.should_clean = False
@@ -56,7 +57,13 @@ class RealtimeData:
             self.graph = pandas.DataFrame()
             self.thread.events.Finish.clean.set()
         else:
-            self.graph = pandas.concat([self.graph, types[self.thread.handler_name].extract_data()])
+            content, is_data = types[self.thread.handler_name].extract_data()
+            if is_data:
+                self.graph = pandas.concat([self.graph, content])
+            else:
+                self.thread.events.set_device.set()
+                key, *content = content
+                self.command_outputs[key] = content
 
     def clean(self):
         self.thread.events.clean.set()
