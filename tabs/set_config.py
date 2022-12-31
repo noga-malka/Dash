@@ -4,7 +4,6 @@ from dash import html
 
 from configurations import Sensor, Schema, Settings
 from consts import UnitTypes
-from tabs.extras import configurate_board
 
 
 class ConfigPage:
@@ -12,7 +11,6 @@ class ConfigPage:
     def render():
         return [dbc.Button(children='Config Board', id='open_config_board'),
                 html.Div(children=[
-                    configurate_board(),
                     dbc.Card(
                         [
                             dbc.CardHeader('Configurations', className='flex center card-title'),
