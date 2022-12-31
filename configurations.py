@@ -156,6 +156,9 @@ class Settings:
         [SensorNames.PRESSURE1, SensorNames.PRESSURE2],
     ]
     GRAPHS = {
+        'CO2': [
+            InputNames.CO2,
+        ],
         'Temperature': [
             InputNames.CO2_TEMP,
             InputNames.HTU_TEMP,
@@ -167,9 +170,6 @@ class Settings:
         'Humidity': [
             InputNames.CO2_HUMIDITY,
             InputNames.HTU_HUMIDITY,
-        ],
-        'CO2': [
-            InputNames.CO2,
         ],
     }
     SENSORS = parse_sensors(GROUPS)
