@@ -105,22 +105,30 @@ def click_navigation_bar_buttons(button):
 
 @app.callback(
     [Output(f'check_{sensor.name}_icon', 'className') for sensor in SetupConsts.DS_TEMP],
+    [Output(f'check_{sensor.name}_address', 'children') for sensor in SetupConsts.DS_TEMP],
     [Input(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
     prevent_initial_call=True)
 def toggle_modal(*args):
     trigger = callback_context.triggered_id
     icons = [dash.no_update] * len(SetupConsts.DS_TEMP)
+    addresses = [dash.no_update] * len(SetupConsts.DS_TEMP)
     for index, sensor in enumerate(SetupConsts.DS_TEMP):
         if trigger == f'check_{sensor.name}':
             if not args[index]:
                 icons[index] = ''
+                addresses[index] = ''
             else:
+                realtime.thread.events.set_device.clear()
                 types[realtime.thread.handler_name].send_command(SetupConsts.COMMANDS[sensor.name], 0)
                 realtime.thread.events.set_device.wait(timeout=5)
-                icon = StatusIcons.CHECK if realtime.thread.events.set_device.is_set() else StatusIcons.ERROR
+                if realtime.thread.events.set_device.is_set():
+                    icon = StatusIcons.CHECK
+                    addresses[index] = realtime.command_outputs['setup']
+                else:
+                    icon = StatusIcons.ERROR
                 icons[index] = f'fa {icon} fa-xl'
             break
-    return icons
+    return *icons, *addresses
 
 
 @app.callback(
