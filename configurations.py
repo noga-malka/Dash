@@ -173,3 +173,5 @@ class Settings:
         ],
     }
     SENSORS = parse_sensors(GROUPS)
+    DS_TEMP = [sensor for name, sensor in SENSORS.items() if
+               name in [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4]]

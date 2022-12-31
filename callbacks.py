@@ -104,6 +104,24 @@ def click_navigation_bar_buttons(button):
 
 
 @app.callback(
+    Output('board_configurator', "className"), Input('scan_board', 'n_clicks'),
+    [Input(f'check_{sensor.name}', 'on') for sensor in Settings.DS_TEMP],
+    prevent_initial_call=True)
+def toggle_modal(*args):
+    raise PreventUpdate
+
+
+@app.callback(
+    Output("config_board", "is_open"), Input('open_config_board', 'n_clicks'),
+    State("config_board", "is_open"),
+    prevent_initial_call=True)
+def toggle_modal(click, is_open):
+    if click:
+        return not is_open
+    return is_open
+
+
+@app.callback(
     Output("bluetooth_modal", "is_open"), Input('bluetooth_link', 'n_clicks'), State("bluetooth_modal", "is_open"),
     prevent_initial_call=True)
 def toggle_modal(click, is_open):

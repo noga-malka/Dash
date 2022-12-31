@@ -1,6 +1,8 @@
 import dash_bootstrap_components as dbc
+import dash_daq as daq
 from dash import dcc, html
 
+from configurations import Settings
 from consts import TagIds, Commands
 from utilities import modal_generator
 
@@ -39,6 +41,19 @@ def are_you_sure():
     return modal_generator('are_you_sure', 'Are You Sure?',
                            [html.Div([dbc.Button('No', id='sure_no'), dbc.Button('Yes', id='sure_yes')],
                                      className='flex children-margin')])
+
+
+def configurate_board():
+    rows = []
+    for sensor in Settings.DS_TEMP:
+        rows.append(html.Div([
+            html.Label(sensor.name),
+            daq.BooleanSwitch(id=f'check_{sensor.name}'),
+        ], className='flex children-margin'))
+    container = html.Div([dbc.Button('scan sensor', id='scan_board'), html.Div(rows)], id='board_configurator',
+                         className='flex column center')
+    return modal_generator('config_board', 'Set board sensors',
+                           [dcc.Loading(container)])
 
 
 EXTRA = {
