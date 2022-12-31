@@ -38,7 +38,7 @@ class Handler:
             sample = {data[index]: float(data[index + 1]) for index in range(0, len(data), 2)}
             sample = {key: value for key, value in sample.items() if key in Settings.SENSORS}
             return pandas.DataFrame(sample, index=[pandas.Timestamp.now()]), True
-        except (KeyError, IndexError, ValueError):
+        except (KeyError, IndexError, ValueError, UnicodeDecodeError):
             logger.warning(f'Failed to parse row: {line}')
             return pandas.DataFrame(), True
 
