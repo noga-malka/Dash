@@ -3,14 +3,15 @@ import logging.config
 
 from pydantic import Field, BaseModel
 
+from consts import IS_DEBUG
 from monitors.gauge_monitor import GaugeMonitor
 from monitors.temperature_monitor import TemperatureMonitor
 
 logging.config.fileConfig('logger.conf')
 logger = logging.getLogger('caeli')
 
-logging.getLogger('werkzeug').disabled = True
-logging.getLogger('callbacks').disabled = True
+logging.getLogger('werkzeug').disabled = not IS_DEBUG
+logging.getLogger('callbacks').disabled = not IS_DEBUG
 
 
 class InputNames:
@@ -19,10 +20,10 @@ class InputNames:
     CO2_TEMP = 'CO2 sensor Temp'
     HTU_HUMIDITY = 'HTU21DF-1 sensor Humidity'
     HTU_TEMP = 'HTU21DF-1 sensor Temp'
-    DS_TEMP_1 = 'DS18B20-1 sensor Temp'
-    DS_TEMP_2 = 'DS18B20-2 sensor Temp'
-    DS_TEMP_3 = 'DS18B20-3 sensor Temp'
-    DS_TEMP_4 = 'DS18B20-4 sensor Temp'
+    DS_TEMP_1 = 'Mouth Temp'
+    DS_TEMP_2 = 'Lungs Temp'
+    DS_TEMP_3 = 'Canister Top Temp'
+    DS_TEMP_4 = 'Canister Bottom Temp'
     PRESSURE_1 = 'pressure 1'
     PRESSURE_2 = 'pressure 2'
 
@@ -30,10 +31,10 @@ class InputNames:
 class SensorNames:
     CO2 = 'CO2 sensor'
     HTU = 'HTU21DF-1 sensor'
-    DS1 = 'DS18B20-1 sensor'
-    DS2 = 'DS18B20-2 sensor'
-    DS3 = 'DS18B20-3 sensor'
-    DS4 = 'DS18B20-4 sensor'
+    DS1 = 'Mouth'
+    DS2 = 'Lungs'
+    DS3 = 'Canister Top'
+    DS4 = 'Canister Bottom'
     PRESSURE1 = 'Pressure-1'
     PRESSURE2 = 'Pressure-2'
 
