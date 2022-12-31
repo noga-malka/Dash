@@ -31,6 +31,6 @@ class FileHandler(Handler):
     def extract_data(self):
         if not self.is_loaded:
             self.is_loaded = True
-            return self.content
+            return self.content, True
         else:
-            return pandas.DataFrame()
+            return pandas.DataFrame(), True
