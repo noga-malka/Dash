@@ -179,5 +179,5 @@ class SetupConsts:
     DS_TEMP = [sensor for name, sensor in Settings.SENSORS.items() if
                name in [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4]]
     COMMANDS = {
-        SensorNames.DS1: 18, SensorNames.DS2: 19, SensorNames.DS3: 20, SensorNames.DS4: 21
+        SensorNames.DS1: 18, SensorNames.DS2: 19, SensorNames.DS3: '1a', SensorNames.DS4: '1b'
     }
