@@ -106,10 +106,10 @@ class Schema:
     HIDDEN_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('hidden')}
 
     MONITOR_TYPES = {
-        Labels.CO2: GaugeMonitor(210, False, True, max_percent=1000000),
-        Labels.TEMP: TemperatureMonitor(150),
-        Labels.HUMIDITY: GaugeMonitor(160),
-        Labels.PRESSURE: GaugeMonitor(160),
+        Labels.CO2: GaugeMonitor(180, False, True, max_percent=1000000),
+        Labels.TEMP: TemperatureMonitor(90),
+        Labels.HUMIDITY: GaugeMonitor(110),
+        Labels.PRESSURE: GaugeMonitor(110),
     }
 
 
@@ -154,8 +154,8 @@ class Settings:
     }
     CARD_ORDER = [
         [SensorNames.CO2, SensorNames.HTU],
-        [SensorNames.DS1, SensorNames.DS2, SensorNames.DS3, SensorNames.DS4],
-        [SensorNames.PRESSURE1, SensorNames.PRESSURE2],
+        [SensorNames.DS1, SensorNames.DS2, SensorNames.DS3, SensorNames.DS4,
+         SensorNames.PRESSURE1, SensorNames.PRESSURE2],
     ]
     GRAPHS = {
         'CO2': [

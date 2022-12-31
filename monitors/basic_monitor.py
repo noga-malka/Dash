@@ -38,5 +38,5 @@ class Monitor:
         icon = html.Div(id=led_id + '_icon', className=self._get_icon(Colors.WARNING))
         label = label if label else sensor.unit_type
         return html.Div([icon, daq.LEDDisplay(id=led_id + '_led', value=sensor.minimum, label=label,
-                                              labelPosition='bottom', size=25, color=Colors.ERROR.value)],
+                                              labelPosition='bottom', size=20, color=Colors.ERROR.value)],
                         className='flex center align children-margin-2')
