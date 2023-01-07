@@ -204,6 +204,8 @@ def toggle_modal(click, mac_address):
 def toggle_modal(path, interval):
     path = path.strip('/')
     output = []
+    if realtime.thread.handler_name not in types:
+        raise PreventUpdate
     current = types[realtime.thread.handler_name].current
     for icon in TagIds.Icons.INPUT_MODES:
         option = NavButtons.DEFAULT
