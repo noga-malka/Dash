@@ -9,7 +9,8 @@ from consts import UnitTypes
 class ConfigPage:
     @staticmethod
     def render():
-        return [dbc.Button(children='Calibrate Temperature Sensors', id='open_config_board'),
+        return [dbc.Button(children='Calibrate Temperature Sensors', id='open_config_board',
+                           style={'width': 'fit-content'}),
                 html.Div(children=[
                     dbc.Card(
                         [
