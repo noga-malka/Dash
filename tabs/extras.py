@@ -44,18 +44,25 @@ def are_you_sure():
 
 
 def configurate_board():
-    rows = []
-    for sensor in SetupConsts.DS_TEMP:
-        rows.append(html.Div([
-            html.Label(sensor.name),
-            html.Div([daq.BooleanSwitch(id=f'check_{sensor.name}'),
-                      html.Div(style={'margin': '5px'}, id=f'check_{sensor.name}_icon'),
-                      html.Label(id=f'check_{sensor.name}_address')], className='flex')
-        ], className='flex children-margin align space-between'))
-    container = html.Div([html.Div(rows), dbc.Button('scan sensor', id='scan_board', disabled=True)],
-                         id='board_configurator', className='flex column center')
-    return modal_generator('config_board', 'Set board sensors',
-                           [dcc.Loading(container)])
+    rows = [generate_sensor_row(sensor.name) for sensor in SetupConsts.DS_TEMP]
+    rows = html.Div(rows, id='setup_container')
+    container = html.Div([rows, generate_setup_buttons()], id='board_configurator', className='flex column center')
+    return modal_generator('config_board', 'Set board sensors', [dcc.Loading(container)])
+
+
+def generate_sensor_row(name: str):
+    return html.Div([html.Label(name),
+                     html.Div([daq.BooleanSwitch(id=f'check_{name}'),
+                               html.Div(style={'margin': '5px'}, id=f'check_{name}_icon'),
+                               html.Label(id=f'check_{name}_address')], className='flex')],
+                    className='flex children-margin align space-between')
+
+
+def generate_setup_buttons():
+    return html.Div([dbc.Button('rescan board', id='refresh_board'),
+                     dbc.Button('reset toggles', id='reset_toggles'),
+                     dbc.Button('scan sensors', id='scan_board', disabled=True)],
+                    className='flex align children-margin')
 
 
 EXTRA = {
