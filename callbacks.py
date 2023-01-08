@@ -1,5 +1,4 @@
 import os.path
-import time
 from datetime import datetime
 
 import bluetooth
@@ -12,7 +11,7 @@ from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings, Schema, SetupConsts
-from consts import TagIds, Theme, UnitTypes, Commands, Colors, NavButtons, StatusIcons
+from consts import TagIds, Theme, UnitTypes, Commands, Colors, NavButtons, StatusIcons, HardwarePackets
 from layout import generate_layout, pages
 from realtime_data import realtime
 from stoppable_thread import types
@@ -124,7 +123,7 @@ def toggle_modal(*args):
                 realtime.thread.events.set_device.wait(timeout=5)
                 if realtime.thread.events.set_device.is_set():
                     icon = StatusIcons.CHECK
-                    addresses[index] = realtime.command_outputs['setup']
+                    addresses[index] = realtime.command_outputs[HardwarePackets.SETUP]
                 else:
                     icon = StatusIcons.ERROR
                 icons[index] = f'fa {icon} fa-xl'
@@ -134,13 +133,12 @@ def toggle_modal(*args):
 
 @app.callback(Output('board_status', 'className'), Output('status_tooltip', 'children'),
               [Output(f'check_{sensor.name}', 'disabled') for sensor in SetupConsts.DS_TEMP],
-              Input('read_board', 'n_intervals'), Input('refresh_board', 'n_clicks'))
+              Input(TagIds.INTERVAL, 'n_intervals'), Input('refresh_board', 'n_clicks'))
 def read_board(interval, click):
     if realtime.thread.handler_name not in types:
         raise PreventUpdate
     types[realtime.thread.handler_name].send_command(Commands.SEARCH_SENSOR, 0)
-    time.sleep(1)
-    sensor_count = int(realtime.command_outputs.get('OneWire_count', [0])[0])
+    sensor_count = realtime.command_outputs.get(HardwarePackets.ONE_WIRE, 0)
     if sensor_count == 1:
         return f'fa {StatusIcons.CHECK} fa-lg', 'found 1 sensor', *[False] * len(SetupConsts.DS_TEMP)
     return f'fa {StatusIcons.ERROR} fa-lg', f'found {sensor_count} sensor', *[True] * len(SetupConsts.DS_TEMP)

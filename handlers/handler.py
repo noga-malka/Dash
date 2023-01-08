@@ -47,7 +47,7 @@ class Handler:
 
     @staticmethod
     def one_wire(command: str, content: list):
-        return command, content[1]
+        return command, int(content[1])
 
     @staticmethod
     def parse_data(command: str, content: list):
