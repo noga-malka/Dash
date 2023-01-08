@@ -133,7 +133,7 @@ def toggle_modal(*args):
 
 @app.callback(Output('board_status', 'className'), Output('status_tooltip', 'children'),
               [Output(f'check_{sensor.name}', 'disabled') for sensor in SetupConsts.DS_TEMP],
-              Input(TagIds.INTERVAL, 'n_intervals'), Input('refresh_board', 'n_clicks'))
+              Input(TagIds.INTERVAL, 'n_intervals'), Input('refresh_board', 'n_clicks'), prevent_initial_call=True)
 def read_board(interval, click):
     if realtime.thread.handler_name not in types:
         raise PreventUpdate

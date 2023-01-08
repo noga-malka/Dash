@@ -7,12 +7,11 @@ from consts import TagIds, Commands, StatusIcons
 from utilities import modal_generator
 
 
-def bluetooth_extra():
+def bluetooth_modal():
     inputs = [
         dcc.Loading(children=[dcc.Dropdown(options=[], id='mac_input', className='full-width')]),
         dbc.Button('Search', id='scan_bluetooth'), dbc.Button('Connect', id='mac_button')]
-    modal = modal_generator('bluetooth_modal', 'Enter Mac Address', inputs, is_centered=False)
-    return [modal, *serial_extra()]
+    return modal_generator('bluetooth_modal', 'Enter Mac Address', inputs, is_centered=False)
 
 
 def file_extra():
@@ -83,6 +82,6 @@ def generate_setup_buttons():
 
 EXTRA = {
     TagIds.Icons.UPLOAD['id']: file_extra(),
-    TagIds.Icons.BLUETOOTH['id']: bluetooth_extra(),
+    TagIds.Icons.BLUETOOTH['id']: serial_extra(),
     TagIds.Icons.SERIAL['id']: serial_extra()
 }

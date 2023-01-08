@@ -4,7 +4,7 @@ from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme
-from tabs.extras import download_session, are_you_sure, configurate_board
+from tabs.extras import download_session, are_you_sure, configurate_board, bluetooth_modal
 from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
 from tabs.set_config import ConfigPage
@@ -72,6 +72,7 @@ def generate_layout():
                         ),
                     ], className='side-nav'
                 ),
+                bluetooth_modal(),
                 download_session(),
                 are_you_sure(),
                 configurate_board(),
