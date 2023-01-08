@@ -1,6 +1,6 @@
 import pandas
 
-from consts import RealtimeConsts
+from consts import HardwarePackets
 from stoppable_thread import StoppableThread, types
 
 
@@ -10,60 +10,35 @@ class RealtimeData:
         self.thread.start()
         self.graph = pandas.DataFrame()
         self.command_outputs = {}
-        self.index = -1
-        self.is_paused = False
-        self.should_clean = False
-        self.config = {
-            'to-start': lambda: self.set_index(0),
-            'forward': lambda: self.step(RealtimeConsts.GAP),
-            'pause': self.pause,
-            'play': self.play,
-            'backward': lambda: self.step(-RealtimeConsts.GAP),
-            'to-end': lambda: self.set_index()
+        self.mapping = {
+            HardwarePackets.SETUP: self.setup,
+            HardwarePackets.ONE_WIRE: self.save_output,
+            HardwarePackets.DATA: self.add_row,
         }
 
-    def set_index(self, value=-1):
-        self.index = value
-
-    def step(self, gap: int):
-        if self.index == -1:
-            self.index = len(self.graph) - 1
-        new_index = self.index + gap
-        self.index = max(0, new_index) if gap < 0 else min(len(self.graph) - 1, new_index)
-
-    def go_to_start(self):
-        self.index = 0
-
-    def pause(self):
-        self.is_paused = True
-        self.index = len(self.graph) - 1 if self.index == -1 else self.index
-        self.thread.events.Finish.connect.clear()
-
-    def play(self):
-        self.is_paused = False
-        self.thread.events.Finish.connect.set()
-
-    def go_to_end(self):
-        self.index = -1
-
-    def read_data(self, step=RealtimeConsts.STEP):
-        current = self.graph.iloc[self.index]
-        if self.index != -1 and not self.is_paused:
-            self.index += step
-        return current
+    def read_data(self):
+        return self.graph.iloc[-1]
 
     def add_data(self):
         if self.thread.events.clean.is_set():
             self.graph = pandas.DataFrame()
             self.thread.events.Finish.clean.set()
         else:
-            content, is_data = types[self.thread.handler_name].extract_data()
-            if is_data:
-                self.graph = pandas.concat([self.graph, content])
-            else:
-                self.thread.events.set_device.set()
-                key, *content = content
-                self.command_outputs[key] = content
+            try:
+                command, content = types[self.thread.handler_name].extract_data()
+            except TypeError:
+                return
+            self.mapping[command](command, content)
+
+    def save_output(self, command: str, content):
+        self.command_outputs[command] = content
+
+    def setup(self, command: str, content):
+        self.thread.events.set_device.set()
+        self.command_outputs[command] = content
+
+    def add_row(self, command: str, content):
+        self.graph = pandas.concat([self.graph, content])
 
     def clean(self):
         self.thread.events.clean.set()

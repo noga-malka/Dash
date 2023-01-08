@@ -6,11 +6,6 @@ import dash_bootstrap_components as dbc
 IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 
 
-class RealtimeConsts:
-    GAP = 210
-    STEP = 1
-
-
 class TagIds:
     RANGE = 'range'
     CHECKLIST = 'checklist'
@@ -53,6 +48,7 @@ class Commands:
     SET_CO2 = 15
     SET_FAN = 16
     SCAN = '1c'
+    SEARCH_SENSOR = '1d'
     COMMAND_DEFAULT = {SET_CO2: '400'}
     ALL = [SET_CO2]
 
@@ -144,3 +140,9 @@ class NavButtons:
         CONNECTED: {'color': 'var(--bs-success)', 'message': 'Connected: {current}'},
         DISCONNECTED: {'color': 'var(--bs-warning)', 'message': 'Failed to Connect: {current}'},
     }
+
+
+class HardwarePackets:
+    DATA = 'CO2 sensor CO2'
+    SETUP = 'setup'
+    ONE_WIRE = 'OneWire_count'

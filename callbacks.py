@@ -1,4 +1,5 @@
 import os.path
+import time
 from datetime import datetime
 
 import bluetooth
@@ -99,7 +100,6 @@ def update_sensors(n_intervals):
 def click_navigation_bar_buttons(button):
     clicked = callback_context.triggered_id['index']
     colors = [None if clicked != icon['id'] else 'red' for icon in TagIds.Icons.ALL]
-    realtime.config.get(clicked, lambda: None)()
     return [{'color': value} for value in colors]
 
 
@@ -130,6 +130,26 @@ def toggle_modal(*args):
                 icons[index] = f'fa {icon} fa-xl'
             break
     return *icons, *addresses, not all(args)
+
+
+@app.callback(Output('board_status', 'className'), Output('status_tooltip', 'children'),
+              [Output(f'check_{sensor.name}', 'disabled') for sensor in SetupConsts.DS_TEMP],
+              Input('read_board', 'n_intervals'), Input('refresh_board', 'n_clicks'))
+def read_board(interval, click):
+    if realtime.thread.handler_name not in types:
+        raise PreventUpdate
+    types[realtime.thread.handler_name].send_command(Commands.SEARCH_SENSOR, 0)
+    time.sleep(1)
+    sensor_count = int(realtime.command_outputs.get('OneWire_count', [0])[0])
+    if sensor_count == 1:
+        return f'fa {StatusIcons.CHECK} fa-lg', 'found 1 sensor', *[False] * len(SetupConsts.DS_TEMP)
+    return f'fa {StatusIcons.ERROR} fa-lg', f'found {sensor_count} sensor', *[True] * len(SetupConsts.DS_TEMP)
+
+
+@app.callback([Output(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
+              Input('reset_toggles', 'n_clicks'))
+def read_board(click):
+    return [False] * len(SetupConsts.DS_TEMP)
 
 
 @app.callback(
@@ -231,8 +251,6 @@ def load_file_data(content, file_name):
               Input(ThemeSwitchAIO.ids.switch('theme'), 'value'),
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def create_graphs(toggle, interval):
-    if realtime.is_paused:
-        raise PreventUpdate
     figures = []
     for name, sensors in Settings.GRAPHS.items():
         content = realtime.graph[list(set(realtime.graph.columns).intersection(set(sensors)))]

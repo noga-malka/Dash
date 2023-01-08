@@ -3,7 +3,7 @@ from typing import Union
 import pandas
 
 from configurations import Settings, logger
-from consts import Commands
+from consts import Commands, HardwarePackets
 
 
 class Handler:
@@ -12,6 +12,11 @@ class Handler:
         self.is_connected = False
         self.current = ''
         self.auto_connect = auto_connect
+        self.mapping = {
+            HardwarePackets.SETUP: self.setup,
+            HardwarePackets.ONE_WIRE: self.one_wire,
+            HardwarePackets.DATA: self.parse_data,
+        }
 
     def connect(self, **kwargs):
         raise NotImplementedError()
@@ -28,19 +33,27 @@ class Handler:
         raise NotImplementedError()
 
     def extract_data(self):
-        if not self.is_connected:
-            return pandas.DataFrame(), True
-        line = self.read_line()
-        try:
-            data = line.split('\t')
-            if data[0] in ['setup']:
-                return data, False
-            sample = {data[index]: float(data[index + 1]) for index in range(0, len(data), 2)}
-            sample = {key: value for key, value in sample.items() if key in Settings.SENSORS}
-            return pandas.DataFrame(sample, index=[pandas.Timestamp.now()]), True
-        except (KeyError, IndexError, ValueError, UnicodeDecodeError):
-            logger.warning(f'Failed to parse row: {line}')
-            return pandas.DataFrame(), True
+        if self.is_connected:
+            line = self.read_line()
+            try:
+                command, *content = line.split('\t')
+                return self.mapping[command](command, [command] + content)
+            except (KeyError, IndexError, ValueError, UnicodeDecodeError):
+                logger.warning(f'Failed to parse row: {line}')
+
+    @staticmethod
+    def setup(command: str, content: list):
+        return command, content[1:]
+
+    @staticmethod
+    def one_wire(command: str, content: list):
+        return command, content[1]
+
+    @staticmethod
+    def parse_data(command: str, content: list):
+        sample = {content[index]: float(content[index + 1]) for index in range(0, len(content), 2)}
+        sample = {key: value for key, value in sample.items() if key in Settings.SENSORS}
+        return command, pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
 
     @staticmethod
     def format(value: Union[str, int], byte_number: int = 1):

@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import dcc, html
 
 from configurations import SetupConsts
-from consts import TagIds, Commands
+from consts import TagIds, Commands, StatusIcons
 from utilities import modal_generator
 
 
@@ -44,17 +44,33 @@ def are_you_sure():
 
 
 def configurate_board():
-    rows = [generate_sensor_row(sensor.name) for sensor in SetupConsts.DS_TEMP]
-    rows = html.Div(rows, id='setup_container')
+    labels = columnize([html.Label(sensor.name) for sensor in SetupConsts.DS_TEMP])
+    toggles = columnize([daq.BooleanSwitch(id=f'check_{sensor.name}', disabled=True) for sensor in SetupConsts.DS_TEMP])
+    status = columnize([html.Div([html.Div(style={'margin': '5px'}, id=f'check_{sensor.name}_icon'),
+                                  html.Label(id=f'check_{sensor.name}_address')]) for sensor in SetupConsts.DS_TEMP])
+
+    rows = html.Div([labels, toggles, dcc.Loading(status)], className='flex space-between')
     container = html.Div([rows, generate_setup_buttons()], id='board_configurator', className='flex column center')
-    return modal_generator('config_board', 'Set board sensors', [dcc.Loading(container)])
+    return modal_generator('config_board', 'Set board sensors',
+                           [
+                               html.Div(className=f'fa {StatusIcons.ERROR} fa-lg', id='board_status',
+                                        style={'align-self': 'end'}),
+                               dbc.Tooltip(target='board_status', placement="top", id='status_tooltip'),
+                               container,
+                               dcc.Interval('read_board', interval=5000)])
+
+
+def columnize(components):
+    return html.Div(components, className='flex column children-margin-2')
 
 
 def generate_sensor_row(name: str):
     return html.Div([html.Label(name),
                      html.Div([daq.BooleanSwitch(id=f'check_{name}'),
                                html.Div(style={'margin': '5px'}, id=f'check_{name}_icon'),
-                               html.Label(id=f'check_{name}_address')], className='flex')],
+                               html.Label(id=f'check_{name}_address')],
+                              className='flex'),
+                     ],
                     className='flex children-margin align space-between')
 
 
