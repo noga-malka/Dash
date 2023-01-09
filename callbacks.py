@@ -105,13 +105,18 @@ def click_navigation_bar_buttons(button):
 @app.callback(
     [Output(f'check_{sensor.name}_icon', 'className') for sensor in SetupConsts.DS_TEMP],
     [Output(f'check_{sensor.name}_address', 'children') for sensor in SetupConsts.DS_TEMP],
-    Output('scan_board', 'disabled'),
+    [Output(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
+    Input('reset_toggles', 'n_clicks'),
     [Input(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
     prevent_initial_call=True)
-def toggle_modal(*args):
+def toggle_modal(reset_toggles, *args):
     trigger = callback_context.triggered_id
-    icons = [dash.no_update] * len(SetupConsts.DS_TEMP)
-    addresses = [dash.no_update] * len(SetupConsts.DS_TEMP)
+    empty = [''] * len(SetupConsts.DS_TEMP)
+    no_update = [dash.no_update] * len(SetupConsts.DS_TEMP)
+    if trigger == 'reset_toggles':
+        return *empty, *empty, *[False] * len(SetupConsts.DS_TEMP)
+    icons = no_update
+    addresses = no_update
     for index, sensor in enumerate(SetupConsts.DS_TEMP):
         if trigger == f'check_{sensor.name}':
             if not args[index]:
@@ -128,26 +133,24 @@ def toggle_modal(*args):
                     icon = StatusIcons.ERROR
                 icons[index] = f'fa {icon} fa-xl'
             break
-    return *icons, *addresses, not all(args)
+    return *icons, *addresses, *no_update
 
 
-@app.callback(Output('board_status', 'className'), Output('status_tooltip', 'children'),
+@app.callback(Output('sensor_count', 'children'),
               [Output(f'check_{sensor.name}', 'disabled') for sensor in SetupConsts.DS_TEMP],
-              Input(TagIds.INTERVAL, 'n_intervals'), Input('refresh_board', 'n_clicks'), prevent_initial_call=True)
-def read_board(interval, click):
-    if realtime.thread.handler_name not in types:
+              Output('scan_board', 'disabled'),
+              Input('read_board', 'n_intervals'), Input('refresh_board', 'n_clicks'),
+              State('config_board', 'is_open'), prevent_initial_call=True)
+def read_board(interval, click, is_open):
+    if realtime.thread.handler_name not in types or not is_open:
         raise PreventUpdate
     types[realtime.thread.handler_name].send_command(Commands.SEARCH_SENSOR, 0)
     sensor_count = realtime.command_outputs.get(HardwarePackets.ONE_WIRE, 0)
-    if sensor_count == 1:
-        return f'fa {StatusIcons.CHECK} fa-lg', 'found 1 sensor', *[False] * len(SetupConsts.DS_TEMP)
-    return f'fa {StatusIcons.ERROR} fa-lg', f'found {sensor_count} sensor', *[True] * len(SetupConsts.DS_TEMP)
-
-
-@app.callback([Output(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
-              Input('reset_toggles', 'n_clicks'))
-def read_board(click):
-    return [False] * len(SetupConsts.DS_TEMP)
+    scan_board = sensor_count != 4
+    enable_toggle = sensor_count != 1
+    if enable_toggle:
+        realtime.command_outputs[HardwarePackets.SETUP] = ''
+    return f'found {sensor_count} sensors', *[enable_toggle] * len(SetupConsts.DS_TEMP), scan_board
 
 
 @app.callback(
