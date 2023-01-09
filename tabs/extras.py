@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import dcc, html
 
 from configurations import SetupConsts
-from consts import TagIds, Commands, StatusIcons
+from consts import TagIds, Commands
 from utilities import modal_generator
 
 
@@ -52,25 +52,13 @@ def configurate_board():
     container = html.Div([rows, generate_setup_buttons()], id='board_configurator', className='flex column center')
     return modal_generator('config_board', 'Set board sensors',
                            [
-                               html.Div(className=f'fa {StatusIcons.ERROR} fa-lg', id='board_status',
-                                        style={'align-self': 'end'}),
-                               dbc.Tooltip(target='board_status', placement="top", id='status_tooltip'),
+                               html.H5(id='sensor_count'),
                                container,
-                               dcc.Interval('read_board', interval=5000)])
+                               dcc.Interval('read_board', interval=3000)])
 
 
 def columnize(components):
     return html.Div(components, className='flex column children-margin-2')
-
-
-def generate_sensor_row(name: str):
-    return html.Div([html.Label(name),
-                     html.Div([daq.BooleanSwitch(id=f'check_{name}'),
-                               html.Div(style={'margin': '5px'}, id=f'check_{name}_icon'),
-                               html.Label(id=f'check_{name}_address')],
-                              className='flex'),
-                     ],
-                    className='flex children-margin align space-between')
 
 
 def generate_setup_buttons():
