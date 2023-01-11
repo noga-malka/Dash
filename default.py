@@ -29,9 +29,15 @@ def click_navigation_bar_buttons(button):
 
 
 @app.callback(
-    Output("bluetooth_modal", "is_open"), Input('bluetooth_link', 'n_clicks'), State("bluetooth_modal", "is_open"),
+    Output("bluetooth_modal", "is_open"),
+    Input('bluetooth_link', 'n_clicks'), State("bluetooth_modal", "is_open"),
+    Input('mac_button', 'n_clicks'), State("mac_input", "value"),
     prevent_initial_call=True)
-def toggle_modal(click, is_open):
+def toggle_modal(click, is_open, connect_click, mac_address):
+    if callback_context.triggered_id == 'mac_button':
+        if mac_address:
+            realtime.thread.connect_handler(address=mac_address)
+        return False
     if click:
         return not is_open
     return is_open
@@ -52,17 +58,6 @@ def toggle_modal(clicked, no, yes, is_open):
     if callback_context.triggered_id == 'sure_yes':
         realtime.clean()
     return not is_open
-
-
-@app.callback(
-    Output("mac_button", "children"),
-    Input('mac_button', 'n_clicks'),
-    [State("mac_input", "value")], prevent_initial_call=True
-)
-def toggle_modal(click, mac_address):
-    if mac_address:
-        realtime.thread.connect_handler(address=mac_address)
-    raise PreventUpdate
 
 
 @app.callback(
