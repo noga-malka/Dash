@@ -45,10 +45,10 @@ class StatusIcons:
 
 class Commands:
     HEADER = 'aa55aa'
-    SET_CO2 = 15
-    SET_FAN = 16
-    SCAN = '1c'
-    SEARCH_SENSOR = '1d'
+    SET_CO2 = 21
+    SET_FAN = 22
+    SCAN = 28
+    SEARCH_SENSOR = 29
     COMMAND_DEFAULT = {SET_CO2: '400'}
     ALL = [SET_CO2]
 

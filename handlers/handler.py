@@ -62,6 +62,6 @@ class Handler:
 
     def build_command(self, command, content):
         content = self.format(hex(int(content)).replace('0x', ''), byte_number=2)
-        command = self.format(command)
+        command = self.format(hex(int(command)).replace('0x', ''))
         length = self.format(int(len(content) / 2))
         return bytes.fromhex(Commands.HEADER + command + length + content)
