@@ -20,6 +20,7 @@ class Events:
     clean = Event()
     disconnect = Event()
     set_device = Event()
+    scan_sensor = Event()
 
     class Finish:
         connect = Event()
