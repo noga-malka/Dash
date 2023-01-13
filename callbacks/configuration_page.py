@@ -3,7 +3,7 @@ from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import SetupConsts, Settings
-from consts import StatusIcons, HardwarePackets, Commands, UnitTypes
+from consts import StatusIcons, HardwarePackets, Commands, UnitTypes, TagIds
 from default import app
 from realtime_data import realtime
 from stoppable_thread import types
@@ -67,7 +67,7 @@ def toggle_modal(click, is_open, scan):
     return is_open
 
 
-@app.callback(Output('placeholder', 'n_clicks'), State('configuration', 'data'), Input('save_config', 'n_clicks'),
+@app.callback(Output(TagIds.TABS, 'value'), State('configuration', 'data'), Input('save_config', 'n_clicks'),
               prevent_initial_call=True)
 def load_file_data(config, click):
     if not click:
@@ -78,6 +78,7 @@ def load_file_data(config, click):
         updates = {key: UnitTypes.CANCEL[sensor.unit_type](value) for key, value in current_values.items() if
                    type(value) is int or type(value) is float}
         sensor.__dict__.update(updates)
+    return 'monitor'
 
 
 @app.callback(Output('configuration', 'data'), Input('temperature_switch', 'on'))
