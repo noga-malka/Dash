@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 import pandas
 from dash import html
 
-from configurations import Settings, Schema
+from configurations import Settings, Schema, group_sensors
 
 
 def generate_grid(components):
@@ -16,7 +16,7 @@ def generate_grid(components):
 
 
 def create_card(group=''):
-    sensors = Settings.GROUPS[group]
+    sensors = group_sensors()[group]
     return generate_grid(
         [[Schema.MONITOR_TYPES[sensor.label].generate_daq(sensor, field) for field, sensor in sensors.items()]])
 

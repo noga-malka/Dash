@@ -2,7 +2,7 @@ import numpy
 from dash import Input, Output, dash, callback_context, State
 from dash.exceptions import PreventUpdate
 
-from configurations import Settings, Schema
+from configurations import Settings, Schema, group_sensors
 from consts import TagIds, Colors, UnitTypes, Commands
 from default import app
 from layout import pages
@@ -26,12 +26,12 @@ def update_sensors(n_intervals):
     return outputs
 
 
-@app.callback(Output('placeholder', 'n_clicks_timestamp'), [Input(group, 'columns') for group in Settings.GROUPS])
+@app.callback(Output('placeholder', 'n_clicks_timestamp'), [Input(group, 'columns') for group in group_sensors()])
 def scan_bluetooth(*titles):
     pages['monitor']['page'].saved_names = {title[0]['id']: title[0]['name'] for title in titles}
 
 
-@app.callback([Output(group + 'header', 'style') for group in Settings.GROUPS], Input(TagIds.INTERVAL, 'n_intervals'))
+@app.callback([Output(group + 'header', 'style') for group in group_sensors()], Input(TagIds.INTERVAL, 'n_intervals'))
 def scan_bluetooth(clicked):
     try:
         content = realtime.read_data()
@@ -39,7 +39,7 @@ def scan_bluetooth(clicked):
         raise PreventUpdate
     disconnected = {sensor for sensor in Settings.SENSORS if numpy.isnan(content.get(sensor, numpy.NaN))}
     output = []
-    for group_name, sensors in Settings.GROUPS.items():
+    for group_name, sensors in group_sensors().items():
         color = 'var(--bs-primary)'
         if disconnected.intersection(sensors):
             color = Colors.DISCONNECTED.value

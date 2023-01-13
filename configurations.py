@@ -1,4 +1,3 @@
-import functools
 import logging.config
 
 from pydantic import Field, BaseModel
@@ -115,46 +114,31 @@ class Schema:
     }
 
 
-def parse_sensors(groups):
-    for group_name, group in groups.items():
-        for key, sensor in group.items():
-            current = group[key].copy()
-            current.group = group_name
-            group[key] = current
-    return functools.reduce(lambda x, y: x | y, groups.values(), {})
+def set_group(sensor, group):
+    current = sensor.copy()
+    current.group = group
+    return current
 
 
 class Settings:
-    GROUPS = {
-        SensorNames.CO2: {
-            InputNames.CO2: SensorInstance.CO2,
-            InputNames.CO2_HUMIDITY: SensorInstance.Humidity,
-            InputNames.CO2_TEMP: SensorInstance.Temperature,
-        },
-        SensorNames.HTU: {
-            InputNames.HTU_HUMIDITY: SensorInstance.Humidity,
-            InputNames.HTU_TEMP: SensorInstance.Temperature,
-        },
-        SensorNames.DS1: {
-            InputNames.DS_TEMP_1: SensorInstance.Temperature,
-        },
-        SensorNames.DS2: {
-            InputNames.DS_TEMP_2: SensorInstance.Temperature
-        },
-        SensorNames.DS3: {
-            InputNames.DS_TEMP_3: SensorInstance.Temperature
-        },
-        SensorNames.DS4: {
-            InputNames.DS_TEMP_4: SensorInstance.Temperature
-        },
-        SensorNames.PRESSURE1: {
-            InputNames.PRESSURE_1: SensorInstance.Pressure,
-            InputNames.PRESSURE_1_TEMP: SensorInstance.Temperature,
-        },
-        SensorNames.PRESSURE2: {
-            InputNames.PRESSURE_2: SensorInstance.Pressure,
-            InputNames.PRESSURE_2_TEMP: SensorInstance.Temperature,
-        }
+    SENSORS = {
+        InputNames.CO2: set_group(SensorInstance.CO2, SensorNames.CO2),
+        InputNames.CO2_HUMIDITY: set_group(SensorInstance.Humidity, SensorNames.CO2),
+        InputNames.CO2_TEMP: set_group(SensorInstance.Temperature, SensorNames.CO2),
+
+        InputNames.HTU_HUMIDITY: set_group(SensorInstance.Humidity, SensorNames.HTU),
+        InputNames.HTU_TEMP: set_group(SensorInstance.Temperature, SensorNames.HTU),
+
+        InputNames.DS_TEMP_1: set_group(SensorInstance.Temperature, SensorNames.DS1),
+        InputNames.DS_TEMP_2: set_group(SensorInstance.Temperature, SensorNames.DS2),
+        InputNames.DS_TEMP_3: set_group(SensorInstance.Temperature, SensorNames.DS3),
+        InputNames.DS_TEMP_4: set_group(SensorInstance.Temperature, SensorNames.DS4),
+
+        InputNames.PRESSURE_1: set_group(SensorInstance.Pressure, SensorNames.PRESSURE1),
+        InputNames.PRESSURE_1_TEMP: set_group(SensorInstance.Temperature, SensorNames.PRESSURE1),
+
+        InputNames.PRESSURE_2: set_group(SensorInstance.Pressure, SensorNames.PRESSURE2),
+        InputNames.PRESSURE_2_TEMP: set_group(SensorInstance.Temperature, SensorNames.PRESSURE2),
     }
     CARD_ORDER = [
         [SensorNames.CO2, SensorNames.HTU],
@@ -178,7 +162,14 @@ class Settings:
             InputNames.HTU_HUMIDITY,
         ],
     }
-    SENSORS = parse_sensors(GROUPS)
+
+
+def group_sensors():
+    groups = {}
+    for input_name, sensor in Settings.SENSORS.items():
+        groups.setdefault(sensor.group, {})
+        groups[sensor.group][input_name] = sensor
+    return groups
 
 
 class SetupConsts:
