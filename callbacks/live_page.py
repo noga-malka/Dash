@@ -5,7 +5,6 @@ from dash.exceptions import PreventUpdate
 from configurations import Settings, Schema, group_sensors
 from consts import TagIds, Colors, UnitTypes, Commands
 from default import app
-from layout import pages
 from realtime_data import realtime
 from stoppable_thread import types
 from utilities import generate_sensors_output
@@ -24,11 +23,6 @@ def update_sensors(n_intervals):
     outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(sensor, content.get(name, numpy.NaN)) for
                name, sensor in Settings.SENSORS.items()]
     return outputs
-
-
-@app.callback(Output('placeholder', 'n_clicks_timestamp'), [Input(group, 'columns') for group in group_sensors()])
-def scan_bluetooth(*titles):
-    pages['monitor']['page'].saved_names = {title[0]['id']: title[0]['name'] for title in titles}
 
 
 @app.callback([Output(group + 'header', 'style') for group in group_sensors()], Input(TagIds.INTERVAL, 'n_intervals'))

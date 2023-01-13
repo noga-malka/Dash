@@ -2,7 +2,7 @@ from dash import Output, Input, callback_context, dash, State
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from configurations import SetupConsts, Settings
+from configurations import SetupConsts, Settings, Schema
 from consts import StatusIcons, HardwarePackets, Commands, UnitTypes, TagIds
 from default import app
 from realtime_data import realtime
@@ -11,21 +11,21 @@ from tabs.set_config import load_data
 
 
 @app.callback(
-    [Output(f'check_{sensor.group}_icon', 'className') for sensor in SetupConsts.DS_TEMP],
-    [Output(f'check_{sensor.group}_address', 'children') for sensor in SetupConsts.DS_TEMP],
-    [Output(f'check_{sensor.group}', 'on') for sensor in SetupConsts.DS_TEMP],
+    [Output(f'check_{name}_icon', 'className') for name in SetupConsts.DS_INPUT],
+    [Output(f'check_{name}_address', 'children') for name in SetupConsts.DS_INPUT],
+    [Output(f'check_{name}', 'on') for name in SetupConsts.DS_INPUT],
     Input('reset_toggles', 'n_clicks'),
-    [Input(f'check_{sensor.group}', 'on') for sensor in SetupConsts.DS_TEMP],
+    [Input(f'check_{name}', 'on') for name in SetupConsts.DS_INPUT],
     prevent_initial_call=True)
 def toggle_modal(reset_toggles, *args):
     trigger = callback_context.triggered_id
-    empty = [''] * len(SetupConsts.DS_TEMP)
-    no_update = [dash.no_update] * len(SetupConsts.DS_TEMP)
+    empty = [''] * len(SetupConsts.DS_INPUT)
+    no_update = [dash.no_update] * len(SetupConsts.DS_INPUT)
     if trigger == 'reset_toggles':
-        return *empty, *empty, *[False] * len(SetupConsts.DS_TEMP)
+        return *empty, *empty, *[False] * len(SetupConsts.DS_INPUT)
     icons = no_update.copy()
     addresses = no_update.copy()
-    for index, sensor in enumerate(SetupConsts.DS_TEMP):
+    for index, sensor in enumerate(SetupConsts.DS_INPUT):
         if trigger == f'check_{sensor.group}':
             if not args[index]:
                 icons[index] = ''
@@ -40,7 +40,7 @@ def toggle_modal(reset_toggles, *args):
 
 
 @app.callback(Output('sensor_count', 'children'),
-              [Output(f'check_{sensor.group}', 'disabled') for sensor in SetupConsts.DS_TEMP],
+              [Output(f'check_{name}', 'disabled') for name in SetupConsts.DS_INPUT],
               Output('scan_board', 'disabled'), State('config_board', 'is_open'),
               Input('read_board', 'n_intervals'), Input('refresh_board', 'n_clicks'), prevent_initial_call=True)
 def read_board(is_open, *args):
@@ -52,7 +52,7 @@ def read_board(is_open, *args):
     enable_toggle = sensor_count != 1
     if enable_toggle:
         realtime.command_outputs[HardwarePackets.SETUP] = ''
-    return f'found {sensor_count} sensors', *[enable_toggle] * len(SetupConsts.DS_TEMP), scan_board
+    return f'found {sensor_count} sensors', *[enable_toggle] * len(SetupConsts.DS_INPUT), scan_board
 
 
 @app.callback(
@@ -73,12 +73,13 @@ def toggle_modal(click, is_open, scan):
 def load_file_data(config, click):
     if not click:
         raise PreventUpdate
-    config = {row['label']: row for row in config}
-    for sensor in Settings.SENSORS.values():
-        current_values = config[sensor.label]
-        updates = {key: UnitTypes.CANCEL[sensor.unit_type](value) for key, value in current_values.items() if
-                   type(value) is int or type(value) is float}
-        sensor.__dict__.update(updates)
+    config = {row['hardware_input']: row for row in config}
+    for name, sensor in Settings.SENSORS.items():
+        current_values = config[name]
+        for key, value in current_values.items():
+            if key in Schema.NUMERIC_FIELDS:
+                current_values[key] = UnitTypes.CANCEL[sensor.unit_type](value)
+        sensor.__dict__.update(current_values)
     return 'monitor'
 
 

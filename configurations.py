@@ -41,7 +41,8 @@ class SensorNames:
 
 
 class Sensor(BaseModel):
-    group: str = Field('', editable=False, content_type='text')
+    hardware_input: str = Field('', editable=False, content_type='text')
+    group: str = Field('', content_type='text')
     label: str = Field(..., editable=False, content_type='text')
     minimum: float = Field(..., content_type='numeric')
     low_error: float = Field(..., content_type='numeric')
@@ -50,7 +51,7 @@ class Sensor(BaseModel):
     high_error: float = Field(..., content_type='numeric')
     maximum: float = Field(..., content_type='numeric')
     unit_type: str = Field(..., editable=False, content_type='text')
-    possible_units: list[str] = Field(..., editable=False, hidden=True)
+    possible_units: list[str] = Field(..., editable=False, content_type='text', hidden=True)
 
 
 class Labels:
@@ -105,6 +106,7 @@ class SensorInstance:
 class Schema:
     SENSOR_SCHEMA = Sensor.schema()['properties']
     HIDDEN_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('hidden')}
+    NUMERIC_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('content_type') == 'numeric'}
 
     MONITOR_TYPES = {
         Labels.CO2: GaugeMonitor(180, False, True, max_percent=1000000),
@@ -114,37 +116,55 @@ class Schema:
     }
 
 
-def set_group(sensor, group):
+def set_group(sensor, group, input_name):
     current = sensor.copy()
     current.group = group
+    current.hardware_input = input_name
     return current
 
 
+def set_sensors(groups):
+    sensors = {}
+    for group_name, relevant_sensors in groups.items():
+        for input_name, sensor in relevant_sensors.items():
+            sensors[input_name] = set_group(sensor, group_name, input_name)
+    return sensors
+
+
 class Settings:
-    SENSORS = {
-        InputNames.CO2: set_group(SensorInstance.CO2, SensorNames.CO2),
-        InputNames.CO2_HUMIDITY: set_group(SensorInstance.Humidity, SensorNames.CO2),
-        InputNames.CO2_TEMP: set_group(SensorInstance.Temperature, SensorNames.CO2),
-
-        InputNames.HTU_HUMIDITY: set_group(SensorInstance.Humidity, SensorNames.HTU),
-        InputNames.HTU_TEMP: set_group(SensorInstance.Temperature, SensorNames.HTU),
-
-        InputNames.DS_TEMP_1: set_group(SensorInstance.Temperature, SensorNames.DS1),
-        InputNames.DS_TEMP_2: set_group(SensorInstance.Temperature, SensorNames.DS2),
-        InputNames.DS_TEMP_3: set_group(SensorInstance.Temperature, SensorNames.DS3),
-        InputNames.DS_TEMP_4: set_group(SensorInstance.Temperature, SensorNames.DS4),
-
-        InputNames.PRESSURE_1: set_group(SensorInstance.Pressure, SensorNames.PRESSURE1),
-        InputNames.PRESSURE_1_TEMP: set_group(SensorInstance.Temperature, SensorNames.PRESSURE1),
-
-        InputNames.PRESSURE_2: set_group(SensorInstance.Pressure, SensorNames.PRESSURE2),
-        InputNames.PRESSURE_2_TEMP: set_group(SensorInstance.Temperature, SensorNames.PRESSURE2),
+    DEFAULT = {
+        SensorNames.CO2: {
+            InputNames.CO2: SensorInstance.CO2,
+            InputNames.CO2_HUMIDITY: SensorInstance.Humidity,
+            InputNames.CO2_TEMP: SensorInstance.Temperature,
+        },
+        SensorNames.HTU: {
+            InputNames.HTU_HUMIDITY: SensorInstance.Humidity,
+            InputNames.HTU_TEMP: SensorInstance.Temperature,
+        },
+        SensorNames.DS1: {
+            InputNames.DS_TEMP_1: SensorInstance.Temperature,
+        },
+        SensorNames.DS2: {
+            InputNames.DS_TEMP_2: SensorInstance.Temperature
+        },
+        SensorNames.DS3: {
+            InputNames.DS_TEMP_3: SensorInstance.Temperature
+        },
+        SensorNames.DS4: {
+            InputNames.DS_TEMP_4: SensorInstance.Temperature
+        },
+        SensorNames.PRESSURE1: {
+            InputNames.PRESSURE_1: SensorInstance.Pressure,
+            InputNames.PRESSURE_1_TEMP: SensorInstance.Temperature,
+        },
+        SensorNames.PRESSURE2: {
+            InputNames.PRESSURE_2: SensorInstance.Pressure,
+            InputNames.PRESSURE_2_TEMP: SensorInstance.Temperature,
+        }
     }
-    CARD_ORDER = [
-        [SensorNames.CO2, SensorNames.HTU],
-        [SensorNames.DS1, SensorNames.DS2, SensorNames.DS3, SensorNames.DS4,
-         SensorNames.PRESSURE1, SensorNames.PRESSURE2],
-    ]
+    SENSORS = set_sensors(DEFAULT)
+
     GRAPHS = {
         'CO2': [
             InputNames.CO2,
@@ -173,8 +193,7 @@ def group_sensors():
 
 
 class SetupConsts:
-    DS_TEMP = [sensor for name, sensor in Settings.SENSORS.items() if
-               name in [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4]]
+    DS_INPUT = [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4]
     COMMANDS = {
         SensorNames.DS1: 24, SensorNames.DS2: 25, SensorNames.DS3: 26, SensorNames.DS4: 27
     }

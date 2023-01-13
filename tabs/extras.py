@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash import dcc, html
 
-from configurations import SetupConsts
+from configurations import SetupConsts, Settings
 from consts import TagIds, Commands
 from utilities import modal_generator
 
@@ -43,11 +43,11 @@ def are_you_sure():
 
 
 def configurate_board():
-    labels = columnize([html.Label(sensor.group) for sensor in SetupConsts.DS_TEMP])
+    labels = columnize([html.Label(Settings.SENSORS[name].group) for name in SetupConsts.DS_INPUT])
     toggles = columnize(
-        [daq.BooleanSwitch(id=f'check_{sensor.group}', disabled=True) for sensor in SetupConsts.DS_TEMP])
-    status = columnize([html.Div([html.Div(style={'margin': '5px'}, id=f'check_{sensor.group}_icon'),
-                                  html.Label(id=f'check_{sensor.group}_address')]) for sensor in SetupConsts.DS_TEMP])
+        [daq.BooleanSwitch(id=f'check_{name}', disabled=True) for name in SetupConsts.DS_INPUT])
+    status = columnize([html.Div([html.Div(style={'margin': '5px'}, id=f'check_{name}_icon'),
+                                  html.Label(id=f'check_{name}_address')]) for name in SetupConsts.DS_INPUT])
 
     rows = html.Div([labels, toggles, dcc.Loading(status)], className='flex space-between')
     container = html.Div([rows, generate_setup_buttons()], id='board_configurator', className='flex column center')
