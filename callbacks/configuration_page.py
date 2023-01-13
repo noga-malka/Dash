@@ -11,11 +11,11 @@ from tabs.set_config import load_data
 
 
 @app.callback(
-    [Output(f'check_{sensor.name}_icon', 'className') for sensor in SetupConsts.DS_TEMP],
-    [Output(f'check_{sensor.name}_address', 'children') for sensor in SetupConsts.DS_TEMP],
-    [Output(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
+    [Output(f'check_{sensor.group}_icon', 'className') for sensor in SetupConsts.DS_TEMP],
+    [Output(f'check_{sensor.group}_address', 'children') for sensor in SetupConsts.DS_TEMP],
+    [Output(f'check_{sensor.group}', 'on') for sensor in SetupConsts.DS_TEMP],
     Input('reset_toggles', 'n_clicks'),
-    [Input(f'check_{sensor.name}', 'on') for sensor in SetupConsts.DS_TEMP],
+    [Input(f'check_{sensor.group}', 'on') for sensor in SetupConsts.DS_TEMP],
     prevent_initial_call=True)
 def toggle_modal(reset_toggles, *args):
     trigger = callback_context.triggered_id
@@ -26,12 +26,13 @@ def toggle_modal(reset_toggles, *args):
     icons = no_update.copy()
     addresses = no_update.copy()
     for index, sensor in enumerate(SetupConsts.DS_TEMP):
-        if trigger == f'check_{sensor.name}':
+        if trigger == f'check_{sensor.group}':
             if not args[index]:
                 icons[index] = ''
                 addresses[index] = ''
             else:
-                success = realtime.send_command(realtime.thread.events.set_device, SetupConsts.COMMANDS[sensor.name], 0)
+                success = realtime.send_command(realtime.thread.events.set_device, SetupConsts.COMMANDS[sensor.group],
+                                                0)
                 addresses[index] = realtime.command_outputs[HardwarePackets.SETUP] if success else dash.no_update
                 icons[index] = f'fa {StatusIcons.CHECK if success else StatusIcons.ERROR} fa-xl'
             break
@@ -39,7 +40,7 @@ def toggle_modal(reset_toggles, *args):
 
 
 @app.callback(Output('sensor_count', 'children'),
-              [Output(f'check_{sensor.name}', 'disabled') for sensor in SetupConsts.DS_TEMP],
+              [Output(f'check_{sensor.group}', 'disabled') for sensor in SetupConsts.DS_TEMP],
               Output('scan_board', 'disabled'), State('config_board', 'is_open'),
               Input('read_board', 'n_intervals'), Input('refresh_board', 'n_clicks'), prevent_initial_call=True)
 def read_board(is_open, *args):

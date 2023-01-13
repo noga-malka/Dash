@@ -42,7 +42,7 @@ class SensorNames:
 
 
 class Sensor(BaseModel):
-    name: str = Field('', editable=False, content_type='text')
+    group: str = Field('', editable=False, content_type='text')
     label: str = Field(..., editable=False, content_type='text')
     minimum: float = Field(..., content_type='numeric')
     low_error: float = Field(..., content_type='numeric')
@@ -119,7 +119,7 @@ def parse_sensors(groups):
     for group_name, group in groups.items():
         for key, sensor in group.items():
             current = group[key].copy()
-            current.name = group_name
+            current.group = group_name
             group[key] = current
     return functools.reduce(lambda x, y: x | y, groups.values(), {})
 

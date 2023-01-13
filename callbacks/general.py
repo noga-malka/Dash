@@ -53,7 +53,7 @@ def change_theme(theme):
 def update_sensors(n_intervals):
     timestamp = 'Timer: '
     if len(realtime.graph):
-        timestamp += parse_time(realtime.graph.iloc[-1].name, realtime.graph.iloc[0].name)
+        timestamp += parse_time(realtime.graph.iloc[-1].group, realtime.graph.iloc[0].group)
     return timestamp
 
 
