@@ -143,6 +143,6 @@ class NavButtons:
 
 
 class HardwarePackets:
-    DATA = 'CO2 sensor CO2'
+    DATA = 'Data'
     SETUP = 'setup'
     ONE_WIRE = 'OneWire_count'

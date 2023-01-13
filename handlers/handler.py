@@ -37,17 +37,17 @@ class Handler:
             line = self.read_line()
             try:
                 command, *content = line.split('\t')
-                return self.mapping[command](command, [command] + content)
+                return self.mapping[command](command, content)
             except (KeyError, IndexError, ValueError, UnicodeDecodeError):
                 logger.warning(f'Failed to parse row: {line}')
 
     @staticmethod
     def setup(command: str, content: list):
-        return command, content[1:]
+        return command, content
 
     @staticmethod
     def one_wire(command: str, content: list):
-        return command, int(content[1])
+        return command, int(content[0])
 
     @staticmethod
     def parse_data(command: str, content: list):
