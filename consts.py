@@ -112,7 +112,7 @@ class UnitTypes:
     FAHRENHEIT = 'F°'
     PPM = 'PPM'
     PERCENTAGE = '%'
-    PRESSURE = 'PSI'
+    PRESSURE = 'BAR'
     CONVERT = {
         PRESSURE: lambda value: value,
         PERCENTAGE: lambda value: value,

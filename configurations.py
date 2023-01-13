@@ -26,6 +26,8 @@ class InputNames:
     DS_TEMP_4 = 'Canister Bottom Temp'
     PRESSURE_1 = 'pressure 1'
     PRESSURE_2 = 'pressure 2'
+    PRESSURE_1_TEMP = 'Temp pressure 1'
+    PRESSURE_2_TEMP = 'Temp pressure 2'
 
 
 class SensorNames:
@@ -35,8 +37,8 @@ class SensorNames:
     DS2 = 'Lungs'
     DS3 = 'Canister Top'
     DS4 = 'Canister Bottom'
-    PRESSURE1 = 'Pressure-1'
-    PRESSURE2 = 'Pressure-2'
+    PRESSURE1 = 'Pressure 1'
+    PRESSURE2 = 'Pressure 2'
 
 
 class Sensor(BaseModel):
@@ -146,10 +148,12 @@ class Settings:
             InputNames.DS_TEMP_4: SensorInstance.Temperature
         },
         SensorNames.PRESSURE1: {
-            InputNames.PRESSURE_1: SensorInstance.Pressure
+            InputNames.PRESSURE_1: SensorInstance.Pressure,
+            InputNames.PRESSURE_1_TEMP: SensorInstance.Temperature,
         },
         SensorNames.PRESSURE2: {
-            InputNames.PRESSURE_2: SensorInstance.Pressure
+            InputNames.PRESSURE_2: SensorInstance.Pressure,
+            InputNames.PRESSURE_2_TEMP: SensorInstance.Temperature,
         }
     }
     CARD_ORDER = [
