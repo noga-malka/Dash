@@ -76,7 +76,7 @@ def load_file_data(config, click):
     for sensor in Settings.SENSORS.values():
         current_values = config[sensor.label]
         updates = {key: UnitTypes.CANCEL[sensor.unit_type](value) for key, value in current_values.items() if
-                   type(value) == int}
+                   type(value) is int or type(value) is float}
         sensor.__dict__.update(updates)
 
 
