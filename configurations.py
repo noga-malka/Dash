@@ -3,7 +3,7 @@ import logging.config
 
 from pydantic import Field, BaseModel
 
-from consts import IS_DEBUG
+from consts import IS_DEBUG, UnitTypes
 from monitors.gauge_monitor import GaugeMonitor
 from monitors.temperature_monitor import TemperatureMonitor
 
@@ -69,8 +69,8 @@ class SensorInstance:
                  high_warning=6000,
                  high_error=8000,
                  maximum=10000,
-                 unit_type='PPM',
-                 possible_units=['PPM'])
+                 unit_type=UnitTypes.PPM,
+                 possible_units=[UnitTypes.PPM])
 
     Temperature = Sensor(label=Labels.TEMP,
                          minimum=10,
@@ -79,8 +79,8 @@ class SensorInstance:
                          high_warning=35,
                          high_error=38,
                          maximum=50,
-                         unit_type='C°',
-                         possible_units=['C°', 'F°'])
+                         unit_type=UnitTypes.CELSIUS,
+                         possible_units=[UnitTypes.CELSIUS, UnitTypes.FAHRENHEIT])
 
     Humidity = Sensor(label=Labels.HUMIDITY,
                       minimum=0,
@@ -89,8 +89,8 @@ class SensorInstance:
                       high_warning=80,
                       high_error=90,
                       maximum=100,
-                      unit_type='%',
-                      possible_units=['%'])
+                      unit_type=UnitTypes.PERCENTAGE,
+                      possible_units=[UnitTypes.PERCENTAGE])
 
     Pressure = Sensor(label=Labels.PRESSURE,
                       minimum=-1,
@@ -99,8 +99,8 @@ class SensorInstance:
                       high_warning=0.45,
                       high_error=0.5,
                       maximum=1,
-                      unit_type='BAR',
-                      possible_units=['BAR'])
+                      unit_type=UnitTypes.PRESSURE,
+                      possible_units=[UnitTypes.PRESSURE])
 
 
 class Schema:
