@@ -91,14 +91,14 @@ class SensorInstance:
                       possible_units=['%'])
 
     Pressure = Sensor(label=Labels.PRESSURE,
-                      minimum=0,
-                      low_error=0.5,
-                      low_warning=0.8,
-                      high_warning=1.2,
-                      high_error=1.5,
-                      maximum=2,
-                      unit_type='PSI',
-                      possible_units=['PSI'])
+                      minimum=-1,
+                      low_error=-0.5,
+                      low_warning=-0.45,
+                      high_warning=0.45,
+                      high_error=0.5,
+                      maximum=1,
+                      unit_type='BAR',
+                      possible_units=['BAR'])
 
 
 class Schema:
