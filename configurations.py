@@ -201,5 +201,5 @@ def group_sensors():
 class SetupConsts:
     DS_INPUT = [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4]
     COMMANDS = {
-        SensorNames.DS1: 24, SensorNames.DS2: 25, SensorNames.DS3: 26, SensorNames.DS4: 27
+        InputNames.DS_TEMP_1: 24, InputNames.DS_TEMP_2: 25, InputNames.DS_TEMP_3: 26, InputNames.DS_TEMP_4: 27
     }

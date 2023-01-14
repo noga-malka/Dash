@@ -29,13 +29,12 @@ def toggle_modal(reset_toggles, *args):
     icons = no_update.copy()
     addresses = no_update.copy()
     for index, sensor in enumerate(SetupConsts.DS_INPUT):
-        if trigger == f'check_{sensor.group}':
+        if trigger == f'check_{sensor}':
             if not args[index]:
                 icons[index] = ''
                 addresses[index] = ''
             else:
-                success = realtime.send_command(realtime.thread.events.set_device, SetupConsts.COMMANDS[sensor.group],
-                                                0)
+                success = realtime.send_command(realtime.thread.events.set_device, SetupConsts.COMMANDS[sensor], 0)
                 addresses[index] = realtime.command_outputs[HardwarePackets.SETUP] if success else dash.no_update
                 icons[index] = f'fa {StatusIcons.CHECK if success else StatusIcons.ERROR} fa-xl'
             break
