@@ -165,6 +165,12 @@ class Settings:
     }
     SENSORS = set_sensors(DEFAULT)
 
+    DISPLAY = [
+        [InputNames.CO2, InputNames.CO2_TEMP, InputNames.CO2_HUMIDITY, InputNames.HTU_TEMP, InputNames.HTU_HUMIDITY],
+        [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4, InputNames.PRESSURE_1,
+         InputNames.PRESSURE_1_TEMP, InputNames.PRESSURE_2, InputNames.PRESSURE_2_TEMP]
+    ]
+
     GRAPHS = {
         'CO2': [
             InputNames.CO2,

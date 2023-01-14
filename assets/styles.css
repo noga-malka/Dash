@@ -128,3 +128,7 @@ color: rgb(117 128 134)!important;
 transform:none!important;
 margin-top: -50px;
 }
+.break-row {
+flex-basis: 100%;
+height: 0;
+}
