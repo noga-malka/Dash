@@ -1,3 +1,4 @@
+import pathlib
 import sys
 from enum import Enum
 
@@ -146,3 +147,9 @@ class HardwarePackets:
     DATA = 'Data'
     SETUP = 'setup'
     ONE_WIRE = 'OneWire_count'
+
+
+class OutputDirectory:
+    ROOT = pathlib.Path('output')
+    TEMP_FILE = ROOT / 'temporary.csv'
+    CONFIG_FILE = ROOT / 'configuration.json'

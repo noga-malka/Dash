@@ -3,6 +3,7 @@ import pandas
 from dash import html
 
 from configurations import Settings, Schema, group_sensors
+from consts import UnitTypes
 
 
 def generate_grid(components):
@@ -39,3 +40,12 @@ def modal_generator(modal_id: str, title: str, inputs: list, is_centered=True):
 
 def generate_sensors_output():
     return [Schema.MONITOR_TYPES[sensor.label].generate_output_list(name) for name, sensor in Settings.SENSORS.items()]
+
+
+def load_configuration(config: dict):
+    for name, sensor in Settings.SENSORS.items():
+        current_values = config[name]
+        for key, value in current_values.items():
+            if key in Schema.NUMERIC_FIELDS:
+                current_values[key] = UnitTypes.CANCEL[current_values['unit_type']](value)
+        sensor.__dict__.update(current_values)

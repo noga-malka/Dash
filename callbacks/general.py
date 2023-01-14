@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 
 import dash_daq as daq
@@ -6,7 +5,7 @@ from dash import Output, Input, html, State
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from consts import TagIds, Theme
+from consts import TagIds, Theme, OutputDirectory
 from default import app
 from layout import pages
 from realtime_data import realtime
@@ -34,10 +33,7 @@ def activate_reader_thread(path: str):
 
 @app.callback(Output('placeholder', 'lang'), Input('save_data', 'n_intervals'))
 def save_temporary_file(intervals):
-    if not os.path.exists('output'):
-        os.mkdir('output')
-    realtime.graph.to_csv(f'output/temporary.csv')
-    raise PreventUpdate
+    realtime.graph.to_csv(OutputDirectory.TEMP_FILE)
 
 
 @app.callback(Output('theme_div', 'children'), Input(ThemeSwitchAIO.ids.switch('theme'), 'value'))

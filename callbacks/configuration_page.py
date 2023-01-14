@@ -1,13 +1,16 @@
+import json
+
 from dash import Output, Input, callback_context, dash, State
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from configurations import SetupConsts, Settings, Schema
-from consts import StatusIcons, HardwarePackets, Commands, UnitTypes, TagIds
+from configurations import SetupConsts, Settings
+from consts import StatusIcons, HardwarePackets, Commands, UnitTypes, TagIds, OutputDirectory
 from default import app
 from realtime_data import realtime
 from stoppable_thread import types
 from tabs.set_config import load_data
+from utilities import load_configuration
 
 
 @app.callback(
@@ -74,12 +77,9 @@ def load_file_data(config, click):
     if not click:
         raise PreventUpdate
     config = {row['hardware_input']: row for row in config}
-    for name, sensor in Settings.SENSORS.items():
-        current_values = config[name]
-        for key, value in current_values.items():
-            if key in Schema.NUMERIC_FIELDS:
-                current_values[key] = UnitTypes.CANCEL[sensor.unit_type](value)
-        sensor.__dict__.update(current_values)
+    with OutputDirectory.CONFIG_FILE.open(mode='w') as config_file:
+        config_file.write(json.dumps(config))
+    load_configuration(config)
     return 'monitor'
 
 
