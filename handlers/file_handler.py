@@ -3,6 +3,7 @@ from io import StringIO
 
 import pandas
 
+from consts import HardwarePackets
 from handlers.handler import Handler
 
 
@@ -31,6 +32,6 @@ class FileHandler(Handler):
     def extract_data(self):
         if not self.is_loaded:
             self.is_loaded = True
-            return self.content, True
+            return HardwarePackets.DATA, self.content
         else:
-            return pandas.DataFrame(), True
+            return HardwarePackets.DATA, pandas.DataFrame()
