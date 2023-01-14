@@ -182,11 +182,17 @@ class Settings:
             InputNames.DS_TEMP_2,
             InputNames.DS_TEMP_3,
             InputNames.DS_TEMP_4,
+            InputNames.PRESSURE_1_TEMP,
+            InputNames.PRESSURE_2_TEMP,
         ],
         'Humidity': [
             InputNames.CO2_HUMIDITY,
             InputNames.HTU_HUMIDITY,
         ],
+        'Pressure': [
+            InputNames.PRESSURE_1,
+            InputNames.PRESSURE_2,
+        ]
     }
 
 
