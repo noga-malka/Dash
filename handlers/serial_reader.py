@@ -9,11 +9,11 @@ from handlers.handler_exception import DisconnectionEvent
 
 class SerialHandler(Handler):
     def __init__(self):
-        self.devices = {}
+        self.devices = []
         super(SerialHandler, self).__init__(False)
 
     def discover(self):
-        self.devices = {com[0]: com[0] for com in filter(lambda port: "USB" in port[2], list_ports.comports())}
+        self.devices = [com[0] for com in filter(lambda port: "USB" in port[2], list_ports.comports())]
 
     def connect(self, comport=None, **kwargs):
         self.disconnect()
