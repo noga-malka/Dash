@@ -1,3 +1,7 @@
+from handlers.packetBuilders.dpc_builder import DPCPacketBuilder
+from handlers.packetBuilders.sensors_builder import SensorsPacketBuilder
+
+
 class InputTypes:
     SENSORS = 'sensors'
     CO2_CONTROLLER = 'CO2 controller'
@@ -6,15 +10,11 @@ class InputTypes:
     MAPPING = {
         SENSORS: {
             'header': '',
-            'content_parser': None
+            'packet_builder': SensorsPacketBuilder(),
         },
         CO2_CONTROLLER: {
             'header': 'DPC\t',
-            'content_parser': None
-        },
-        ENGINE: {
-            'header': '',
-            'content_parser': None
+            'packet_builder': DPCPacketBuilder(),
         },
     }
 
@@ -53,8 +53,18 @@ class Commands:
         }
 
     CLASSIFIER = {
-        InputTypes.SENSORS: [SET_FAN, SET_CO2, SETUP_DS1, SETUP_DS2, SETUP_DS3, SETUP_DS4, SEARCH_SENSOR, SCAN],
-        InputTypes.CO2_CONTROLLER: [CO2Controller.OPEN, CO2Controller.CLOSE, CO2Controller.AUTO, CO2Controller.READ]
+        SET_FAN: InputTypes.SENSORS,
+        SET_CO2: InputTypes.SENSORS,
+        SETUP_DS1: InputTypes.SENSORS,
+        SETUP_DS2: InputTypes.SENSORS,
+        SETUP_DS3: InputTypes.SENSORS,
+        SETUP_DS4: InputTypes.SENSORS,
+        SEARCH_SENSOR: InputTypes.SENSORS,
+        SCAN: InputTypes.SENSORS,
+        CO2Controller.OPEN: InputTypes.CO2_CONTROLLER,
+        CO2Controller.CLOSE: InputTypes.CO2_CONTROLLER,
+        CO2Controller.AUTO: InputTypes.CO2_CONTROLLER,
+        CO2Controller.READ: InputTypes.CO2_CONTROLLER,
     }
 
 

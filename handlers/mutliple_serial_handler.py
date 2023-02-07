@@ -23,11 +23,11 @@ class MultipleSerialHandler(Handler):
         return all(handler.is_connected for handler in self.handlers.values())
 
     def send_command(self, command, content):
-        for handler_name, commands in Commands.CLASSIFIER.items():
-            if command in commands:
-                self.handlers[handler_name].send_command(command, content)
-                return
-        logger.warning(f'no handler with command {command}')
+        input_type = Commands.CLASSIFIER.get(command)
+        if input_type:
+            self.handlers[input_type].send_command(command, content)
+        else:
+            logger.warning(f'no handler with command {command}')
 
     def read_lines(self) -> list[str]:
         lines = []

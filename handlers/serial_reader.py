@@ -1,7 +1,7 @@
 import serial
 
 from configurations import logger
-from handlers.consts import Uart
+from handlers.consts import Uart, InputTypes, Commands
 from handlers.handler import Handler
 from handlers.handler_exception import DisconnectionEvent
 
@@ -27,7 +27,7 @@ class SerialHandler(Handler):
             raise DisconnectionEvent(self.__class__.__name__)
 
     def send_command(self, command: str, content: str):
-        packet = self.build_command(command, content)
+        packet = InputTypes.MAPPING[Commands.CLASSIFIER[command]]['packet_builder'].build_packet(command, content)
         if self.client:
             logger.info(f'send packet: {packet}')
             self.client.write(packet)
