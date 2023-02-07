@@ -14,6 +14,13 @@ def bluetooth_modal():
     return modal_generator('bluetooth_modal', 'Enter Mac Address', inputs, is_centered=False)
 
 
+def serial_modal():
+    inputs = [
+        dcc.Loading(children=[dcc.Dropdown(options=[], id='serial_input', className='full-width')]),
+        dbc.Button('Search', id='scan_comports'), dbc.Button('Connect', id='serial_connect')]
+    return modal_generator('serial_modal', 'Select Serial Connections', inputs, is_centered=False)
+
+
 def file_extra():
     return [dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))]
 

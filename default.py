@@ -43,6 +43,19 @@ def toggle_modal(click, is_open, connect_click, mac_address):
     return is_open
 
 
+@app.callback(
+    Output("serial_modal", "is_open"),
+    Input('serial_link', 'n_clicks'), State("serial_modal", "is_open"),
+    Input('serial_connect', 'n_clicks'), State("serial_input", "value"),
+    prevent_initial_call=True)
+def toggle_modal(click, is_open, connect_click, comport):
+    if callback_context.triggered_id == 'serial_connect':
+        return False
+    if click:
+        return not is_open
+    return is_open
+
+
 @app.callback(Output("save_file", "is_open"), Input({'type': 'icon', 'index': 'save'}, 'n_clicks'),
               State("save_file", "is_open"))
 def toggle_modal(click, is_open):
