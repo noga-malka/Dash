@@ -63,8 +63,7 @@ def columnize(components):
 
 
 def generate_setup_buttons():
-    return html.Div([dbc.Button('rescan board', id='refresh_board'),
-                     dbc.Button('reset toggles', id='reset_toggles'),
+    return html.Div([dbc.Button('reset toggles', id='reset_toggles'),
                      dbc.Button('scan sensors', id='scan_board', disabled=True)],
                     className='flex align children-margin')
 

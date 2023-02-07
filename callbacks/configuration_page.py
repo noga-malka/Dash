@@ -44,7 +44,7 @@ def toggle_modal(reset_toggles, *args):
 @app.callback(Output('sensor_count', 'children'),
               [Output(f'check_{name}', 'disabled') for name in SetupConsts.COMMANDS],
               Output('scan_board', 'disabled'), State('config_board', 'is_open'),
-              Input('read_board', 'n_intervals'), Input('refresh_board', 'n_clicks'), prevent_initial_call=True)
+              Input('read_board', 'n_intervals'), prevent_initial_call=True)
 def read_board(is_open, *args):
     if not realtime.in_types() or not is_open:
         raise PreventUpdate
