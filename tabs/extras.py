@@ -43,11 +43,11 @@ def are_you_sure():
 
 
 def configurate_board():
-    labels = columnize([html.Label(Settings.SENSORS[name].group) for name in SetupConsts.DS_INPUT])
+    labels = columnize([html.Label(Settings.SENSORS[name].group) for name in SetupConsts.COMMANDS])
     toggles = columnize(
-        [daq.BooleanSwitch(id=f'check_{name}', disabled=True) for name in SetupConsts.DS_INPUT])
+        [daq.BooleanSwitch(id=f'check_{name}', disabled=True) for name in SetupConsts.COMMANDS])
     status = columnize([html.Div([html.Div(style={'margin': '5px'}, id=f'check_{name}_icon'),
-                                  html.Label(id=f'check_{name}_address')]) for name in SetupConsts.DS_INPUT])
+                                  html.Label(id=f'check_{name}_address')]) for name in SetupConsts.COMMANDS])
 
     rows = html.Div([labels, toggles, dcc.Loading(status)], className='flex space-between')
     container = html.Div([rows, generate_setup_buttons()], id='board_configurator', className='flex column center')

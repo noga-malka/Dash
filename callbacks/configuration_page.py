@@ -14,21 +14,21 @@ from utilities import load_configuration
 
 
 @app.callback(
-    [Output(f'check_{name}_icon', 'className') for name in SetupConsts.DS_INPUT],
-    [Output(f'check_{name}_address', 'children') for name in SetupConsts.DS_INPUT],
-    [Output(f'check_{name}', 'on') for name in SetupConsts.DS_INPUT],
+    [Output(f'check_{name}_icon', 'className') for name in SetupConsts.COMMANDS],
+    [Output(f'check_{name}_address', 'children') for name in SetupConsts.COMMANDS],
+    [Output(f'check_{name}', 'on') for name in SetupConsts.COMMANDS],
     Input('reset_toggles', 'n_clicks'),
-    [Input(f'check_{name}', 'on') for name in SetupConsts.DS_INPUT],
+    [Input(f'check_{name}', 'on') for name in SetupConsts.COMMANDS],
     prevent_initial_call=True)
 def toggle_modal(reset_toggles, *args):
     trigger = callback_context.triggered_id
-    empty = [''] * len(SetupConsts.DS_INPUT)
-    no_update = [dash.no_update] * len(SetupConsts.DS_INPUT)
+    empty = [''] * len(SetupConsts.COMMANDS)
+    no_update = [dash.no_update] * len(SetupConsts.COMMANDS)
     if trigger == 'reset_toggles':
-        return *empty, *empty, *[False] * len(SetupConsts.DS_INPUT)
+        return *empty, *empty, *[False] * len(SetupConsts.COMMANDS)
     icons = no_update.copy()
     addresses = no_update.copy()
-    for index, sensor in enumerate(SetupConsts.DS_INPUT):
+    for index, sensor in enumerate(SetupConsts.COMMANDS):
         if trigger == f'check_{sensor}':
             if not args[index]:
                 icons[index] = ''
@@ -42,7 +42,7 @@ def toggle_modal(reset_toggles, *args):
 
 
 @app.callback(Output('sensor_count', 'children'),
-              [Output(f'check_{name}', 'disabled') for name in SetupConsts.DS_INPUT],
+              [Output(f'check_{name}', 'disabled') for name in SetupConsts.COMMANDS],
               Output('scan_board', 'disabled'), State('config_board', 'is_open'),
               Input('read_board', 'n_intervals'), Input('refresh_board', 'n_clicks'), prevent_initial_call=True)
 def read_board(is_open, *args):
@@ -54,7 +54,7 @@ def read_board(is_open, *args):
     enable_toggle = sensor_count != 1
     if enable_toggle:
         realtime.command_outputs[HardwarePackets.SETUP] = ''
-    return f'found {sensor_count} sensors', *[enable_toggle] * len(SetupConsts.DS_INPUT), scan_board
+    return f'found {sensor_count} sensors', *[enable_toggle] * len(SetupConsts.COMMANDS), scan_board
 
 
 @app.callback(
