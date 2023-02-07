@@ -3,10 +3,19 @@ class InputTypes:
     CO2_CONTROLLER = 'CO2 controller'
     ENGINE = 'engine'
 
-    HEADERS = {
-        SENSORS: '',
-        CO2_CONTROLLER: 'DPC\t',
-        ENGINE: '',
+    MAPPING = {
+        SENSORS: {
+            'header': '',
+            'content_parser': None
+        },
+        CO2_CONTROLLER: {
+            'header': 'DPC\t',
+            'content_parser': None
+        },
+        ENGINE: {
+            'header': '',
+            'content_parser': None
+        },
     }
 
 
@@ -30,10 +39,18 @@ class Commands:
     SEARCH_SENSOR = 29
 
     class CO2Controller:
-        OPEN = 'O'
-        CLOSE = 'C'
-        AUTO = 'A'
-        READ = 'R'
+        CARRIAGE_RETURN = '\r'
+        OPEN = 'V,M,O'
+        CLOSE = 'V,M,C'
+        AUTO = 'V,M,A'
+        READ = 'FV'
+        SET_POINT = 'SP'
+
+        MAPPING = {
+            'close': CLOSE,
+            'open': OPEN,
+            'auto': AUTO,
+        }
 
     CLASSIFIER = {
         InputTypes.SENSORS: [SET_FAN, SET_CO2, SETUP_DS1, SETUP_DS2, SETUP_DS3, SETUP_DS4, SEARCH_SENSOR, SCAN],

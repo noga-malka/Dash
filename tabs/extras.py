@@ -4,7 +4,7 @@ from dash import dcc, html
 
 from configurations import SetupConsts, Settings
 from consts import TagIds
-from handlers.consts import InputTypes
+from handlers.consts import InputTypes, Commands
 from utilities import modal_generator, corner_radius
 
 
@@ -20,7 +20,7 @@ def serial_modal():
         html.Div(id='selected_connections', children=[]),
         html.Div([
             html.Div(dcc.Loading(id='loading_test', children=[dcc.Dropdown(options=[], id='serial_input')])),
-            dcc.Dropdown(options=list(InputTypes.HEADERS), id='input_type'),
+            dcc.Dropdown(options=list(InputTypes.MAPPING), id='input_type'),
 
         ], className='flex children-margin-2 flex-grow'),
         dbc.Button('Search Ports', id='scan_comports'),
@@ -45,20 +45,12 @@ def generate_card(title: str, content: list):
                                                                                                              'right'))
 
 
-def serial_extra():
+def control_panel(buttons: list):
     return [html.Div(
         [
             dbc.Collapse(
                 [
-                    html.Div([
-                        generate_card('Reset CO2 sensors',
-                                      [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
-                                       dbc.Button('reset', id=TagIds.CO2_BUTTON)]),
-                        generate_card('Change Fan Speed', [
-                            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON,
-                                       tooltip={'placement': 'bottom', 'always_visible': True},
-                                       className='slider')]),
-                    ], className='flex align children-margin center')
+                    html.Div(buttons, className='flex align children-margin center')
                 ],
                 id="control_panel",
             ),
@@ -66,6 +58,33 @@ def serial_extra():
         ], className='flex center column align bg-info',
         style=corner_radius('bottom', 'right', '50px') | corner_radius('bottom', 'left', '50px'))
     ]
+
+
+def serial_extra():
+    return control_panel([
+        generate_card('Change DPC Mode', [
+            dbc.RadioItems(
+                options=[{"label": command.title(), "value": command} for command in Commands.CO2Controller.MAPPING])]),
+        generate_card('Reset CO2 sensors',
+                      [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
+                       dbc.Button('reset', id=TagIds.CO2_BUTTON)]),
+        generate_card('Change Fan Speed', [
+            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON,
+                       tooltip={'placement': 'bottom', 'always_visible': True},
+                       className='slider')]),
+    ])
+
+
+def bluetooth_extra():
+    return control_panel([
+        generate_card('Reset CO2 sensors',
+                      [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
+                       dbc.Button('reset', id=TagIds.CO2_BUTTON)]),
+        generate_card('Change Fan Speed', [
+            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON,
+                       tooltip={'placement': 'bottom', 'always_visible': True},
+                       className='slider')]),
+    ])
 
 
 def download_session():
@@ -107,6 +126,6 @@ def generate_setup_buttons():
 
 EXTRA = {
     TagIds.Icons.UPLOAD['id']: file_extra(),
-    TagIds.Icons.BLUETOOTH['id']: serial_extra(),
+    TagIds.Icons.BLUETOOTH['id']: bluetooth_extra(),
     TagIds.Icons.SERIAL['id']: serial_extra()
 }

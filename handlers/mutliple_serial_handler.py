@@ -32,5 +32,5 @@ class MultipleSerialHandler(Handler):
     def read_lines(self) -> list[str]:
         lines = []
         for input_type, connection in self.handlers.items():
-            lines += [InputTypes.HEADERS.get(input_type, '') + line for line in connection.read_lines()]
+            lines += [InputTypes.MAPPING[input_type]['header'] + line for line in connection.read_lines()]
         return lines
