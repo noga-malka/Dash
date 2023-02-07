@@ -49,3 +49,7 @@ def load_configuration(config: dict):
             if key in Schema.NUMERIC_FIELDS:
                 current_values[key] = UnitTypes.CANCEL[current_values['unit_type']](value)
         sensor.__dict__.update(current_values)
+
+
+def corner_radius(vertical, horizontal, size='20px'):
+    return {f'border-{vertical}-{horizontal}-radius': size}

@@ -4,8 +4,7 @@ from dash import dcc, html
 
 from configurations import SetupConsts, Settings
 from consts import TagIds
-from handlers.consts import Commands
-from utilities import modal_generator
+from utilities import modal_generator, corner_radius
 
 
 def bluetooth_modal():
@@ -26,16 +25,36 @@ def file_extra():
     return [dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))]
 
 
+def generate_card(title: str, content: list):
+    return html.Div([
+        html.Label(title),
+        html.Hr(),
+        html.Div(content, className='flex center align children-margin-2')
+    ], style={'padding': '10px', 'border-right': 'solid'} | corner_radius('bottom', 'right') | corner_radius('top',
+                                                                                                             'right'))
+
+
 def serial_extra():
-    return [html.Div([
-        dbc.Button('Reset CO2 sensors', id=TagIds.CO2_BUTTON),
-        dbc.Input(id='co2_value', style={'width': '10rem'}, type='number'),
-        html.Div([
-            html.Label('Change Fan Speed'),
-            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON, tooltip={'placement': 'bottom', 'always_visible': True},
-                       className='full-width'),
-        ], style={'width': '50%'}, className='column flex align')
-    ], className='flex align children-margin center')]
+    return [html.Div(
+        [
+            dbc.Collapse(
+                [
+                    html.Div([
+                        generate_card('Reset CO2 sensors',
+                                      [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
+                                       dbc.Button('reset', id=TagIds.CO2_BUTTON)]),
+                        generate_card('Change Fan Speed', [
+                            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON,
+                                       tooltip={'placement': 'bottom', 'always_visible': True},
+                                       className='slider')]),
+                    ], className='flex align children-margin center')
+                ],
+                id="control_panel",
+            ),
+            html.Div(id='expand_panel', className=TagIds.Icons.DOWN, style={'padding': '10px', 'font-size': 'x-large'})
+        ], className='flex center column align bg-info',
+        style=corner_radius('bottom', 'right', '50px') | corner_radius('bottom', 'left', '50px'))
+    ]
 
 
 def download_session():

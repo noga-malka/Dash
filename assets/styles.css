@@ -7,6 +7,10 @@ margin: 10px;
 .grow > *{
     flex-grow:1
 }
+.slider{
+width: 200px
+
+}
 .rc-slider-rail, .rc-slider-track{
     height: 10px
 }

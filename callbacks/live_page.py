@@ -4,8 +4,8 @@ from dash.exceptions import PreventUpdate
 
 from configurations import Settings, Schema, group_sensors
 from consts import TagIds, Colors, UnitTypes
-from handlers.consts import Commands
 from default import app
+from handlers.consts import Commands
 from realtime_data import realtime
 from utilities import generate_sensors_output
 
@@ -39,6 +39,18 @@ def scan_bluetooth(clicked):
             color = Colors.DISCONNECTED.value
         output.append({'background-color': color})
     return output
+
+
+@app.callback(
+    Output("control_panel", "is_open"), Output('expand_panel', 'className'),
+    Input("expand_panel", "n_clicks"),
+    State("control_panel", "is_open"),
+)
+def toggle_collapse(expand_click, is_open):
+    state = not is_open
+    if not expand_click:
+        raise PreventUpdate
+    return state, TagIds.Icons.UP if state else TagIds.Icons.DOWN
 
 
 @app.callback([[Output(sensor_key, 'min'), Output(sensor_key, 'max'), Output(sensor_key, 'units'),

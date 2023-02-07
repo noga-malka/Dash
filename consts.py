@@ -29,6 +29,8 @@ class TagIds:
         BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
         RANDOM = {'id': 'random', 'icon': 'fa-random'}
         UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
+        DOWN = 'fa fa-angle-down'
+        UP = 'fa fa-angle-up'
 
         ALL = [SAVE, CLEAN]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
