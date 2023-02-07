@@ -20,7 +20,6 @@ class Commands:
     SETUP_DS4 = 27
     SCAN = 28
     SEARCH_SENSOR = 29
-    COMMAND_DEFAULT = {SET_CO2: '400'}
 
 
 class Uart:

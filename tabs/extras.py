@@ -29,8 +29,7 @@ def file_extra():
 def serial_extra():
     return [html.Div([
         dbc.Button('Reset CO2 sensors', id=TagIds.CO2_BUTTON),
-        dbc.Input(value=Commands.COMMAND_DEFAULT[Commands.SET_CO2], id='co2_value', style={'width': '10rem'},
-                  type='number'),
+        dbc.Input(id='co2_value', style={'width': '10rem'}, type='number'),
         html.Div([
             html.Label('Change Fan Speed'),
             dcc.Slider(0, 100, id=TagIds.FAN_BUTTON, tooltip={'placement': 'bottom', 'always_visible': True},
