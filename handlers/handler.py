@@ -22,20 +22,20 @@ class Handler:
     def send_command(self, command, content):
         raise NotImplementedError()
 
-    def read_line(self):
+    def read_lines(self) -> list[str]:
         raise NotImplementedError()
 
     def extract_data(self):
         if self.is_connected:
-            output = self.read_line()
+            lines = self.read_lines()
             try:
                 parsed_data = []
-                for line in output:
+                for line in lines:
                     command, *content = line.split('\t')
                     parsed_data.append((command, content))
                 return parsed_data
             except (KeyError, IndexError, ValueError, UnicodeDecodeError):
-                logger.warning(f'Failed to parse row: {output}')
+                logger.warning(f'Failed to parse row: {lines}')
 
     @staticmethod
     def format(value: Union[str, int], byte_number: int = 1):

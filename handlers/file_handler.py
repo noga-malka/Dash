@@ -26,12 +26,11 @@ class FileHandler(Handler):
             return True
         return False
 
-    def read_line(self) -> str:
+    def read_lines(self) -> list[str]:
         pass
 
     def extract_data(self):
+        content = self.content if not self.is_loaded else pandas.DataFrame
         if not self.is_loaded:
             self.is_loaded = True
-            return HardwarePackets.DATA, self.content
-        else:
-            return HardwarePackets.DATA, pandas.DataFrame()
+        return [(HardwarePackets.FILE, content)]

@@ -15,8 +15,8 @@ class RandomHandler(Handler):
     def connect(self, **kwargs):
         return True
 
-    def read_line(self) -> str:
+    def read_lines(self) -> list[str]:
         time.sleep(0.5)
         values = [[name, str(random.randint(sensor.minimum, sensor.maximum))] for name, sensor in
                   Settings.SENSORS.items()]
-        return "\t".join(sum(values, []))
+        return ["\t".join(sum(values, []))]

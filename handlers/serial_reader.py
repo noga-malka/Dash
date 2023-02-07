@@ -20,9 +20,9 @@ class SerialHandler(Handler):
             return False
         return True
 
-    def read_line(self) -> str:
+    def read_lines(self) -> list[str]:
         try:
-            return self.client.readline().decode().strip()
+            return [self.client.readline().decode().strip()]
         except serial.SerialException:
             raise DisconnectionEvent(self.__class__.__name__)
 

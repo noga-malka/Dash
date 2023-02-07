@@ -28,7 +28,7 @@ class BluetoothHandler(Handler):
             return False
         return True
 
-    def read_line(self) -> str:
+    def read_lines(self) -> list[str]:
         while b'\n' not in self.buffer:
             new_data = self.client.recv(4096)
             if new_data == b'':
@@ -37,7 +37,7 @@ class BluetoothHandler(Handler):
         end_line = self.buffer.find(b'\n')
         output = self.buffer[:end_line]
         self.buffer = self.buffer[end_line + 1:]
-        return output.decode()
+        return [output.decode()]
 
     def send_command(self, command, content):
         packet = self.build_command(command, content)

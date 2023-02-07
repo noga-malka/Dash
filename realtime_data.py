@@ -3,7 +3,7 @@ from typing import Callable
 
 import pandas
 
-from configurations import Settings
+from configurations import Settings, logger
 from handlers.consts import HardwarePackets
 from stoppable_thread import StoppableThread, types
 
@@ -18,6 +18,7 @@ class RealtimeData:
             HardwarePackets.SETUP: self.setup,
             HardwarePackets.ONE_WIRE: self.save_output,
             HardwarePackets.DATA: self.add_row,
+            HardwarePackets.FILE: self.add_dataframe,
         }
 
     def in_types(self):
@@ -31,12 +32,13 @@ class RealtimeData:
             self.graph = pandas.DataFrame()
             self.thread.events.Finish.clean.set()
         else:
+            data = []
             try:
                 data = types[self.thread.handler_name].extract_data()
                 for (command, content) in data:
                     self.mapping[command](command, content)
-            except TypeError:
-                pass
+            except (KeyError, IndexError, ValueError, UnicodeDecodeError):
+                logger.warning(f'Failed to parse row: {data}')
 
     def save_output(self, command: str, content: str):
         self.command_outputs[command] = int(content[0])
@@ -50,7 +52,10 @@ class RealtimeData:
         sample = {content[index]: float(content[index + 1]) for index in range(0, len(content), 2)}
         sample = {key: value for key, value in sample.items() if key in Settings.SENSORS}
         content = pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
-        self.graph = pandas.concat([self.graph, content])
+        self.add_dataframe(command, content)
+
+    def add_dataframe(self, command: str, dataframe: pandas.DataFrame):
+        self.graph = pandas.concat([self.graph, dataframe])
 
     def clean(self):
         self.thread.events.clean.set()

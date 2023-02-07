@@ -12,9 +12,11 @@ app.layout = generate_layout()
 
 @app.callback(Output('mac_input', 'options'), Input('scan_bluetooth', 'n_clicks'))
 def scan_bluetooth(clicked):
-    if realtime.thread.handler_name == 'bluetooth':
+    try:
         types[realtime.thread.handler_name].discover()
         return list(types[realtime.thread.handler_name].devices.keys())
+    except (AttributeError, KeyError):
+        raise PreventUpdate
 
 
 @app.callback(Output({'type': 'icon', 'index': ALL}, 'style'),
