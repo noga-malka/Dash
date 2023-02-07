@@ -6,10 +6,10 @@ from consts import IS_DEBUG
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.file_handler import FileHandler
 from handlers.handler_exception import DisconnectionEvent
+from handlers.mutliple_serial_handler import MultipleSerialHandler
 from handlers.random_handler import RandomHandler
-from handlers.serial_reader import SerialHandler
 
-types = {'serial': SerialHandler(), 'bluetooth': BluetoothHandler(), 'upload': FileHandler()}
+types = {'serial': MultipleSerialHandler(), 'bluetooth': BluetoothHandler(), 'upload': FileHandler()}
 if IS_DEBUG:
     types['random'] = RandomHandler()
 

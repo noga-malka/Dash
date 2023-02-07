@@ -1,3 +1,4 @@
+import dash_bootstrap_components as dbc
 from dash import Dash, Input, Output, callback_context, ALL, State
 from dash.exceptions import PreventUpdate
 
@@ -12,11 +13,25 @@ app.layout = generate_layout()
 
 @app.callback(Output('mac_input', 'options'), Input('scan_bluetooth', 'n_clicks'))
 def scan_bluetooth(clicked):
-    try:
-        types[realtime.thread.handler_name].discover()
-        return list(types[realtime.thread.handler_name].devices.keys())
-    except (AttributeError, KeyError):
-        raise PreventUpdate
+    types['bluetooth'].discover()
+    return list(types['bluetooth'].devices.keys())
+
+
+@app.callback(Output('serial_input', 'options'), Input('scan_comports', 'n_clicks'))
+def scan_comports(clicked):
+    types['serial'].discover()
+    return types['serial'].devices
+
+
+@app.callback(Output('selected_connections', 'children'), Input('add_serial', 'n_clicks'),
+              Input('clear_serial', 'n_clicks'), State('selected_connections', 'children'),
+              State('serial_input', 'value'), State('input_type', 'value'), prevent_initial_call=True)
+def scan_comports(add, clear, children, comport, input_type):
+    if callback_context.triggered_id == 'clear_serial':
+        return []
+    if comport and input_type:
+        return children + [dbc.Badge(f'{comport} : {input_type}', pill=True, className='me-1')]
+    raise PreventUpdate
 
 
 @app.callback(Output({'type': 'icon', 'index': ALL}, 'style'),
@@ -45,10 +60,13 @@ def toggle_modal(click, is_open, connect_click, mac_address):
 @app.callback(
     Output("serial_modal", "is_open"),
     Input('serial_link', 'n_clicks'), State("serial_modal", "is_open"),
-    Input('serial_connect', 'n_clicks'), State("serial_input", "value"),
+    Input('serial_connect', 'n_clicks'), State("selected_connections", "children"),
     prevent_initial_call=True)
-def toggle_modal(click, is_open, connect_click, comport):
+def toggle_modal(click, is_open, connect_click, connections):
     if callback_context.triggered_id == 'serial_connect':
+        connections = [badge['props']['children'].split(' : ') for badge in connections]
+        connections = {comport: input_type for (comport, input_type) in connections}
+        realtime.thread.connect_handler(connections=connections)
         return False
     if click:
         return not is_open

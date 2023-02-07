@@ -4,6 +4,7 @@ from dash import dcc, html
 
 from configurations import SetupConsts, Settings
 from consts import TagIds
+from handlers.consts import InputTypes
 from utilities import modal_generator, corner_radius
 
 
@@ -16,8 +17,18 @@ def bluetooth_modal():
 
 def serial_modal():
     inputs = [
-        dcc.Loading(children=[dcc.Dropdown(options=[], id='serial_input', className='full-width')]),
-        dbc.Button('Search', id='scan_comports'), dbc.Button('Connect', id='serial_connect')]
+        html.Div(id='selected_connections', children=[]),
+        html.Div([
+            html.Div(dcc.Loading(id='loading_test', children=[dcc.Dropdown(options=[], id='serial_input')])),
+            dcc.Dropdown(options=list(InputTypes.HEADERS), id='input_type'),
+
+        ], className='flex children-margin-2 flex-grow'),
+        dbc.Button('Search Ports', id='scan_comports'),
+        html.Div([
+            dbc.Button('Add Connection', id='add_serial'),
+            dbc.Button('Clear All', id='clear_serial'),
+        ], className='flex flex-grow children-margin-2'),
+        dbc.Button('Connect', id='serial_connect')]
     return modal_generator('serial_modal', 'Select Serial Connections', inputs, is_centered=False)
 
 

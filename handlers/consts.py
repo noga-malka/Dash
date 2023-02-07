@@ -3,6 +3,12 @@ class InputTypes:
     CO2_CONTROLLER = 'CO2 controller'
     ENGINE = 'engine'
 
+    HEADERS = {
+        SENSORS: '',
+        CO2_CONTROLLER: 'DPC\t',
+        ENGINE: '',
+    }
+
 
 class HardwarePackets:
     DATA = 'Data'

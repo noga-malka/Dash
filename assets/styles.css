@@ -1,6 +1,9 @@
 .column{
 flex-direction: column;
 }
+.flex-grow > * {
+flex-grow: 1
+}
 .children-margin > *{
 margin: 10px;
 }
