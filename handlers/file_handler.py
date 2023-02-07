@@ -3,7 +3,7 @@ from io import StringIO
 
 import pandas
 
-from consts import HardwarePackets
+from handlers.consts import HardwarePackets
 from handlers.handler import Handler
 
 

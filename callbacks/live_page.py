@@ -3,10 +3,10 @@ from dash import Input, Output, dash, callback_context, State
 from dash.exceptions import PreventUpdate
 
 from configurations import Settings, Schema, group_sensors
-from consts import TagIds, Colors, UnitTypes, Commands
+from consts import TagIds, Colors, UnitTypes
+from handlers.consts import Commands
 from default import app
 from realtime_data import realtime
-from stoppable_thread import types
 from utilities import generate_sensors_output
 
 
@@ -70,4 +70,4 @@ def send_command(co2_click, co2_value, fan_value):
         command, value = Commands.SET_CO2, co2_value
     if callback_context.triggered_id == TagIds.FAN_BUTTON:
         command, value = Commands.SET_FAN, fan_value
-    types[realtime.thread.handler_name].send_command(command, value)
+    realtime.send_command(command, value)

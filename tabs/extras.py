@@ -3,7 +3,8 @@ import dash_daq as daq
 from dash import dcc, html
 
 from configurations import SetupConsts, Settings
-from consts import TagIds, Commands
+from consts import TagIds
+from handlers.consts import Commands
 from utilities import modal_generator
 
 

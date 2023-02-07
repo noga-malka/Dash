@@ -44,21 +44,6 @@ class StatusIcons:
     ERROR = 'fa-times-circle'
 
 
-class Commands:
-    HEADER = 'aa55aa'
-    SET_CO2 = 21
-    SET_FAN = 22
-    SCAN = 28
-    SEARCH_SENSOR = 29
-    COMMAND_DEFAULT = {SET_CO2: '400'}
-    ALL = [SET_CO2]
-
-
-class Uart:
-    BAUDRATE = 115200
-    TIMEOUT = 1
-
-
 class DaqConsts:
     GRADIENT = {"gradient": True, "ranges": {"red": [0, 20], "yellow": [20, 50], "green": [50, 100]}}
     ICONS = {"right": "fa fa-moon", "left": "fa fa-sun"}
@@ -141,12 +126,6 @@ class NavButtons:
         CONNECTED: {'color': 'var(--bs-success)', 'message': 'Connected: {current}'},
         DISCONNECTED: {'color': 'var(--bs-warning)', 'message': 'Failed to Connect: {current}'},
     }
-
-
-class HardwarePackets:
-    DATA = 'Data'
-    SETUP = 'setup'
-    ONE_WIRE = 'OneWire_count'
 
 
 class OutputDirectory:

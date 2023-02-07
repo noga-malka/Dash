@@ -1,8 +1,7 @@
 import serial
-from serial.tools import list_ports
 
 from configurations import logger
-from consts import Uart
+from handlers.consts import Uart
 from handlers.handler import Handler
 from handlers.handler_exception import DisconnectionEvent
 

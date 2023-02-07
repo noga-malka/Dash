@@ -5,10 +5,10 @@ from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import SetupConsts, Settings
-from consts import StatusIcons, HardwarePackets, Commands, UnitTypes, TagIds, OutputDirectory
+from consts import StatusIcons, UnitTypes, TagIds, OutputDirectory
+from handlers.consts import Commands, HardwarePackets
 from default import app
 from realtime_data import realtime
-from stoppable_thread import types
 from tabs.set_config import load_data
 from utilities import load_configuration
 
@@ -34,7 +34,7 @@ def toggle_modal(reset_toggles, *args):
                 icons[index] = ''
                 addresses[index] = ''
             else:
-                success = realtime.send_command(realtime.thread.events.set_device, SetupConsts.COMMANDS[sensor], 0)
+                success = realtime.send_command(SetupConsts.COMMANDS[sensor], 0, realtime.thread.events.set_device)
                 addresses[index] = realtime.command_outputs[HardwarePackets.SETUP] if success else dash.no_update
                 icons[index] = f'fa {StatusIcons.CHECK if success else StatusIcons.ERROR} fa-xl'
             break
@@ -48,7 +48,7 @@ def toggle_modal(reset_toggles, *args):
 def read_board(is_open, *args):
     if not realtime.in_types() or not is_open:
         raise PreventUpdate
-    success = realtime.send_command(realtime.thread.events.scan_sensor, Commands.SEARCH_SENSOR, 0, timeout=2)
+    success = realtime.send_command(Commands.SEARCH_SENSOR, 0, realtime.thread.events.scan_sensor, timeout=2)
     sensor_count = realtime.command_outputs.get(HardwarePackets.ONE_WIRE, 0) if success else -1
     scan_board = sensor_count != 4
     enable_toggle = sensor_count != 1
@@ -63,7 +63,7 @@ def read_board(is_open, *args):
     prevent_initial_call=True)
 def toggle_modal(click, is_open, scan):
     if callback_context.triggered_id == 'scan_board':
-        types[realtime.thread.handler_name].send_command(Commands.SCAN, 0)
+        realtime.send_command(Commands.SCAN, 0)
         return False
     if click:
         return not is_open

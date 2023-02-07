@@ -2,7 +2,7 @@ from threading import Event
 
 import pandas
 
-from consts import HardwarePackets
+from handlers.consts import HardwarePackets
 from stoppable_thread import StoppableThread, types
 
 
@@ -49,7 +49,10 @@ class RealtimeData:
     def clean(self):
         self.thread.events.clean.set()
 
-    def send_command(self, event: Event, command: str, content: str = '0', timeout=5):
+    def send_command(self, command: str, content: str = '0', event: Event = None, timeout=5):
+        if not event:
+            types[self.thread.handler_name].send_command(command, content)
+            return False
         event.clear()
         types[self.thread.handler_name].send_command(command, content)
         event.wait(timeout=timeout)
