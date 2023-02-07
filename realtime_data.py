@@ -19,6 +19,7 @@ class RealtimeData:
             HardwarePackets.ONE_WIRE: self.save_output,
             HardwarePackets.DATA: self.add_row,
             HardwarePackets.FILE: self.add_dataframe,
+            HardwarePackets.DPC: self.parse_dpc_controller,
         }
 
     def in_types(self):
@@ -39,6 +40,9 @@ class RealtimeData:
                     self.mapping[command](command, content)
             except (KeyError, IndexError, ValueError, UnicodeDecodeError):
                 logger.warning(f'Failed to parse row: {data}')
+
+    def parse_dpc_controller(self, command: str, content: str):
+        pass
 
     def save_output(self, command: str, content: str):
         self.command_outputs[command] = int(content[0])

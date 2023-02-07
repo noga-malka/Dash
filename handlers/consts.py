@@ -15,6 +15,7 @@ class HardwarePackets:
     SETUP = 'setup'
     ONE_WIRE = 'OneWire_count'
     FILE = 'file'
+    DPC = 'DPC'
 
 
 class Commands:
