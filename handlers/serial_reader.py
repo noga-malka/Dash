@@ -22,9 +22,11 @@ class SerialHandler(Handler):
 
     def read_lines(self) -> list[str]:
         try:
-            return [self.client.readline().decode().strip()]
+            if self.client.inWaiting():
+                return [self.client.readline().decode().strip()]
         except serial.SerialException:
             raise DisconnectionEvent(self.__class__.__name__)
+        return []
 
     def send_command(self, command: str, content: str):
         packet = InputTypes.MAPPING[Commands.CLASSIFIER[command]]['packet_builder'].build_packet(command, content)
