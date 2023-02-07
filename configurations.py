@@ -40,18 +40,23 @@ class SensorNames:
     PRESSURE2 = 'Pressure 2'
 
 
+class ContentType:
+    NUMERIC = 'numeric'
+    TEXT = 'text'
+
+
 class Sensor(BaseModel):
-    hardware_input: str = Field('', editable=False, content_type='text')
-    group: str = Field('', content_type='text')
-    label: str = Field(..., editable=False, content_type='text')
-    minimum: float = Field(..., content_type='numeric')
-    low_error: float = Field(..., content_type='numeric')
-    low_warning: float = Field(..., content_type='numeric')
-    high_warning: float = Field(..., content_type='numeric')
-    high_error: float = Field(..., content_type='numeric')
-    maximum: float = Field(..., content_type='numeric')
-    unit_type: str = Field(..., editable=False, content_type='text')
-    possible_units: list[str] = Field(..., editable=False, content_type='text', hidden=True)
+    hardware_input: str = Field('', editable=False, content_type=ContentType.TEXT)
+    group: str = Field('', content_type=ContentType.TEXT)
+    label: str = Field(..., editable=False, content_type=ContentType.TEXT)
+    minimum: float = Field(..., content_type=ContentType.NUMERIC)
+    low_error: float = Field(..., content_type=ContentType.NUMERIC)
+    low_warning: float = Field(..., content_type=ContentType.NUMERIC)
+    high_warning: float = Field(..., content_type=ContentType.NUMERIC)
+    high_error: float = Field(..., content_type=ContentType.NUMERIC)
+    maximum: float = Field(..., content_type=ContentType.NUMERIC)
+    unit_type: str = Field(..., editable=False, content_type=ContentType.TEXT)
+    possible_units: list[str] = Field(..., editable=False, content_type=ContentType.TEXT, hidden=True)
 
 
 class Labels:
@@ -106,7 +111,7 @@ class SensorInstance:
 class Schema:
     SENSOR_SCHEMA = Sensor.schema()['properties']
     HIDDEN_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('hidden')}
-    NUMERIC_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('content_type') == 'numeric'}
+    NUMERIC_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('content_type') == ContentType.NUMERIC}
 
     MONITOR_TYPES = {
         Labels.CO2: GaugeMonitor(180, False, True, max_percent=1000000),
