@@ -1,6 +1,5 @@
 from typing import Union
 
-from configurations import logger
 from handlers.consts import Commands
 
 
@@ -28,14 +27,11 @@ class Handler:
     def extract_data(self):
         if self.is_connected:
             lines = self.read_lines()
-            try:
-                parsed_data = []
-                for line in lines:
-                    command, *content = line.split('\t')
-                    parsed_data.append((command, content))
-                return parsed_data
-            except (KeyError, IndexError, ValueError, UnicodeDecodeError):
-                logger.warning(f'Failed to parse row: {lines}')
+            parsed_data = []
+            for line in lines:
+                command, *content = line.split('\t')
+                parsed_data.append((command, content))
+            return parsed_data
 
     @staticmethod
     def format(value: Union[str, int], byte_number: int = 1):
