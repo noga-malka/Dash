@@ -1,4 +1,3 @@
-import bluetooth
 from dash import Dash, Input, Output, callback_context, ALL, State
 from dash.exceptions import PreventUpdate
 
@@ -13,11 +12,9 @@ app.layout = generate_layout()
 
 @app.callback(Output('mac_input', 'options'), Input('scan_bluetooth', 'n_clicks'))
 def scan_bluetooth(clicked):
-    devices = {name: mac for (mac, name) in bluetooth.discover_devices(lookup_names=True)}
-    if not realtime.in_types():
-        raise PreventUpdate
-    types[realtime.thread.handler_name].devices = devices
-    return list(devices.keys())
+    if realtime.thread.handler_name == 'bluetooth':
+        types[realtime.thread.handler_name].discover()
+        return list(types[realtime.thread.handler_name].devices.keys())
 
 
 @app.callback(Output({'type': 'icon', 'index': ALL}, 'style'),

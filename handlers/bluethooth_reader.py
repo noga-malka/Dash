@@ -1,5 +1,7 @@
 import socket
 
+import bluetooth
+
 from configurations import logger
 from handlers.handler import Handler
 from handlers.handler_exception import DisconnectionEvent
@@ -10,6 +12,9 @@ class BluetoothHandler(Handler):
         self.buffer = b''
         self.devices = {}
         super(BluetoothHandler, self).__init__(False)
+
+    def discover(self):
+        self.devices = {name: mac for (mac, name) in bluetooth.discover_devices(lookup_names=True)}
 
     def connect(self, address='', **kwargs):
         self.disconnect()
