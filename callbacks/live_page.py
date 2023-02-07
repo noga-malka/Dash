@@ -91,3 +91,9 @@ def send_command(co2_click, co2_value, fan_value):
     if callback_context.triggered_id == TagIds.FAN_BUTTON:
         command, value = Commands.SET_FAN, fan_value
     realtime.send_command(command, value)
+
+
+@app.callback(Output('placeholder', 'n_clicks'), Input('sp_slider', 'value'), prevent_initial_call=True)
+def send_command(sp_value):
+    if sp_value:
+        realtime.send_command(Commands.CO2Controller.SET_POINT, str(sp_value))

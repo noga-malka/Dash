@@ -66,6 +66,10 @@ def serial_extra():
             dbc.RadioItems(id='dpc_mode_selector',
                            options=[{"label": command.title(), "value": command} for command in
                                     Commands.CO2Controller.MAPPING])]),
+        generate_card('Set Point in DPC', [
+            dcc.Slider(0, 2.5, id='sp_slider',
+                       tooltip={'placement': 'bottom', 'always_visible': True},
+                       className='slider')]),
         generate_card('Reset CO2 sensors',
                       [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
                        dbc.Button('reset', id=TagIds.CO2_BUTTON)]),

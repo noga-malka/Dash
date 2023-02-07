@@ -44,7 +44,7 @@ class Commands:
         CLOSE = 'V,M,C'
         AUTO = 'V,M,A'
         READ = 'FV'
-        SET_POINT = 'SP'
+        SET_POINT = 'SP,'
 
         MAPPING = {
             'close': CLOSE,
@@ -65,6 +65,7 @@ class Commands:
         CO2Controller.CLOSE: InputTypes.CO2_CONTROLLER,
         CO2Controller.AUTO: InputTypes.CO2_CONTROLLER,
         CO2Controller.READ: InputTypes.CO2_CONTROLLER,
+        CO2Controller.SET_POINT: InputTypes.CO2_CONTROLLER,
     }
 
 
