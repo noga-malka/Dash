@@ -1,7 +1,9 @@
 from threading import Event
+from typing import Callable
 
 import pandas
 
+from configurations import Settings
 from handlers.consts import HardwarePackets
 from stoppable_thread import StoppableThread, types
 
@@ -12,7 +14,7 @@ class RealtimeData:
         self.thread.start()
         self.graph = pandas.DataFrame()
         self.command_outputs = {}
-        self.mapping = {
+        self.mapping: dict[str, Callable] = {
             HardwarePackets.SETUP: self.setup,
             HardwarePackets.ONE_WIRE: self.save_output,
             HardwarePackets.DATA: self.add_row,
@@ -30,20 +32,24 @@ class RealtimeData:
             self.thread.events.Finish.clean.set()
         else:
             try:
-                command, content = types[self.thread.handler_name].extract_data()
+                data = types[self.thread.handler_name].extract_data()
+                for (command, content) in data:
+                    self.mapping[command](command, content)
             except TypeError:
-                return
-            self.mapping[command](command, content)
+                pass
 
-    def save_output(self, command: str, content):
-        self.command_outputs[command] = content
+    def save_output(self, command: str, content: str):
+        self.command_outputs[command] = int(content[0])
         self.thread.events.scan_sensor.set()
 
-    def setup(self, command: str, content):
+    def setup(self, command: str, content: str):
         self.command_outputs[command] = content
         self.thread.events.set_device.set()
 
-    def add_row(self, command: str, content):
+    def add_row(self, command: str, content: str):
+        sample = {content[index]: float(content[index + 1]) for index in range(0, len(content), 2)}
+        sample = {key: value for key, value in sample.items() if key in Settings.SENSORS}
+        content = pandas.DataFrame(sample, index=[pandas.Timestamp.now()])
         self.graph = pandas.concat([self.graph, content])
 
     def clean(self):
