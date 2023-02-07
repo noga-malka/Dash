@@ -53,6 +53,14 @@ def toggle_collapse(expand_click, is_open):
     return state, TagIds.Icons.UP if state else TagIds.Icons.DOWN
 
 
+@app.callback(
+    Output("placeholder", "className"),
+    Input("dpc_mode_selector", "value"), prevent_initial_call=True)
+def toggle_collapse(mode):
+    if mode:
+        realtime.send_command(Commands.CO2Controller.MAPPING[mode], '')
+
+
 @app.callback([[Output(sensor_key, 'min'), Output(sensor_key, 'max'), Output(sensor_key, 'units'),
                 Output(sensor_key + '_led', 'label')] for sensor_key in Settings.SENSORS],
               Input('temperature_switch', 'on'))

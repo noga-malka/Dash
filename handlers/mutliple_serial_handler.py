@@ -25,7 +25,8 @@ class MultipleSerialHandler(Handler):
     def send_command(self, command, content):
         input_type = Commands.CLASSIFIER.get(command)
         if input_type:
-            self.handlers[input_type].send_command(command, content)
+            packet = InputTypes.MAPPING[input_type]['packet_builder'].build_packet(command, content)
+            self.handlers[input_type].send_packet(packet)
         else:
             logger.warning(f'no handler with command {command}')
 

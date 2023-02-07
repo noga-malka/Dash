@@ -63,8 +63,9 @@ def control_panel(buttons: list):
 def serial_extra():
     return control_panel([
         generate_card('Change DPC Mode', [
-            dbc.RadioItems(
-                options=[{"label": command.title(), "value": command} for command in Commands.CO2Controller.MAPPING])]),
+            dbc.RadioItems(id='dpc_mode_selector',
+                           options=[{"label": command.title(), "value": command} for command in
+                                    Commands.CO2Controller.MAPPING])]),
         generate_card('Reset CO2 sensors',
                       [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
                        dbc.Button('reset', id=TagIds.CO2_BUTTON)]),

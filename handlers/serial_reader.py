@@ -28,6 +28,9 @@ class SerialHandler(Handler):
 
     def send_command(self, command: str, content: str):
         packet = InputTypes.MAPPING[Commands.CLASSIFIER[command]]['packet_builder'].build_packet(command, content)
+        self.send_packet(packet)
+
+    def send_packet(self, packet):
         if self.client:
             logger.info(f'send packet: {packet}')
             self.client.write(packet)
