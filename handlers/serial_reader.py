@@ -10,19 +10,20 @@ from handlers.handler_exception import DisconnectionEvent
 class SerialHandler(Handler):
     def __init__(self):
         self.devices = {}
-        super(SerialHandler, self).__init__()
+        super(SerialHandler, self).__init__(False)
 
     def discover(self):
         self.devices = {com[0]: com[0] for com in filter(lambda port: "USB" in port[2], list_ports.comports())}
 
-    def connect(self, **kwargs):
+    def connect(self, comport=None, **kwargs):
         self.disconnect()
-        usb_ports = list(filter(lambda port: "USB" in port[2], list(list_ports.comports())))
-        if len(usb_ports) == 1:
-            self.current = usb_ports[0][0]
-            self.client = serial.Serial(usb_ports[0][0], Uart.BAUDRATE, timeout=Uart.TIMEOUT)
-            return True
-        return False
+        try:
+            self.current = comport
+            self.client = serial.Serial(comport, Uart.BAUDRATE, timeout=Uart.TIMEOUT)
+        except serial.SerialException:
+            self.client = None
+            return False
+        return True
 
     def read_line(self) -> str:
         try:
