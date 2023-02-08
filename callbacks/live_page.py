@@ -7,7 +7,6 @@ from consts import TagIds, Colors, UnitTypes
 from default import app
 from handlers.consts import Commands
 from realtime_data import realtime
-from stoppable_thread import types
 from utilities import generate_sensors_output
 
 
@@ -15,7 +14,6 @@ from utilities import generate_sensors_output
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
     try:
-        types[realtime.thread.handler_name].interval_action()
         content = realtime.database.read()
     except IndexError:
         content = {name: sensor.minimum for name, sensor in Settings.SENSORS.items()}

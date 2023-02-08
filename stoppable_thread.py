@@ -1,5 +1,5 @@
 import time
-from threading import Thread, Event
+from threading import Thread, Event, Timer
 
 from configurations import logger
 from consts import IS_DEBUG
@@ -21,6 +21,7 @@ class Events:
     disconnect = Event()
     set_device = Event()
     scan_sensor = Event()
+    interval = Event()
 
     class Finish:
         connect = Event()
@@ -28,10 +29,11 @@ class Events:
 
 
 class StoppableThread(Thread):
-    def __init__(self, target=None, name=None, args=(), kwargs=None, daemon=None):
+    def __init__(self, target=None, name=None, args=(), kwargs=None, daemon=None, interval=None):
         super(StoppableThread, self).__init__(target=target, name=name, args=args, kwargs=kwargs, daemon=daemon)
         self.events = Events()
         self.handler_name = ''
+        self._interval = interval
 
     def set_handler(self, handler_name):
         self.events.change_input.set()
@@ -45,6 +47,7 @@ class StoppableThread(Thread):
             types[self.handler_name].is_connected = types[self.handler_name].connect(**kwargs)
             if types[self.handler_name].is_connected:
                 self.events.Finish.connect.set()
+                self.events.interval.set()
                 logger.debug(f'connected to handler {self.handler_name}')
             else:
                 logger.error(f'Failed to connect to handler {self.handler_name}')
@@ -71,6 +74,10 @@ class StoppableThread(Thread):
             elif self.events.Finish.connect.is_set():
                 try:
                     self._target(*self._args, **self._kwargs)
+                    if self.events.interval.is_set():
+                        self.events.interval.clear()
+                        types[self.handler_name].interval_action()
+                        Timer(self._interval, lambda: self.events.interval.set()).start()
                 except DisconnectionEvent as disconnect:
                     logger.error(disconnect)
                     self.events.clean.set()
