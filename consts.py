@@ -53,7 +53,6 @@ class DatabaseReader(Enum):
 
 
 class DatabaseTypes:
-    IGNORE = 'ignore'
     ROW = 'row'
     SINGLE_VALUE = 'single'
     DATAFRAME = 'dataframe'

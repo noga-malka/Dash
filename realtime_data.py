@@ -47,10 +47,10 @@ class RealtimeData:
     @staticmethod
     def parse_dpc_controller(content: str, **kwargs):
         try:
-            parsed_content = float(content[0].strip('>'))
+            row = {InputNames.DPC: float(content[0])}
         except (ValueError, IndexError):
-            return DatabaseTypes.IGNORE, None
-        return DatabaseTypes.ROW, {InputNames.DPC: parsed_content}
+            row = {}
+        return DatabaseTypes.ROW, row
 
     def save_output(self, command: str, content: str, **kwargs):
         return DatabaseTypes.SINGLE_VALUE, (command, int(content[0]), self.thread.events.scan_sensor)

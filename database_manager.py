@@ -14,7 +14,6 @@ class DatabaseManager:
             DatabaseTypes.SINGLE_VALUE: self.save_single_value,
             DatabaseTypes.ROW: self.add_row,
             DatabaseTypes.DATAFRAME: self.merge,
-            DatabaseTypes.IGNORE: lambda args: None,
         }
         self.reset()
 
@@ -56,9 +55,10 @@ class DatabaseManager:
             self.data = pandas.concat([self.data, *dataframes])
 
     def add_row(self, content):
-        row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
-        if not row.empty:
-            self.data = self.data.append(row)
+        if all(content):
+            row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
+            if not row.empty:
+                self.data = self.data.append(row)
 
     def to_csv(self, path=None):
         return self.data.to_csv(path)
