@@ -3,7 +3,7 @@ from typing import Callable
 
 import pandas
 
-from configurations import Settings, logger
+from configurations import Settings, logger, InputNames
 from consts import DatabaseTypes
 from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets
@@ -50,7 +50,7 @@ class RealtimeData:
             parsed_content = float(content[0].strip('>'))
         except (ValueError, IndexError):
             return DatabaseTypes.IGNORE, None
-        return DatabaseTypes.ROW, {'dpc': parsed_content}
+        return DatabaseTypes.ROW, {InputNames.DPC: parsed_content}
 
     def save_output(self, command: str, content: str, **kwargs):
         return DatabaseTypes.SINGLE_VALUE, (command, int(content[0]), self.thread.events.scan_sensor)

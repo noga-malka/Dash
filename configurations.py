@@ -27,6 +27,7 @@ class InputNames:
     PRESSURE_2 = 'pressure 2'
     PRESSURE_1_TEMP = 'Temp pressure 1'
     PRESSURE_2_TEMP = 'Temp pressure 2'
+    DPC = 'DPC'
 
 
 class SensorNames:
@@ -38,6 +39,7 @@ class SensorNames:
     DS4 = 'Canister Bottom'
     PRESSURE1 = 'Pressure 1'
     PRESSURE2 = 'Pressure 2'
+    DPC = 'DPC sensor'
 
 
 class ContentType:
@@ -64,6 +66,7 @@ class Labels:
     TEMP = 'Temperature'
     HUMIDITY = 'Humidity'
     PRESSURE = 'Pressure'
+    DPC = 'DPC'
 
 
 class SensorInstance:
@@ -107,6 +110,16 @@ class SensorInstance:
                       unit_type=UnitTypes.PRESSURE,
                       possible_units=[UnitTypes.PRESSURE])
 
+    DPC = Sensor(label=Labels.DPC,
+                 minimum=0,
+                 low_error=0.25,
+                 low_warning=0.5,
+                 high_warning=2,
+                 high_error=2.25,
+                 maximum=2.5,
+                 unit_type=UnitTypes.SET_POINT,
+                 possible_units=[UnitTypes.SET_POINT])
+
 
 class Schema:
     SENSOR_SCHEMA = Sensor.schema()['properties']
@@ -118,6 +131,7 @@ class Schema:
         Labels.TEMP: TemperatureMonitor(90),
         Labels.HUMIDITY: GaugeMonitor(110),
         Labels.PRESSURE: GaugeMonitor(110),
+        Labels.DPC: GaugeMonitor(110),
     }
 
 
@@ -166,12 +180,16 @@ class Settings:
         SensorNames.PRESSURE2: {
             InputNames.PRESSURE_2: SensorInstance.Pressure,
             InputNames.PRESSURE_2_TEMP: SensorInstance.Temperature,
-        }
+        },
+        SensorNames.DPC: {
+            InputNames.DPC: SensorInstance.DPC,
+        },
     }
     SENSORS = set_sensors(DEFAULT)
 
     DISPLAY = [
-        [InputNames.CO2, InputNames.CO2_TEMP, InputNames.CO2_HUMIDITY, InputNames.HTU_TEMP, InputNames.HTU_HUMIDITY],
+        [InputNames.DPC, InputNames.CO2, InputNames.CO2_TEMP, InputNames.CO2_HUMIDITY, InputNames.HTU_TEMP,
+         InputNames.HTU_HUMIDITY],
         [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4, InputNames.PRESSURE_1,
          InputNames.PRESSURE_1_TEMP, InputNames.PRESSURE_2, InputNames.PRESSURE_2_TEMP]
     ]
@@ -179,6 +197,9 @@ class Settings:
     GRAPHS = {
         'CO2': [
             InputNames.CO2,
+        ],
+        'DPC': [
+            InputNames.DPC,
         ],
         'Temperature': [
             InputNames.CO2_TEMP,
