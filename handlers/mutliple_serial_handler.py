@@ -24,11 +24,15 @@ class MultipleSerialHandler(Handler):
 
     def send_command(self, command, content):
         input_type = Commands.CLASSIFIER.get(command)
-        if input_type:
+        try:
             packet = InputTypes.MAPPING[input_type]['packet_builder'].build_packet(command, content)
             self.handlers[input_type].send_packet(packet)
-        else:
+        except KeyError:
             logger.warning(f'no handler with command {command}')
+
+    def interval_action(self):
+        if InputTypes.CO2_CONTROLLER in self.handlers:
+            self.send_command(Commands.CO2Controller.READ, '')
 
     def read_lines(self) -> list[str]:
         lines = []

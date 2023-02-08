@@ -18,6 +18,9 @@ class Handler:
             self.client.close()
         self.client = None
 
+    def interval_action(self):
+        pass
+
     def send_command(self, command, content):
         raise NotImplementedError()
 
