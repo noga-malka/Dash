@@ -32,7 +32,7 @@ def activate_reader_thread(path: str):
 
 @app.callback(Output('placeholder', 'lang'), Input('save_data', 'n_intervals'))
 def save_temporary_file(intervals):
-    realtime.data.to_csv(OutputDirectory.TEMP_FILE)
+    realtime.database.to_csv(OutputDirectory.TEMP_FILE)
 
 
 @app.callback(Output('theme_div', 'children'), Input(ThemeSwitchAIO.ids.switch('theme'), 'value'))
@@ -47,15 +47,15 @@ def change_theme(theme):
               Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
     timestamp = 'Timer: '
-    if realtime.data.is_not_empty():
-        timestamp += realtime.data.time_gap()
+    if realtime.database.is_not_empty():
+        timestamp += realtime.database.time_gap()
     return timestamp
 
 
 @app.callback(Output("download_text", "data"), Input('save_session', 'n_clicks'))
 def toggle_modal(click):
     creation_time = datetime.now().strftime("%Y_%m_%d %H-%M-%S")
-    return dict(filename=f'output_{creation_time}.csv', content=realtime.data.to_csv())
+    return dict(filename=f'output_{creation_time}.csv', content=realtime.database.to_csv())
 
 
 @app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), State('upload-file', 'filename'),

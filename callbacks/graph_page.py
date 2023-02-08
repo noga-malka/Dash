@@ -14,7 +14,8 @@ from realtime_data import realtime
 def create_graphs(toggle, interval):
     figures = []
     for name, sensors in Settings.GRAPHS.items():
-        content = realtime.data.data[list(set(realtime.data.data.columns).intersection(set(sensors)))]
+        all_data = realtime.database.read('all')
+        content = all_data[list(set(all_data.columns).intersection(set(sensors)))]
         graph = px.line(content, title=name, template=Theme.FIGURE_DARK if toggle else Theme.FIGURE_LIGHT)
         figures.append(graph)
     return figures

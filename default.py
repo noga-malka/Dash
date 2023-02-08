@@ -86,7 +86,7 @@ def toggle_modal(click, is_open):
               [State("are_you_sure", "is_open")], prevent_initial_call=True)
 def toggle_modal(clicked, no, yes, is_open):
     if callback_context.triggered_id == 'sure_yes':
-        realtime.clean()
+        realtime.thread.events.clean.set()
     return not is_open
 
 

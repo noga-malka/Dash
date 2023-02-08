@@ -4,7 +4,7 @@ from typing import Callable
 import pandas
 
 from configurations import Settings, logger
-from dataframe import Dataframe
+from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets
 from stoppable_thread import StoppableThread, types
 
@@ -13,10 +13,10 @@ class RealtimeData:
     def __init__(self):
         self.thread = StoppableThread(target=self.add_data, daemon=True)
         self.thread.start()
-        self.data = Dataframe()
-        self.current = {}
-        self.command_outputs = {}
-        self.mapping: dict[str, Callable] = {
+        self.database = DatabaseManager()
+        self._current = {}
+
+        self._mapping: dict[str, Callable] = {
             HardwarePackets.SETUP: self.setup,
             HardwarePackets.ONE_WIRE: self.save_output,
             HardwarePackets.DATA: self.add_row,
@@ -27,23 +27,19 @@ class RealtimeData:
     def in_types(self):
         return self.thread.handler_name in types
 
-    def read_data(self):
-        return self.data.read_row()
-
     def add_data(self):
         if self.thread.events.clean.is_set():
-            self.data.reset(self.thread.events.Finish.clean)
+            self.database.reset(self.thread.events.Finish.clean)
         else:
             data = []
             try:
-                self.current = {}
+                self._current = {}
                 data = types[self.thread.handler_name].extract_data()
                 for (command, content) in data:
-                    data_type, args = self.mapping[command](command, content)
-                    self.current.setdefault(data_type, [])
-                    self.current[data_type].append(args)
-                if self.current:
-                    self.data.save(self.current)
+                    data_type, args = self._mapping[command](command=command, content=content)
+                    self._current.setdefault(data_type, [])
+                    self._current[data_type].append(args)
+                self.database.save(self._current)
             except (KeyError, IndexError, ValueError, UnicodeDecodeError):
                 logger.warning(f'Failed to parse row: {data}')
 

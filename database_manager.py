@@ -3,7 +3,7 @@ import functools
 import pandas
 
 
-class Dataframe:
+class DatabaseManager:
     def __init__(self):
         self.data = None
         self.single_values = None
@@ -29,11 +29,11 @@ class Dataframe:
         return len(self.data)
 
     def time_gap(self):
-        total = pandas.Timestamp(self.read_row().name) - pandas.Timestamp(self.read_row(0).name)
+        total = pandas.Timestamp(self.read().name) - pandas.Timestamp(self.read(0).name)
         return str(total).split(' ')[-1]
 
-    def read_row(self, index=-1):
-        return self.data.iloc[index]
+    def read(self, index=-1):
+        return self.data if index == 'all' else self.data.iloc[index]
 
     def save_single_value(self, values):
         for (key, value, event) in values:

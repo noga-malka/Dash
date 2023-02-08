@@ -16,7 +16,7 @@ from utilities import generate_sensors_output
 def update_sensors(n_intervals):
     try:
         types[realtime.thread.handler_name].interval_action()
-        content = realtime.read_data()
+        content = realtime.database.read()
     except IndexError:
         content = {name: sensor.minimum for name, sensor in Settings.SENSORS.items()}
     outputs = [Schema.MONITOR_TYPES[sensor.label].generate_output_values(sensor, content.get(name, numpy.NaN)) for
@@ -27,7 +27,7 @@ def update_sensors(n_intervals):
 @app.callback([Output(group + 'header', 'style') for group in group_sensors()], Input(TagIds.INTERVAL, 'n_intervals'))
 def scan_bluetooth(clicked):
     try:
-        content = realtime.read_data()
+        content = realtime.database.read()
     except IndexError:
         raise PreventUpdate
     disconnected = {sensor for sensor in Settings.SENSORS if numpy.isnan(content.get(sensor, numpy.NaN))}

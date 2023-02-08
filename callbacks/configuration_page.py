@@ -35,7 +35,7 @@ def toggle_modal(reset_toggles, *args):
                 addresses[index] = ''
             else:
                 success = realtime.send_command(SetupConsts.COMMANDS[sensor], 0, realtime.thread.events.set_device)
-                addresses[index] = realtime.data.get(HardwarePackets.SETUP) if success else dash.no_update
+                addresses[index] = realtime.database.get(HardwarePackets.SETUP) if success else dash.no_update
                 icons[index] = f'fa {StatusIcons.CHECK if success else StatusIcons.ERROR} fa-xl'
             break
     return *icons, *addresses, *no_update
@@ -49,11 +49,11 @@ def read_board(is_open, *args):
     if not realtime.in_types() or not is_open:
         raise PreventUpdate
     success = realtime.send_command(Commands.SEARCH_SENSOR, 0, realtime.thread.events.scan_sensor, timeout=2)
-    sensor_count = realtime.data.get(HardwarePackets.ONE_WIRE, 0) if success else -1
+    sensor_count = realtime.database.get(HardwarePackets.ONE_WIRE, 0) if success else -1
     scan_board = sensor_count != 4
     enable_toggle = sensor_count != 1
     if enable_toggle:
-        realtime.data.set(HardwarePackets.SETUP, '')
+        realtime.database.set(HardwarePackets.SETUP, '')
     return f'found {sensor_count} sensors', *[enable_toggle] * len(SetupConsts.COMMANDS), scan_board
 
 
