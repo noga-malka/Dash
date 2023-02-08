@@ -51,11 +51,11 @@ def toggle_collapse(expand_click, is_open):
 
 
 @app.callback(
-    Output("placeholder", "className"),
-    Input("dpc_mode_selector", "value"), prevent_initial_call=True)
+    Output('sp_slider', 'disabled'), Input("dpc_mode_selector", "value"), prevent_initial_call=True)
 def toggle_collapse(mode):
     if mode:
         realtime.send_command(Commands.CO2Controller.MAPPING[mode], '')
+    return mode != 'auto'
 
 
 @app.callback([[Output(sensor_key, 'min'), Output(sensor_key, 'max'), Output(sensor_key, 'units'),

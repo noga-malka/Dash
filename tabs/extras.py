@@ -67,7 +67,7 @@ def serial_extra():
                            options=[{"label": command.title(), "value": command} for command in
                                     Commands.CO2Controller.MAPPING])]),
         generate_card('Set Point in DPC', [
-            dcc.Slider(0, 2.5, id='sp_slider',
+            dcc.Slider(0, 2.5, id='sp_slider', disabled=True,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
         html.Div(style={'flex-grow': '1'}),
