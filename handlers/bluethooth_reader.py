@@ -31,8 +31,11 @@ class BluetoothHandler(Handler):
 
     def read_lines(self) -> list[str]:
         while b'\n' not in self.buffer:
-            new_data = self.client.recv(4096)
-            if new_data == b'':
+            try:
+                new_data = self.client.recv(4096)
+                if new_data == b'':
+                    raise ConnectionAbortedError
+            except ConnectionAbortedError:
                 raise DisconnectionEvent(self.__class__.__name__)
             self.buffer += new_data
         end_line = self.buffer.find(b'\n')

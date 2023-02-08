@@ -24,7 +24,7 @@ class SerialHandler(Handler):
         try:
             if self.client.inWaiting():
                 return [self.client.readline().decode().strip()]
-        except serial.SerialException:
+        except (serial.SerialException, AttributeError):
             raise DisconnectionEvent(self.__class__.__name__)
         return []
 

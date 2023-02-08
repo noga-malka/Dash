@@ -15,7 +15,13 @@ class MultipleSerialHandler(Handler):
     def discover(self):
         self.devices = [com[0] for com in filter(lambda port: "USB" in port[2], list_ports.comports())]
 
+    def disconnect(self):
+        for connection in self.handlers.values():
+            connection.disconnect()
+        self.handlers = {}
+
     def connect(self, connections: dict, **kwargs):
+        self.disconnect()
         for comport, action in connections.items():
             self.handlers[action] = SerialHandler()
             self.handlers[action].is_connected = self.handlers[action].connect(comport=comport)
