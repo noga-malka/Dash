@@ -54,23 +54,20 @@ def generate_layout():
             html.Div([
                 html.Div(
                     [
-                        html.H2("Data Input", className="display-7"),
+                        html.Div(html.H2("Data Input", className="display-7"), className='sidebar-header'),
                         html.Hr(),
                         dbc.Nav(
-                            [
-                                dbc.NavLink(
-                                    [html.Div(
-                                        [html.Div(className=f"fa {icon['icon']['icon']}", style={'padding': '10px'}),
-                                         html.Label(icon['label'])]),
-                                        html.Label(id=f"{icon['icon']['id']}_label")],
-                                    href=f"/{icon['icon']['id']}", id=f"{icon['icon']['id']}_link",
-                                    active="exact") for icon in TagIds.Icons.INPUT_MODES
-                            ],
-                            vertical=True,
-                            pills=True,
-                            key=f'/{TagIds.Icons.SERIAL["id"]}'
+                            [dbc.NavLink(
+                                [html.Div([
+                                    html.Div(className=f"fa {icon['icon']['icon']} icon"),
+                                    html.Span(icon['label']),
+                                ]),
+                                    html.Span(id=f"{icon['icon']['id']}_label")],
+                                href=f"/{icon['icon']['id']}", id=f"{icon['icon']['id']}_link",
+                                active="exact") for icon in TagIds.Icons.INPUT_MODES],
+                            vertical=True, pills=True, key=f'/{TagIds.Icons.SERIAL["id"]}'
                         ),
-                    ], className='side-nav'
+                    ], className='sidebar'
                 ),
                 serial_modal(),
                 bluetooth_modal(),

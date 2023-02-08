@@ -7,9 +7,6 @@ flex-grow: 1
 .children-margin > *{
 margin: 10px;
 }
-.grow > *{
-    flex-grow:1
-}
 .slider{
 width: 200px
 
@@ -59,9 +56,6 @@ font-family: var(--bs-body-font-family)!important
     display: flex;
     justify-content: space-around;
 }
-#title{
-    margin: 0;
-}
 .sensor-card{
     width: fit-content!important;
 }
@@ -93,11 +87,6 @@ width: 100%;
     text-align: center;
     margin: 10px;
 }
-.side-nav{
-width: 20rem;
-padding: 2rem 1rem;
-border-right: groove;
-}
 .fa-check-circle{
     color: green;
 }
@@ -106,9 +95,6 @@ border-right: groove;
 }
 .fa-times-circle{
     color: red;
-}
-.Select-menu-outer{
-    color: black
 }
 .gHfqLF, .sc-gqjmRU{
 font-size:large;
