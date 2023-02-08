@@ -39,7 +39,7 @@ class SensorNames:
     DS4 = 'Canister Bottom'
     PRESSURE1 = 'Pressure 1'
     PRESSURE2 = 'Pressure 2'
-    DPC = 'DPC sensor'
+    DPC = 'DPC Volume'
 
 
 class ContentType:

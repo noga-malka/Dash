@@ -52,7 +52,7 @@ def control_panel(buttons: list):
                 [
                     html.Div(buttons, className='flex align children-margin center')
                 ],
-                id="control_panel",
+                id="control_panel", className='full-width'
             ),
             html.Div(id='expand_panel', className=TagIds.Icons.DOWN, style={'padding': '10px', 'font-size': 'x-large'})
         ], className='flex center column align bg-info',
@@ -70,6 +70,7 @@ def serial_extra():
             dcc.Slider(0, 2.5, id='sp_slider',
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
+        html.Div(style={'flex-grow': '1'}),
         generate_card('Reset CO2 sensors',
                       [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
                        dbc.Button('reset', id=TagIds.CO2_BUTTON)]),
