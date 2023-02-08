@@ -12,7 +12,7 @@ from stoppable_thread import StoppableThread, types
 
 class RealtimeData:
     def __init__(self):
-        self.thread = StoppableThread(target=self.add_data, daemon=True, interval=1)
+        self.thread = StoppableThread(target=self.add_data, daemon=True, interval=0.8)
         self.thread.start()
         self.database = DatabaseManager()
         self._current = {}
