@@ -2,16 +2,18 @@ import functools
 
 import pandas
 
+from consts import DatabaseTypes, DatabaseReader
+
 
 class DatabaseManager:
     def __init__(self):
         self.data = None
         self.single_values = None
         self._mapping = {
-            'single': self.save_single_value,
-            'row': self.add_row,
-            'frame': self.merge,
-            'ignore': lambda args: None,
+            DatabaseTypes.SINGLE_VALUE: self.save_single_value,
+            DatabaseTypes.ROW: self.add_row,
+            DatabaseTypes.DATAFRAME: self.merge,
+            DatabaseTypes.IGNORE: lambda args: None,
         }
         self.reset()
 
@@ -29,11 +31,11 @@ class DatabaseManager:
         return len(self.data)
 
     def time_gap(self):
-        total = pandas.Timestamp(self.read().name) - pandas.Timestamp(self.read(0).name)
+        total = pandas.Timestamp(self.read().name) - pandas.Timestamp(self.read(DatabaseReader.FIRST).name)
         return str(total).split(' ')[-1]
 
-    def read(self, index=-1):
-        return self.data if index == 'all' else self.data.iloc[index]
+    def read(self, index=DatabaseReader.LAST):
+        return self.data if index == DatabaseReader.ALL else self.data.iloc[index.value]
 
     def save_single_value(self, values):
         for (key, value, event) in values:

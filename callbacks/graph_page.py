@@ -3,7 +3,7 @@ from dash import Output, Input
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
-from consts import TagIds, Theme
+from consts import TagIds, Theme, DatabaseReader
 from default import app
 from realtime_data import realtime
 
@@ -14,7 +14,7 @@ from realtime_data import realtime
 def create_graphs(toggle, interval):
     figures = []
     for name, sensors in Settings.GRAPHS.items():
-        all_data = realtime.database.read('all')
+        all_data = realtime.database.read(DatabaseReader.ALL)
         content = all_data[list(set(all_data.columns).intersection(set(sensors)))]
         graph = px.line(content, title=name, template=Theme.FIGURE_DARK if toggle else Theme.FIGURE_LIGHT)
         figures.append(graph)

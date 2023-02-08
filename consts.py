@@ -46,6 +46,19 @@ class StatusIcons:
     ERROR = 'fa-times-circle'
 
 
+class DatabaseReader(Enum):
+    FIRST = 0
+    LAST = -1
+    ALL = 'all'
+
+
+class DatabaseTypes:
+    IGNORE = 'ignore'
+    ROW = 'row'
+    SINGLE_VALUE = 'single'
+    DATAFRAME = 'dataframe'
+
+
 class DaqConsts:
     GRADIENT = {"gradient": True, "ranges": {"red": [0, 20], "yellow": [20, 50], "green": [50, 100]}}
     ICONS = {"right": "fa fa-moon", "left": "fa fa-sun"}

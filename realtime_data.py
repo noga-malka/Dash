@@ -4,6 +4,7 @@ from typing import Callable
 import pandas
 
 from configurations import Settings, logger
+from consts import DatabaseTypes
 from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets
 from stoppable_thread import StoppableThread, types
@@ -48,23 +49,23 @@ class RealtimeData:
         try:
             parsed_content = float(content[0].strip('>'))
         except (ValueError, IndexError):
-            return 'ignore', None
-        return 'row', {'dpc': parsed_content}
+            return DatabaseTypes.IGNORE, None
+        return DatabaseTypes.ROW, {'dpc': parsed_content}
 
     def save_output(self, command: str, content: str, **kwargs):
-        return 'single', (command, int(content[0]), self.thread.events.scan_sensor)
+        return DatabaseTypes.SINGLE_VALUE, (command, int(content[0]), self.thread.events.scan_sensor)
 
     def setup(self, command: str, content: str, **kwargs):
-        return 'single', (command, content, self.thread.events.set_device)
+        return DatabaseTypes.SINGLE_VALUE, (command, content, self.thread.events.set_device)
 
     @staticmethod
     def add_row(content: str, **kwargs):
         sample = {content[index]: float(content[index + 1]) for index in range(0, len(content), 2)}
-        return 'row', {key: value for key, value in sample.items() if key in Settings.SENSORS}
+        return DatabaseTypes.ROW, {key: value for key, value in sample.items() if key in Settings.SENSORS}
 
     @staticmethod
     def add_dataframe(content: pandas.DataFrame, **kwargs):
-        return 'frame', content
+        return DatabaseTypes.DATAFRAME, content
 
     def send_command(self, command: str, content: str = '0', event: Event = None, timeout=5):
         if not event:
