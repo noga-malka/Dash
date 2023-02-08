@@ -1,4 +1,5 @@
 import functools
+import re
 
 import pandas
 
@@ -32,7 +33,7 @@ class DatabaseManager:
 
     def time_gap(self):
         total = pandas.Timestamp(self.read().name) - pandas.Timestamp(self.read(DatabaseReader.FIRST).name)
-        return str(total).split(' ')[-1]
+        return re.search('([0-9]{2}|:)+', str(total)).group(0)
 
     def read(self, index=DatabaseReader.LAST):
         return self.data if index == DatabaseReader.ALL else self.data.iloc[index.value]
