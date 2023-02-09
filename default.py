@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import Dash, Input, Output, callback_context, State
 from dash.exceptions import PreventUpdate
 
-from consts import TagIds, Theme, NavButtons
+from consts import TagIds, Theme, NavButtons, Icons
 from layout import generate_layout
 from realtime_data import realtime
 from stoppable_thread import types
@@ -34,10 +34,10 @@ def scan_comports(add, clear, children, comport, input_type):
     raise PreventUpdate
 
 
-@app.callback([Output(icon['id'], 'style') for icon in TagIds.Icons.ALL],
-              [Input(icon['id'], 'n_clicks') for icon in TagIds.Icons.ALL], prevent_initial_call=True)
+@app.callback([Output(icon['id'], 'style') for icon in Icons.ALL],
+              [Input(icon['id'], 'n_clicks') for icon in Icons.ALL], prevent_initial_call=True)
 def click_navigation_bar_buttons(*buttons):
-    colors = [None if callback_context.triggered_id != icon['id'] else 'red' for icon in TagIds.Icons.ALL]
+    colors = [None if callback_context.triggered_id != icon['id'] else 'red' for icon in Icons.ALL]
     return [{'color': value} for value in colors]
 
 
@@ -72,7 +72,7 @@ def toggle_modal(click, is_open, connect_click, connections):
     return is_open
 
 
-@app.callback(Output("save_file", "is_open"), Input(TagIds.Icons.SAVE['id'], 'n_clicks'),
+@app.callback(Output("save_file", "is_open"), Input(Icons.SAVE['id'], 'n_clicks'),
               State("save_file", "is_open"))
 def toggle_modal(click, is_open):
     if click:
@@ -80,7 +80,7 @@ def toggle_modal(click, is_open):
     return is_open
 
 
-@app.callback(Output("are_you_sure", "is_open"), Input(TagIds.Icons.CLEAN['id'], 'n_clicks'),
+@app.callback(Output("are_you_sure", "is_open"), Input(Icons.CLEAN['id'], 'n_clicks'),
               Input('sure_no', 'n_clicks'), Input('sure_yes', 'n_clicks'),
               [State("are_you_sure", "is_open")], prevent_initial_call=True)
 def toggle_modal(clicked, no, yes, is_open):
@@ -91,7 +91,7 @@ def toggle_modal(clicked, no, yes, is_open):
 
 @app.callback(
     [[Output(f"{icon['icon']['id']}_label", "children"), Output(f"{icon['icon']['id']}_link", "style")] for icon in
-     TagIds.Icons.INPUT_MODES], Input('url', 'pathname'),
+     Icons.INPUT_MODES], Input('url', 'pathname'),
     Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True
 )
 def toggle_modal(path, interval):
@@ -100,7 +100,7 @@ def toggle_modal(path, interval):
     if not realtime.in_types():
         raise PreventUpdate
     current = types[realtime.thread.handler_name].current
-    for icon in TagIds.Icons.INPUT_MODES:
+    for icon in Icons.INPUT_MODES:
         option = NavButtons.DEFAULT
         if icon['icon']['id'] == path:
             option = NavButtons.CLICKED

@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import dcc, html
 
 from configurations import SetupConsts, Settings
-from consts import TagIds
+from consts import TagIds, Icons
 from handlers.consts import InputTypes, Commands
 from utilities import modal_generator, corner_radius
 
@@ -54,7 +54,7 @@ def control_panel(buttons: list):
                 ],
                 id="control_panel", className='full-width'
             ),
-            html.Div(id='expand_panel', className=TagIds.Icons.Css.DOWN, style={'padding': '10px'})
+            html.Div(id='expand_panel', className=Icons.Css.DOWN, style={'padding': '10px'})
         ], className='flex center column align bg-info',
         style=corner_radius('bottom', 'right', '50px') | corner_radius('bottom', 'left', '50px'))
     ]
@@ -131,7 +131,7 @@ def generate_setup_buttons():
 
 
 EXTRA = {
-    TagIds.Icons.UPLOAD['id']: file_extra(),
-    TagIds.Icons.BLUETOOTH['id']: bluetooth_extra(),
-    TagIds.Icons.SERIAL['id']: serial_extra()
+    Icons.UPLOAD['id']: file_extra(),
+    Icons.BLUETOOTH['id']: bluetooth_extra(),
+    Icons.SERIAL['id']: serial_extra()
 }

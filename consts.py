@@ -16,42 +16,40 @@ class TagIds:
     CO2_BUTTON = 'set_co2'
     FAN_BUTTON = 'set_fan'
 
-    class Icons:
-        class Css:
-            DOWN = 'fa fa-angle-down fa-lg'
-            UP = 'fa fa-angle-up fa-lg'
-            SAVE = 'fa fa-bookmark fa-lg'
-            CLEAN = 'fa fa-eraser fa-lg'
 
-            SERIAL = 'fa fa-plug fa-lg icon'
-            BLUETOOTH = 'fa fa-wifi fa-lg icon'
-            RANDOM = 'fa fa-random fa-lg icon'
-            UPLOAD = 'fa fa-upload fa-lg icon'
+class Icons:
+    class Css:
+        DOWN = 'fa fa-angle-down fa-lg'
+        UP = 'fa fa-angle-up fa-lg'
+        SAVE = 'fa fa-bookmark fa-lg'
+        CLEAN = 'fa fa-eraser fa-lg'
 
-            CHECK = 'fa fa-check-circle fa-lg'
-            WARNING = 'fa fa-exclamation-circle fa-lg'
-            ERROR = 'fa fa-times-circle fa-lg'
+        SERIAL = 'fa fa-plug fa-lg icon'
+        BLUETOOTH = 'fa fa-wifi fa-lg icon'
+        RANDOM = 'fa fa-random fa-lg icon'
+        UPLOAD = 'fa fa-upload fa-lg icon'
 
-        SAVE = {'id': 'save', 'icon': Css.SAVE}
-        CLEAN = {'id': 'clean', 'icon': Css.CLEAN}
+        CHECK = 'fa fa-check-circle fa-lg'
+        WARNING = 'fa fa-exclamation-circle fa-lg'
+        ERROR = 'fa fa-times-circle fa-lg'
 
-        SERIAL = {'id': 'serial', 'icon': Css.SERIAL}
-        BLUETOOTH = {'id': 'bluetooth', 'icon': Css.BLUETOOTH}
-        RANDOM = {'id': 'random', 'icon': Css.RANDOM}
-        UPLOAD = {'id': 'upload', 'icon': Css.UPLOAD}
+        MOON = 'fa fa-moon'
+        SUN = 'fa fa-sun'
 
-        ALL = [SAVE, CLEAN]
-        INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
-                       {'icon': BLUETOOTH, 'label': 'Bluetooth'},
-                       {'icon': UPLOAD, 'label': 'Load File'}]
-        if IS_DEBUG:
-            INPUT_MODES.append({'icon': RANDOM, 'label': 'Random Data'})
+    SAVE = {'id': 'save', 'icon': Css.SAVE}
+    CLEAN = {'id': 'clean', 'icon': Css.CLEAN}
 
+    SERIAL = {'id': 'serial', 'icon': Css.SERIAL}
+    BLUETOOTH = {'id': 'bluetooth', 'icon': Css.BLUETOOTH}
+    RANDOM = {'id': 'random', 'icon': Css.RANDOM}
+    UPLOAD = {'id': 'upload', 'icon': Css.UPLOAD}
 
-class StatusIcons:
-    CHECK = 'fa-check-circle'
-    WARNING = 'fa-exclamation-circle'
-    ERROR = 'fa-times-circle'
+    ALL = [SAVE, CLEAN]
+    INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
+                   {'icon': BLUETOOTH, 'label': 'Bluetooth'},
+                   {'icon': UPLOAD, 'label': 'Load File'}]
+    if IS_DEBUG:
+        INPUT_MODES.append({'icon': RANDOM, 'label': 'Random Data'})
 
 
 class DatabaseReader(Enum):
@@ -68,7 +66,7 @@ class DatabaseTypes:
 
 class DaqConsts:
     GRADIENT = {"gradient": True, "ranges": {"red": [0, 20], "yellow": [20, 50], "green": [50, 100]}}
-    ICONS = {"right": "fa fa-moon", "left": "fa fa-sun"}
+    ICONS = {"right": Icons.Css.MOON, "left": Icons.Css.SUN}
 
 
 class Colors(Enum):
@@ -100,10 +98,10 @@ class ValueRange:
         ('high_error', 'maximum'): Colors.ERROR,
     }
     ICONS = {
-        Colors.GOOD: StatusIcons.CHECK,
-        Colors.WARNING: StatusIcons.WARNING,
-        Colors.ERROR: StatusIcons.WARNING,
-        Colors.DISCONNECTED: StatusIcons.ERROR,
+        Colors.GOOD: Icons.Css.CHECK,
+        Colors.WARNING: Icons.Css.WARNING,
+        Colors.ERROR: Icons.Css.WARNING,
+        Colors.DISCONNECTED: Icons.Css.ERROR,
     }
 
 

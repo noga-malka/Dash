@@ -5,7 +5,7 @@ from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import SetupConsts, Settings
-from consts import StatusIcons, UnitTypes, TagIds, OutputDirectory
+from consts import UnitTypes, TagIds, OutputDirectory, Icons
 from default import app
 from handlers.consts import Commands, HardwarePackets
 from realtime_data import realtime
@@ -36,7 +36,7 @@ def toggle_modal(reset_toggles, *args):
             else:
                 success = realtime.send_command(SetupConsts.COMMANDS[sensor], 0, realtime.thread.events.set_device)
                 addresses[index] = realtime.database.get(HardwarePackets.SETUP) if success else dash.no_update
-                icons[index] = f'fa {StatusIcons.CHECK if success else StatusIcons.ERROR} fa-xl'
+                icons[index] = Icons.Css.CHECK if success else Icons.Css.ERROR
             break
     return *icons, *addresses, *no_update
 

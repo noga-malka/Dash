@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from consts import TagIds, DaqConsts, Theme
+from consts import TagIds, DaqConsts, Theme, Icons
 from tabs.extras import download_session, are_you_sure, configurate_board, bluetooth_modal, serial_modal
 from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
@@ -20,10 +20,10 @@ def generate_buttons():
     buttons = [
         dbc.Button([
             html.I(className=icon['icon'], style={'margin': '5px'}), icon['id']], id=icon['id'])
-        for icon in TagIds.Icons.ALL
+        for icon in Icons.ALL
     ]
     return [html.Div([dbc.Button('Timer:', id='timer'), *buttons], className='flex center children-margin-2'),
-            *[dbc.Tooltip(icon['id'], target=icon['id'], placement="top") for icon in TagIds.Icons.ALL]]
+            *[dbc.Tooltip(icon['id'], target=icon['id'], placement="top") for icon in Icons.ALL]]
 
 
 def generate_layout():
@@ -59,8 +59,8 @@ def generate_layout():
                                 ]),
                                     html.Span(id=f"{icon['icon']['id']}_label")],
                                 href=f"/{icon['icon']['id']}", id=f"{icon['icon']['id']}_link",
-                                active="exact") for icon in TagIds.Icons.INPUT_MODES],
-                            vertical=True, pills=True, key=f'/{TagIds.Icons.SERIAL["id"]}'
+                                active="exact") for icon in Icons.INPUT_MODES],
+                            vertical=True, pills=True, key=f'/{Icons.SERIAL["id"]}'
                         ),
                     ], className='sidebar'
                 ),

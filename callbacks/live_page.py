@@ -3,7 +3,7 @@ from dash import Input, Output, dash, callback_context, State
 from dash.exceptions import PreventUpdate
 
 from configurations import Settings, Schema, group_sensors
-from consts import TagIds, Colors, UnitTypes
+from consts import TagIds, Colors, UnitTypes, Icons
 from default import app
 from handlers.consts import Commands
 from realtime_data import realtime
@@ -47,7 +47,7 @@ def toggle_collapse(expand_click, is_open):
     state = not is_open
     if not expand_click:
         raise PreventUpdate
-    return state, TagIds.Icons.Css.UP if state else TagIds.Icons.Css.DOWN
+    return state, Icons.Css.UP if state else Icons.Css.DOWN
 
 
 @app.callback(
