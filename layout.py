@@ -74,7 +74,7 @@ def generate_layout():
                 html.Div(id='placeholder', style={'display': None}),
                 html.Div([dcc.Tabs(id=TagIds.TABS, value='monitor',
                                    children=[dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
-                          html.Div(id='theme_div')],
+                          html.Div(id=TagIds.Layout.THEME)],
                          style={'width': '100%'})
             ], style={'display': 'flex'}),
         ],

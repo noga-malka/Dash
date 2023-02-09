@@ -22,6 +22,7 @@ class TagFields:
     MIN = 'min'
     MAX = 'max'
     LABEL = 'label'
+    PATH = 'pathname'
 
 
 class TagIds:
@@ -34,6 +35,12 @@ class TagIds:
     FAN_BUTTON = 'set_fan'
     TEMP_SWITCH = 'temperature_switch'
     PLACEHOLDER = 'placeholder'
+    CLOCK = 'timer'
+
+    class Layout:
+        THEME = 'theme_layout'
+        CONTENT = 'content_layout'
+        EXTRA = 'extra_layout'
 
     class Intervals:
         ONE_SECOND = 'interval'
@@ -96,6 +103,8 @@ class TagIds:
                 CO2 = 'set_co2'
                 CO2_VALUE = 'co2_value'
                 FAN = 'set_fan'
+
+            UPLOAD_FILE = 'upload-file'
 
 
 class Icons:

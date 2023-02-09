@@ -27,13 +27,20 @@ def send_command(sp_value):
         realtime.send_command(Commands.CO2Controller.SET_POINT, str(sp_value))
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input('upload-file', 'contents'),
-              State('upload-file', 'filename'), prevent_initial_call=True)
-def load_file_data(content, file_name):
+@app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input(TagIds.Tabs.Monitors.UPLOAD_FILE, 'contents'),
+              State(TagIds.Tabs.Monitors.UPLOAD_FILE, 'filename'), prevent_initial_call=True)
+def load_data_from_file(content, file_name):
     if content:
         realtime.thread.connect_handler(content=content, file_name=file_name)
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'lang'), Input('save_data', 'n_intervals'))
+@app.callback(Output(TagIds.PLACEHOLDER, 'lang'), Input(TagIds.Intervals.ONE_MINUTE, TagFields.INTERVAL))
 def save_temporary_file(intervals):
     realtime.database.to_csv(OutputDirectory.TEMP_FILE)
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'accessKey'), Input(TagIds.LOCATION, TagFields.PATH))
+def update_the_threads_handler(path: str):
+    path = path.strip('/')
+    if realtime.thread.handler_name != path and realtime.thread.set_handler(path):
+        realtime.thread.connect_handler()

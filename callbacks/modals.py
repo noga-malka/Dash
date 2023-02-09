@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import dash_bootstrap_components as dbc
 from dash import Input, Output, callback_context, State
 from dash.exceptions import PreventUpdate
@@ -78,3 +80,9 @@ def add_serial_connection_to_list(children, comport, input_type, *args):
     if comport and input_type:
         return children + [dbc.Badge(f'{comport} : {input_type}', pill=True)]
     raise PreventUpdate
+
+
+@app.callback(Output(TagIds.Modals.Save.DOWNLOAD, TagFields.DATA), Input(TagIds.Modals.Save.BUTTON, TagFields.CLICK))
+def toggle_modal(click):
+    creation_time = datetime.now().strftime("%Y_%m_%d %H-%M-%S")
+    return dict(filename=f'output_{creation_time}.csv', content=realtime.database.to_csv())
