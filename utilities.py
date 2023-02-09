@@ -47,7 +47,7 @@ def load_configuration(config: dict):
         current_values = config[name]
         for key, value in current_values.items():
             if key in Schema.NUMERIC_FIELDS:
-                current_values[key] = UnitTypes.CANCEL[current_values['unit_type']](value)
+                current_values[key] = UnitTypes.get_converter(current_values['unit_type'], cancel=True)(value)
         sensor.__dict__.update(current_values)
 
 

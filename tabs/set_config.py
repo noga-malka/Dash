@@ -41,6 +41,6 @@ def load_data():
     for sensor in Settings.SENSORS.values():
         data = sensor.dict(exclude=Schema.HIDDEN_FIELDS)
         for key in numeric:
-            data[key] = UnitTypes.CONVERT[sensor.unit_type](data[key])
+            data[key] = UnitTypes.get_converter(sensor.unit_type)(data[key])
         parsed_data.append(data)
     return parsed_data

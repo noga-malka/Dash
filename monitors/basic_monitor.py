@@ -27,7 +27,7 @@ class Monitor:
             for (minimum, maximum), level in ValueRange.LEVEL_COMPARE.items():
                 if sensor_dict[minimum] <= value <= sensor_dict[maximum]:
                     current_level = level
-            value = UnitTypes.CONVERT[sensor.unit_type](value)
+            value = UnitTypes.get_converter(sensor.unit_type)(value)
         return [value, current_level.value, '{:.2f}'.format(value), current_level.value,
                 ValueRange.ICONS[current_level]]
 

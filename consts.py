@@ -121,21 +121,17 @@ class UnitTypes:
     PRESSURE = 'BAR'
     SET_POINT = 'SP'
     CONVERT = {
-        PRESSURE: lambda value: value,
-        PERCENTAGE: lambda value: value,
-        PPM: lambda value: value,
-        CELSIUS: lambda value: value,
-        SET_POINT: lambda value: value,
         FAHRENHEIT: to_fahrenheit
     }
     CANCEL = {
-        PRESSURE: lambda value: value,
-        PERCENTAGE: lambda value: value,
-        PPM: lambda value: value,
-        CELSIUS: lambda value: value,
-        SET_POINT: lambda value: value,
         FAHRENHEIT: to_celsius
     }
+
+    @staticmethod
+    def get_converter(unit_type: str, cancel=False):
+        if cancel:
+            return UnitTypes.CANCEL.get(unit_type, lambda value: value)
+        return UnitTypes.CONVERT.get(unit_type, lambda value: value)
 
 
 class NavButtons:

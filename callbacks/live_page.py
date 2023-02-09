@@ -63,7 +63,7 @@ def toggle_collapse(mode):
               Input('temperature_switch', 'on'))
 def change_unit_type(is_celsius):
     unit_type = UnitTypes.CELSIUS if is_celsius else UnitTypes.FAHRENHEIT
-    change_function = UnitTypes.CONVERT[unit_type]
+    change_function = UnitTypes.get_converter(unit_type)
     outputs = []
     for name, sensor in Settings.SENSORS.items():
         changes = [dash.no_update] * 4
