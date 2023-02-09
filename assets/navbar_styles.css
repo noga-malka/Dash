@@ -25,7 +25,6 @@
 /* fix the width of the icons */
 .sidebar .nav-link .icon {
   padding: 5px;
-  font-size: larger;
 }
 
 /* hide the navlink labels by default */

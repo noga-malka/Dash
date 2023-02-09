@@ -2,6 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import html
 
 from configurations import group_sensors, Settings
+from consts import TagIds
 from utilities import create_card
 
 
@@ -17,7 +18,7 @@ class LivePage:
                     rows[index].append(group_name)
                     break
         return [
-            html.Div(id='extra'),
+            html.Div(id=TagIds.Layout.EXTRA),
             html.Div(
                 children=sum([self._build_row(row) for row in rows.values()], []),
                 className='children-margin flex center', style={'flex-wrap': 'wrap'})

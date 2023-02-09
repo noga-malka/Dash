@@ -60,7 +60,7 @@ width: 100%;
     margin-bottom: 8px
  }
 
-#upload-file{
+.upload{
     height: 60px;
     line-height: 60px;
     border-width: 1px;
@@ -81,4 +81,7 @@ width: 100%;
 .break-row {
 flex-basis: 100%;
 height: 0;
+}
+.Select-menu-outer{
+    color: black
 }

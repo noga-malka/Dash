@@ -7,43 +7,141 @@ import dash_bootstrap_components as dbc
 IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 
 
+class TagFields:
+    IS_OPEN = 'is_open'
+    CLICK = 'n_clicks'
+    INTERVAL = 'n_intervals'
+    VALUE = 'value'
+    CLASS_NAME = 'className'
+    STYLE = 'style'
+    CHILDREN = 'children'
+    OPTIONS = 'options'
+    DATA = 'data'
+    ON = 'on'
+    DISABLED = 'disabled'
+    MIN = 'min'
+    MAX = 'max'
+    LABEL = 'label'
+    PATH = 'pathname'
+
+
 class TagIds:
-    RANGE = 'range'
-    CHECKLIST = 'checklist'
+    LOCATION = 'url'
     TABS = 'tabs'
-    INTERVAL = 'interval'
-    GRAPH = 'graph'
-    CO2_BUTTON = 'set_co2'
-    FAN_BUTTON = 'set_fan'
+    TEMP_SWITCH = 'temperature_switch'
+    PLACEHOLDER = 'placeholder'
+    CLOCK = 'timer'
+    THEME = 'theme'
 
-    class Icons:
-        BACKWARD = {'id': 'backward', 'icon': 'fa-fast-backward'}
-        START = {'id': 'to-start', 'icon': 'fa-step-backward'}
-        PLAY = {'id': 'play', 'icon': 'fa-play'}
-        PAUSE = {'id': 'pause', 'icon': 'fa-pause-circle'}
-        SAVE = {'id': 'save', 'icon': 'fa-bookmark'}
-        CLEAN = {'id': 'clean', 'icon': 'fa-eraser'}
-        FORWARD = {'id': 'forward', 'icon': 'fa-fast-forward'}
-        END = {'id': 'to-end', 'icon': 'fa-step-forward'}
-        SERIAL = {'id': 'serial', 'icon': 'fa-plug'}
-        BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
-        RANDOM = {'id': 'random', 'icon': 'fa-random'}
-        UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
-        DOWN = 'fa fa-angle-down'
-        UP = 'fa fa-angle-up'
+    class Layout:
+        THEME = 'theme_layout'
+        CONTENT = 'content_layout'
+        EXTRA = 'extra_layout'
 
-        ALL = [SAVE, CLEAN]
-        INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
-                       {'icon': BLUETOOTH, 'label': 'Bluetooth'},
-                       {'icon': UPLOAD, 'label': 'Load File'}]
-        if IS_DEBUG:
-            INPUT_MODES.append({'icon': RANDOM, 'label': 'Random Data'})
+    class Intervals:
+        ONE_SECOND = 'interval'
+        THREE_SECONDS = 'read_board'
+        ONE_MINUTE = 'save_data'
+
+        VALUES = {
+            ONE_SECOND: 1000,
+            THREE_SECONDS: 3000,
+            ONE_MINUTE: 60000,
+        }
+
+        @staticmethod
+        def create_interval(name: str):
+            return dict(id=name, interval=TagIds.Intervals.VALUES[name], n_intervals=0)
+
+    class Modals:
+        class Save:
+            MODAL = 'save_file'
+            DOWNLOAD = 'download_text'
+            BUTTON = 'save_session'
+
+        class Clean:
+            MODAL = 'are_you_sure'
+            YES = 'sure_yes'
+            NO = 'sure_no'
+
+        class Bluetooth:
+            MODAL = 'bluetooth_modal'
+            SCAN = 'scan_bluetooth'
+            INPUT = 'mac_input'
+            CONNECT = 'mac_button'
+
+        class Serial:
+            MODAL = 'serial_modal'
+            CONNECTIONS = 'selected_connections'
+            SCAN = 'scan_comports'
+            ADD = 'add_serial'
+            CLEAR = 'clear_serial'
+            INPUT = 'serial_input'
+            INPUT_TYPE = 'input_type'
+            CONNECT = 'serial_connect'
+
+    class Tabs:
+        class Config:
+            TABLE = 'configuration'
+            SAVE_TABLE = 'save_config'
+            RESET_TOGGLES = 'reset_toggles'
+            SENSOR_STATUS = 'sensor_count'
+            SCAN = 'scan_board'
+            MODAL = 'config_board'
+            OPEN_MODAL = 'open_config_board'
+
+        class Monitors:
+            class Control:
+                PANEL = 'control_panel'
+                TOGGLE_PANEL = 'expand_panel'
+                SP_SLIDER = 'sp_slider'
+                DPC = 'dpc_mode_selector'
+                CO2 = 'set_co2'
+                CO2_VALUE = 'co2_value'
+                FAN = 'set_fan'
+
+            UPLOAD_FILE = 'upload_file'
 
 
-class StatusIcons:
-    CHECK = 'fa-check-circle'
-    WARNING = 'fa-exclamation-circle'
-    ERROR = 'fa-times-circle'
+class Icons:
+    class Css:
+        DOWN = 'fa fa-angle-down fa-lg'
+        UP = 'fa fa-angle-up fa-lg'
+        SAVE = 'fa fa-bookmark fa-lg'
+        CLEAN = 'fa fa-eraser fa-lg'
+
+        SERIAL = 'fa fa-plug fa-lg icon'
+        BLUETOOTH = 'fa fa-wifi fa-lg icon'
+        RANDOM = 'fa fa-random fa-lg icon'
+        UPLOAD = 'fa fa-upload fa-lg icon'
+
+        CHECK = 'fa fa-check-circle fa-lg'
+        WARNING = 'fa fa-exclamation-circle fa-lg'
+        ERROR = 'fa fa-times-circle fa-lg'
+
+        MOON = 'fa fa-moon'
+        SUN = 'fa fa-sun'
+
+    SAVE = {'id': 'save', 'icon': Css.SAVE}
+    CLEAN = {'id': 'clean', 'icon': Css.CLEAN}
+
+    SERIAL = {'id': 'serial', 'icon': Css.SERIAL}
+    BLUETOOTH = {'id': 'bluetooth', 'icon': Css.BLUETOOTH}
+    RANDOM = {'id': 'random', 'icon': Css.RANDOM}
+    UPLOAD = {'id': 'upload', 'icon': Css.UPLOAD}
+
+    ALL = [SAVE, CLEAN]
+
+
+class InputModes:
+    SERIAL = 'serial'
+    BLUETOOTH = 'bluetooth'
+    FILE = 'file'
+    ALL = {
+        SERIAL: {'icon': Icons.Css.SERIAL, 'label': 'Serial'},
+        BLUETOOTH: {'icon': Icons.Css.BLUETOOTH, 'label': 'Bluetooth'},
+        FILE: {'icon': Icons.Css.UPLOAD, 'label': 'From File'},
+    }
 
 
 class DatabaseReader(Enum):
@@ -60,7 +158,7 @@ class DatabaseTypes:
 
 class DaqConsts:
     GRADIENT = {"gradient": True, "ranges": {"red": [0, 20], "yellow": [20, 50], "green": [50, 100]}}
-    ICONS = {"right": "fa fa-moon", "left": "fa fa-sun"}
+    ICONS = {"right": Icons.Css.MOON, "left": Icons.Css.SUN}
 
 
 class Colors(Enum):
@@ -92,10 +190,10 @@ class ValueRange:
         ('high_error', 'maximum'): Colors.ERROR,
     }
     ICONS = {
-        Colors.GOOD: StatusIcons.CHECK,
-        Colors.WARNING: StatusIcons.WARNING,
-        Colors.ERROR: StatusIcons.WARNING,
-        Colors.DISCONNECTED: StatusIcons.ERROR,
+        Colors.GOOD: Icons.Css.CHECK,
+        Colors.WARNING: Icons.Css.WARNING,
+        Colors.ERROR: Icons.Css.WARNING,
+        Colors.DISCONNECTED: Icons.Css.ERROR,
     }
 
 
@@ -115,21 +213,17 @@ class UnitTypes:
     PRESSURE = 'BAR'
     SET_POINT = 'SP'
     CONVERT = {
-        PRESSURE: lambda value: value,
-        PERCENTAGE: lambda value: value,
-        PPM: lambda value: value,
-        CELSIUS: lambda value: value,
-        SET_POINT: lambda value: value,
         FAHRENHEIT: to_fahrenheit
     }
     CANCEL = {
-        PRESSURE: lambda value: value,
-        PERCENTAGE: lambda value: value,
-        PPM: lambda value: value,
-        CELSIUS: lambda value: value,
-        SET_POINT: lambda value: value,
         FAHRENHEIT: to_celsius
     }
+
+    @staticmethod
+    def get_converter(unit_type: str, cancel=False):
+        if cancel:
+            return UnitTypes.CANCEL.get(unit_type, lambda value: value)
+        return UnitTypes.CONVERT.get(unit_type, lambda value: value)
 
 
 class NavButtons:
