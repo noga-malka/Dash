@@ -1,8 +1,7 @@
-import dash_bootstrap_components as dbc
-from dash import Dash, Input, Output, callback_context, State
+from dash import Dash, Input, Output
 from dash.exceptions import PreventUpdate
 
-from consts import TagIds, Theme, NavButtons, InputModes
+from consts import TagIds, Theme, NavButtons, InputModes, TagFields
 from layout import generate_layout
 from realtime_data import realtime
 from stoppable_thread import types
@@ -11,32 +10,9 @@ app = Dash(__name__, external_stylesheets=[Theme.DARK], suppress_callback_except
 app.layout = generate_layout()
 
 
-@app.callback(Output('mac_input', 'options'), Input('scan_bluetooth', 'n_clicks'))
-def scan_bluetooth(clicked):
-    types[InputModes.BLUETOOTH].discover()
-    return list(types[InputModes.BLUETOOTH].devices.keys())
-
-
-@app.callback(Output('serial_input', 'options'), Input('scan_comports', 'n_clicks'))
-def scan_comports(clicked):
-    types[InputModes.SERIAL].discover()
-    return types[InputModes.SERIAL].devices
-
-
-@app.callback(Output('selected_connections', 'children'), Input('add_serial', 'n_clicks'),
-              Input('clear_serial', 'n_clicks'), State('selected_connections', 'children'),
-              State('serial_input', 'value'), State('input_type', 'value'), prevent_initial_call=True)
-def scan_comports(add, clear, children, comport, input_type):
-    if callback_context.triggered_id == 'clear_serial':
-        return []
-    if comport and input_type:
-        return children + [dbc.Badge(f'{comport} : {input_type}', pill=True, className='me-1')]
-    raise PreventUpdate
-
-
 @app.callback(
-    [[Output(f"{mode}_label", "children"), Output(f"{mode}_link", "style")] for mode in InputModes.ALL],
-    Input('url', 'pathname'), Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True
+    [[Output(f"{mode}_label", TagFields.CHILDREN), Output(f"{mode}_link", TagFields.STYLE)] for mode in InputModes.ALL],
+    Input(TagIds.LOCATION, 'pathname'), Input(TagIds.INTERVAL, TagFields.INTERVAL), prevent_initial_call=True
 )
 def display_connection_status(path, *args):
     path = path.strip('/')

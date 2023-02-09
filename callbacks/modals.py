@@ -1,8 +1,11 @@
+import dash_bootstrap_components as dbc
 from dash import Input, Output, callback_context, State
+from dash.exceptions import PreventUpdate
 
-from consts import TagIds, Icons, TagFields
+from consts import TagIds, Icons, TagFields, InputModes
 from default import app
 from realtime_data import realtime
+from stoppable_thread import types
 
 
 @app.callback(Output(TagIds.Modals.Save.MODAL, TagFields.IS_OPEN), Input(Icons.SAVE['id'], TagFields.CLICK),
@@ -48,3 +51,30 @@ def toggle_modal(is_open, connections, *args):
         realtime.thread.connect_handler(connections=connections)
         return False
     return not is_open
+
+
+@app.callback(Output(TagIds.Modals.Bluetooth.INPUT, TagFields.OPTIONS),
+              Input(TagIds.Modals.Bluetooth.SCAN, TagFields.CLICK))
+def scan_for_bluetooth_addresses(clicked):
+    types[InputModes.BLUETOOTH].discover()
+    return list(types[InputModes.BLUETOOTH].devices.keys())
+
+
+@app.callback(Output(TagIds.Modals.Serial.INPUT, TagFields.OPTIONS), Input(TagIds.Modals.Serial.SCAN, TagFields.CLICK))
+def scan_for_serial_comports(clicked):
+    types[InputModes.SERIAL].discover()
+    return types[InputModes.SERIAL].devices
+
+
+@app.callback(Output(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),
+              State(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),
+              State(TagIds.Modals.Serial.INPUT, TagFields.VALUE),
+              State(TagIds.Modals.Serial.INPUT_TYPE, TagFields.VALUE),
+              Input(TagIds.Modals.Serial.ADD, TagFields.CLICK), Input(TagIds.Modals.Serial.CLEAR, TagFields.CLICK),
+              prevent_initial_call=True)
+def add_serial_connection_to_list(children, comport, input_type, *args):
+    if callback_context.triggered_id == TagIds.Modals.Serial.CLEAR:
+        return []
+    if comport and input_type:
+        return children + [dbc.Badge(f'{comport} : {input_type}', pill=True)]
+    raise PreventUpdate

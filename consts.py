@@ -10,13 +10,16 @@ IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 class TagFields:
     IS_OPEN = 'is_open'
     CLICK = 'n_clicks'
+    INTERVAL = 'n_intervals'
     VALUE = 'value'
     CLASS_NAME = 'className'
     STYLE = 'style'
     CHILDREN = 'children'
+    OPTIONS = 'options'
 
 
 class TagIds:
+    LOCATION = 'url'
     RANGE = 'range'
     CHECKLIST = 'checklist'
     TABS = 'tabs'
