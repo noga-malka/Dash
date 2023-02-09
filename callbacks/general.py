@@ -1,11 +1,11 @@
 from datetime import datetime
 
 import dash_daq as daq
-from dash import Output, Input, html, State
+from dash import Output, Input, html
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from consts import TagIds, Theme, OutputDirectory
+from consts import TagIds, Theme
 from default import app
 from layout import pages
 from realtime_data import realtime
@@ -30,11 +30,6 @@ def activate_reader_thread(path: str):
     raise PreventUpdate
 
 
-@app.callback(Output('placeholder', 'lang'), Input('save_data', 'n_intervals'))
-def save_temporary_file(intervals):
-    realtime.database.to_csv(OutputDirectory.TEMP_FILE)
-
-
 @app.callback(Output('theme_div', 'children'), Input(ThemeSwitchAIO.ids.switch('theme'), 'value'))
 def change_theme(theme):
     Theme.DAQ_THEME['dark'] = theme
@@ -56,10 +51,3 @@ def update_sensors(n_intervals):
 def toggle_modal(click):
     creation_time = datetime.now().strftime("%Y_%m_%d %H-%M-%S")
     return dict(filename=f'output_{creation_time}.csv', content=realtime.database.to_csv())
-
-
-@app.callback(Output('placeholder', 'children'), Input('upload-file', 'contents'), State('upload-file', 'filename'),
-              prevent_initial_call=True)
-def load_file_data(content, file_name):
-    if content:
-        realtime.thread.connect_handler(content=content, file_name=file_name)

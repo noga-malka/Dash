@@ -19,6 +19,9 @@ class TagFields:
     DATA = 'data'
     ON = 'on'
     DISABLED = 'disabled'
+    MIN = 'min'
+    MAX = 'max'
+    LABEL = 'label'
 
 
 class TagIds:
@@ -30,6 +33,7 @@ class TagIds:
     CO2_BUTTON = 'set_co2'
     FAN_BUTTON = 'set_fan'
     TEMP_SWITCH = 'temperature_switch'
+    PLACEHOLDER = 'placeholder'
 
     class Intervals:
         ONE_SECOND = 'interval'
@@ -82,6 +86,16 @@ class TagIds:
             SCAN = 'scan_board'
             MODAL = 'config_board'
             OPEN_MODAL = 'open_config_board'
+
+        class Monitors:
+            class Control:
+                PANEL = 'control_panel'
+                TOGGLE_PANEL = 'expand_panel'
+                SP_SLIDER = 'sp_slider'
+                DPC = 'dpc_mode_selector'
+                CO2 = 'set_co2'
+                CO2_VALUE = 'co2_value'
+                FAN = 'set_fan'
 
 
 class Icons:
