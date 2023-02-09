@@ -11,7 +11,7 @@ from utilities import generate_sensors_output
 
 
 @app.callback(generate_sensors_output(),
-              Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
+              Input(TagIds.Intervals.ONE_SECOND, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
     try:
         content = realtime.database.read()
@@ -22,7 +22,8 @@ def update_sensors(n_intervals):
     return outputs
 
 
-@app.callback([Output(group + 'header', 'style') for group in group_sensors()], Input(TagIds.INTERVAL, 'n_intervals'))
+@app.callback([Output(group + 'header', 'style') for group in group_sensors()],
+              Input(TagIds.Intervals.ONE_SECOND, 'n_intervals'))
 def scan_bluetooth(clicked):
     try:
         content = realtime.database.read()

@@ -26,7 +26,6 @@ class TagIds:
     RANGE = 'range'
     CHECKLIST = 'checklist'
     TABS = 'tabs'
-    INTERVAL = 'interval'
     GRAPH = 'graph'
     CO2_BUTTON = 'set_co2'
     FAN_BUTTON = 'set_fan'
@@ -42,6 +41,10 @@ class TagIds:
             THREE_SECONDS: 3000,
             ONE_MINUTE: 60000,
         }
+
+        @staticmethod
+        def create_interval(name: str):
+            return dict(id=name, interval=TagIds.Intervals.VALUES[name], n_intervals=0)
 
     class Modals:
         class Save:

@@ -10,7 +10,7 @@ from realtime_data import realtime
 
 @app.callback(*[Output(name + '_graph', 'figure') for name in Settings.GRAPHS],
               Input(ThemeSwitchAIO.ids.switch('theme'), 'value'),
-              Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
+              Input(TagIds.Intervals.ONE_SECOND, 'n_intervals'), prevent_initial_call=True)
 def create_graphs(toggle, interval):
     figures = []
     for name, sensors in Settings.GRAPHS.items():

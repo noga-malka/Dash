@@ -44,7 +44,7 @@ def change_theme(theme):
 
 
 @app.callback(Output('timer', 'children'),
-              Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True)
+              Input(TagIds.Intervals.ONE_SECOND, 'n_intervals'), prevent_initial_call=True)
 def update_sensors(n_intervals):
     timestamp = 'Timer: '
     if realtime.database.is_not_empty():

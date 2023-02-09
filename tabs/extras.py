@@ -125,7 +125,8 @@ def configurate_board():
                            [
                                html.H5(id='sensor_count'),
                                container,
-                               dcc.Interval('read_board', interval=3000)])
+                               dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.THREE_SECONDS)),
+                           ])
 
 
 def columnize(components):

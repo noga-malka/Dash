@@ -12,7 +12,8 @@ app.layout = generate_layout()
 
 @app.callback(
     [[Output(f"{mode}_label", TagFields.CHILDREN), Output(f"{mode}_link", TagFields.STYLE)] for mode in InputModes.ALL],
-    Input(TagIds.LOCATION, 'pathname'), Input(TagIds.INTERVAL, TagFields.INTERVAL), prevent_initial_call=True
+    Input(TagIds.LOCATION, 'pathname'), Input(TagIds.Intervals.ONE_SECOND, TagFields.INTERVAL),
+    prevent_initial_call=True
 )
 def display_connection_status(path, *args):
     path = path.strip('/')
