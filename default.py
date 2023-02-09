@@ -42,54 +42,6 @@ def click_navigation_bar_buttons(*buttons):
 
 
 @app.callback(
-    Output("bluetooth_modal", "is_open"),
-    Input('bluetooth_link', 'n_clicks'), State("bluetooth_modal", "is_open"),
-    Input('mac_button', 'n_clicks'), State("mac_input", "value"),
-    prevent_initial_call=True)
-def toggle_modal(click, is_open, connect_click, mac_address):
-    if callback_context.triggered_id == 'mac_button':
-        if mac_address:
-            realtime.thread.connect_handler(address=mac_address)
-        return False
-    if click:
-        return not is_open
-    return is_open
-
-
-@app.callback(
-    Output("serial_modal", "is_open"),
-    Input('serial_link', 'n_clicks'), State("serial_modal", "is_open"),
-    Input('serial_connect', 'n_clicks'), State("selected_connections", "children"),
-    prevent_initial_call=True)
-def toggle_modal(click, is_open, connect_click, connections):
-    if callback_context.triggered_id == 'serial_connect':
-        connections = [badge['props']['children'].split(' : ') for badge in connections]
-        connections = {comport: input_type for (comport, input_type) in connections}
-        realtime.thread.connect_handler(connections=connections)
-        return False
-    if click:
-        return not is_open
-    return is_open
-
-
-@app.callback(Output("save_file", "is_open"), Input(Icons.SAVE['id'], 'n_clicks'),
-              State("save_file", "is_open"))
-def toggle_modal(click, is_open):
-    if click:
-        return not is_open
-    return is_open
-
-
-@app.callback(Output("are_you_sure", "is_open"), Input(Icons.CLEAN['id'], 'n_clicks'),
-              Input('sure_no', 'n_clicks'), Input('sure_yes', 'n_clicks'),
-              [State("are_you_sure", "is_open")], prevent_initial_call=True)
-def toggle_modal(clicked, no, yes, is_open):
-    if callback_context.triggered_id == 'sure_yes':
-        realtime.thread.events.clean.set()
-    return not is_open
-
-
-@app.callback(
     [[Output(f"{icon['icon']['id']}_label", "children"), Output(f"{icon['icon']['id']}_link", "style")] for icon in
      Icons.INPUT_MODES], Input('url', 'pathname'),
     Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True

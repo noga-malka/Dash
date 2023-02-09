@@ -7,6 +7,15 @@ import dash_bootstrap_components as dbc
 IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 
 
+class TagFields:
+    IS_OPEN = 'is_open'
+    CLICK = 'n_clicks'
+    VALUE = 'value'
+    CLASS_NAME = 'className'
+    STYLE = 'style'
+    CHILDREN = 'children'
+
+
 class TagIds:
     RANGE = 'range'
     CHECKLIST = 'checklist'
@@ -15,6 +24,33 @@ class TagIds:
     GRAPH = 'graph'
     CO2_BUTTON = 'set_co2'
     FAN_BUTTON = 'set_fan'
+
+    class Modals:
+        class Save:
+            MODAL = 'save_file'
+            DOWNLOAD = 'download_text'
+            BUTTON = 'save_session'
+
+        class Clean:
+            MODAL = 'are_you_sure'
+            YES = 'sure_yes'
+            NO = 'sure_no'
+
+        class Bluetooth:
+            MODAL = 'bluetooth_modal'
+            SCAN = 'scan_bluetooth'
+            INPUT = 'mac_input'
+            CONNECT = 'mac_button'
+
+        class Serial:
+            MODAL = 'serial_modal'
+            CONNECTIONS = 'selected_connections'
+            SCAN = 'scan_comports'
+            ADD = 'add_serial'
+            CLEAR = 'clear_serial'
+            INPUT = 'serial_input'
+            INPUT_TYPE = 'input_type'
+            CONNECT = 'serial_connect'
 
 
 class Icons:
