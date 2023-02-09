@@ -34,7 +34,7 @@ def adapt_table_to_temperature_unit_type(is_celsius):
 
 
 @app.callback(Output(TagIds.Tabs.Config.TABLE, 'style_header'), Output(TagIds.Tabs.Config.TABLE, 'style_data'),
-              Input(ThemeSwitchAIO.ids.switch('theme'), TagFields.VALUE))
+              Input(ThemeSwitchAIO.ids.switch(TagIds.THEME), TagFields.VALUE))
 def change_table_theme(theme):
     color = 'white' if theme else 'black'
     style_header = {'backgroundColor': 'var(--bs-primary)', 'color': color}

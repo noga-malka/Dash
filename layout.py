@@ -10,9 +10,9 @@ from tabs.live_monitor import LivePage
 from tabs.set_config import ConfigPage
 
 pages = {
-    'monitor': {'label': 'Monitor Panel', 'page': LivePage()},
-    'graph': {'label': 'Graph Panel', 'page': GraphPage()},
-    'config': {'label': 'Configurations', 'page': ConfigPage()}
+    'monitor': {'label': 'Monitor Panel', TagIds.Layout.CONTENT: LivePage()},
+    'graph': {'label': 'Graph Panel', TagIds.Layout.CONTENT: GraphPage()},
+    'config': {'label': 'Configurations', TagIds.Layout.CONTENT: ConfigPage()}
 }
 
 
@@ -22,7 +22,7 @@ def generate_buttons():
             html.I(className=icon['icon'], style={'margin': '5px'}), icon['id']], id=icon['id'])
         for icon in Icons.ALL
     ]
-    return [html.Div([dbc.Button('Timer:', id='timer'), *buttons], className='flex center children-margin-2'),
+    return [html.Div([dbc.Button('Timer:', id=TagIds.CLOCK), *buttons], className='flex center children-margin-2'),
             *[dbc.Tooltip(icon['id'], target=icon['id'], placement="top") for icon in Icons.ALL]]
 
 
@@ -32,16 +32,16 @@ def generate_layout():
             html.Div(
                 html.Img(src='assets/logo.png', width=120),
                 className='bg-primary flex center', style={'padding': '10px'}),
-            dcc.Location(id="url"),
+            dcc.Location(id=TagIds.LOCATION),
             html.Div(
                 children=[
                     html.Div([
                         html.Label('F°'),
-                        daq.BooleanSwitch(id='temperature_switch', on=True),
+                        daq.BooleanSwitch(id=TagIds.TEMP_SWITCH, on=True),
                         html.Label('C°'),
                     ], className='flex center align children-margin-2'),
                     *generate_buttons(),
-                    ThemeSwitchAIO(aio_id="theme", themes=[Theme.DARK, Theme.LIGHT],
+                    ThemeSwitchAIO(aio_id=TagIds.THEME, themes=[Theme.DARK, Theme.LIGHT],
                                    switch_props={"persistence": True}, icons=DaqConsts.ICONS),
                 ], className='bg-info space-between',
                 style={'padding': '5px', 'align-items': 'center'}
@@ -71,7 +71,7 @@ def generate_layout():
                 configurate_board(),
                 dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.ONE_MINUTE)),
                 dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.ONE_SECOND)),
-                html.Div(id='placeholder', style={'display': None}),
+                html.Div(id=TagIds.PLACEHOLDER, style={'display': None}),
                 html.Div([dcc.Tabs(id=TagIds.TABS, value='monitor',
                                    children=[dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
                           html.Div(id=TagIds.Layout.THEME)],

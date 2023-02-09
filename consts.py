@@ -27,15 +27,11 @@ class TagFields:
 
 class TagIds:
     LOCATION = 'url'
-    RANGE = 'range'
-    CHECKLIST = 'checklist'
     TABS = 'tabs'
-    GRAPH = 'graph'
-    CO2_BUTTON = 'set_co2'
-    FAN_BUTTON = 'set_fan'
     TEMP_SWITCH = 'temperature_switch'
     PLACEHOLDER = 'placeholder'
     CLOCK = 'timer'
+    THEME = 'theme'
 
     class Layout:
         THEME = 'theme_layout'
@@ -104,7 +100,7 @@ class TagIds:
                 CO2_VALUE = 'co2_value'
                 FAN = 'set_fan'
 
-            UPLOAD_FILE = 'upload-file'
+            UPLOAD_FILE = 'upload_file'
 
 
 class Icons:

@@ -60,7 +60,7 @@ width: 100%;
     margin-bottom: 8px
  }
 
-#upload-file{
+.upload{
     height: 60px;
     line-height: 60px;
     border-width: 1px;

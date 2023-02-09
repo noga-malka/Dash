@@ -37,7 +37,7 @@ def serial_modal():
 
 
 def file_extra():
-    return [dcc.Upload(id='upload-file', children=html.Div(['Drag and Drop']))]
+    return [dcc.Upload(id=TagIds.Tabs.Monitors.UPLOAD_FILE, children=html.Div(['Drag and Drop'], className='upload'))]
 
 
 def generate_card(title: str, content: list):
@@ -54,8 +54,9 @@ def control_panel(buttons: list):
         html.Div(
             [
                 dbc.Collapse([html.Div(buttons, className='flex align children-margin center')],
-                             id="control_panel", className='full-width'),
-                html.Div(id='expand_panel', className=Icons.Css.DOWN, style={'padding': '10px'})
+                             id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
+                html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, className=Icons.Css.DOWN,
+                         style={'padding': '10px'})
             ],
             className='flex center column align bg-info',
             style=corner_radius('bottom', 'right', '50px') | corner_radius('bottom', 'left', '50px'))
@@ -65,34 +66,32 @@ def control_panel(buttons: list):
 def serial_extra():
     return control_panel([
         generate_card('Change DPC Mode', [
-            dbc.RadioItems(id='dpc_mode_selector',
+            dbc.RadioItems(id=TagIds.Tabs.Monitors.Control.DPC,
                            options=[{"label": command.title(), "value": command} for command in
                                     Commands.CO2Controller.MAPPING])]),
         generate_card('Set Point in DPC', [
-            dcc.Slider(0, 2.5, id='sp_slider', disabled=True,
+            dcc.Slider(0, 2.5, id=TagIds.Tabs.Monitors.Control.SP_SLIDER, disabled=True,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
         html.Div(style={'flex-grow': '1'}),
-        generate_card('Reset CO2 sensors',
-                      [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
-                       dbc.Button('reset', id=TagIds.CO2_BUTTON)]),
-        generate_card('Change Fan Speed', [
-            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON,
-                       tooltip={'placement': 'bottom', 'always_visible': True},
-                       className='slider')]),
+        *sensors_controllers(),
     ])
 
 
 def bluetooth_extra():
-    return control_panel([
-        generate_card('Reset CO2 sensors',
-                      [dbc.Input(id='co2_value', type='number', style={'width': '100px'}),
-                       dbc.Button('reset', id=TagIds.CO2_BUTTON)]),
-        generate_card('Change Fan Speed', [
-            dcc.Slider(0, 100, id=TagIds.FAN_BUTTON,
-                       tooltip={'placement': 'bottom', 'always_visible': True},
-                       className='slider')]),
-    ])
+    return control_panel(sensors_controllers())
+
+
+def sensors_controllers():
+    return [generate_card('Reset CO2 sensors',
+                          [dbc.Input(id=TagIds.Tabs.Monitors.Control.CO2_VALUE, type='number',
+                                     style={'width': '100px'}),
+                           dbc.Button('reset', id=TagIds.Tabs.Monitors.Control.CO2)]),
+            generate_card('Change Fan Speed', [
+                dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.FAN,
+                           tooltip={'placement': 'bottom', 'always_visible': True},
+                           className='slider')]),
+            ]
 
 
 def download_session():
@@ -120,10 +119,10 @@ def configurate_board():
                                   html.Label(id=f'check_{name}_address')]) for name in SetupConsts.COMMANDS])
 
     rows = html.Div([labels, toggles, dcc.Loading(status)], className='flex space-between')
-    container = html.Div([rows, generate_setup_buttons()], id='board_configurator', className='flex column center')
+    container = html.Div([rows, generate_setup_buttons()], className='flex column center')
     return modal_generator('config_board', 'Set board sensors',
                            [
-                               html.H5(id='sensor_count'),
+                               html.H5(id=TagIds.Tabs.Config.SENSOR_STATUS),
                                container,
                                dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.THREE_SECONDS)),
                            ])
@@ -134,8 +133,8 @@ def columnize(components):
 
 
 def generate_setup_buttons():
-    return html.Div([dbc.Button('reset toggles', id='reset_toggles'),
-                     dbc.Button('scan sensors', id='scan_board', disabled=True)],
+    return html.Div([dbc.Button('reset toggles', id=TagIds.Tabs.Config.RESET_TOGGLES),
+                     dbc.Button('scan sensors', id=TagIds.Tabs.Config.SCAN, disabled=True)],
                     className='flex align children-margin')
 
 
