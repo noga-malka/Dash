@@ -16,6 +16,9 @@ class TagFields:
     STYLE = 'style'
     CHILDREN = 'children'
     OPTIONS = 'options'
+    DATA = 'data'
+    ON = 'on'
+    DISABLED = 'disabled'
 
 
 class TagIds:
@@ -27,6 +30,18 @@ class TagIds:
     GRAPH = 'graph'
     CO2_BUTTON = 'set_co2'
     FAN_BUTTON = 'set_fan'
+    TEMP_SWITCH = 'temperature_switch'
+
+    class Intervals:
+        ONE_SECOND = 'interval'
+        THREE_SECONDS = 'read_board'
+        ONE_MINUTE = 'save_data'
+
+        VALUES = {
+            ONE_SECOND: 1000,
+            THREE_SECONDS: 3000,
+            ONE_MINUTE: 60000,
+        }
 
     class Modals:
         class Save:
@@ -54,6 +69,16 @@ class TagIds:
             INPUT = 'serial_input'
             INPUT_TYPE = 'input_type'
             CONNECT = 'serial_connect'
+
+    class Tabs:
+        class Config:
+            TABLE = 'configuration'
+            SAVE_TABLE = 'save_config'
+            RESET_TOGGLES = 'reset_toggles'
+            SENSOR_STATUS = 'sensor_count'
+            SCAN = 'scan_board'
+            MODAL = 'config_board'
+            OPEN_MODAL = 'open_config_board'
 
 
 class Icons:
