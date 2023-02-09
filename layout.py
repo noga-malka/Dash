@@ -19,16 +19,11 @@ pages = {
 def generate_buttons():
     buttons = [
         dbc.Button([
-            html.I(className=f"fa {icon['icon']} fa-xl", style={'margin': '5px'}),
-            icon['id']
-        ], id={'type': 'icon', 'index': icon['id']})
+            html.I(className=f"fa {icon['icon']} fa-xl", style={'margin': '5px'}), icon['id']], id=icon['id'])
         for icon in TagIds.Icons.ALL
     ]
-    return [html.Div([dbc.Button('Timer:', id='timer'), *buttons],
-                     className='flex center children-margin-2'),
-            *[dbc.Tooltip(icon['id'], target={'type': 'icon', 'index': icon['id']}, placement="top") for icon in
-              TagIds.Icons.ALL],
-            ]
+    return [html.Div([dbc.Button('Timer:', id='timer'), *buttons], className='flex center children-margin-2'),
+            *[dbc.Tooltip(icon['id'], target=icon['id'], placement="top") for icon in TagIds.Icons.ALL]]
 
 
 def generate_layout():

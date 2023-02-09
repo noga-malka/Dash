@@ -17,18 +17,14 @@ class TagIds:
     FAN_BUTTON = 'set_fan'
 
     class Icons:
-        BACKWARD = {'id': 'backward', 'icon': 'fa-fast-backward'}
-        START = {'id': 'to-start', 'icon': 'fa-step-backward'}
-        PLAY = {'id': 'play', 'icon': 'fa-play'}
-        PAUSE = {'id': 'pause', 'icon': 'fa-pause-circle'}
         SAVE = {'id': 'save', 'icon': 'fa-bookmark'}
         CLEAN = {'id': 'clean', 'icon': 'fa-eraser'}
-        FORWARD = {'id': 'forward', 'icon': 'fa-fast-forward'}
-        END = {'id': 'to-end', 'icon': 'fa-step-forward'}
+
         SERIAL = {'id': 'serial', 'icon': 'fa-plug'}
         BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
         RANDOM = {'id': 'random', 'icon': 'fa-random'}
         UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
+
         DOWN = 'fa fa-angle-down'
         UP = 'fa fa-angle-up'
 

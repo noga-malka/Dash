@@ -1,5 +1,5 @@
 import dash_bootstrap_components as dbc
-from dash import Dash, Input, Output, callback_context, ALL, State
+from dash import Dash, Input, Output, callback_context, State
 from dash.exceptions import PreventUpdate
 
 from consts import TagIds, Theme, NavButtons
@@ -34,11 +34,10 @@ def scan_comports(add, clear, children, comport, input_type):
     raise PreventUpdate
 
 
-@app.callback(Output({'type': 'icon', 'index': ALL}, 'style'),
-              Input({'type': 'icon', 'index': ALL}, 'n_clicks'), prevent_initial_call=True)
-def click_navigation_bar_buttons(button):
-    clicked = callback_context.triggered_id['index']
-    colors = [None if clicked != icon['id'] else 'red' for icon in TagIds.Icons.ALL]
+@app.callback([Output(icon['id'], 'style') for icon in TagIds.Icons.ALL],
+              [Input(icon['id'], 'n_clicks') for icon in TagIds.Icons.ALL], prevent_initial_call=True)
+def click_navigation_bar_buttons(*buttons):
+    colors = [None if callback_context.triggered_id != icon['id'] else 'red' for icon in TagIds.Icons.ALL]
     return [{'color': value} for value in colors]
 
 
@@ -73,7 +72,7 @@ def toggle_modal(click, is_open, connect_click, connections):
     return is_open
 
 
-@app.callback(Output("save_file", "is_open"), Input({'type': 'icon', 'index': 'save'}, 'n_clicks'),
+@app.callback(Output("save_file", "is_open"), Input(TagIds.Icons.SAVE['id'], 'n_clicks'),
               State("save_file", "is_open"))
 def toggle_modal(click, is_open):
     if click:
@@ -81,7 +80,7 @@ def toggle_modal(click, is_open):
     return is_open
 
 
-@app.callback(Output("are_you_sure", "is_open"), Input({'type': 'icon', 'index': 'clean'}, 'n_clicks'),
+@app.callback(Output("are_you_sure", "is_open"), Input(TagIds.Icons.CLEAN['id'], 'n_clicks'),
               Input('sure_no', 'n_clicks'), Input('sure_yes', 'n_clicks'),
               [State("are_you_sure", "is_open")], prevent_initial_call=True)
 def toggle_modal(clicked, no, yes, is_open):
