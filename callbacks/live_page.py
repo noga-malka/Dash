@@ -4,7 +4,7 @@ from dash.exceptions import PreventUpdate
 
 from configurations import Settings, Schema, group_sensors
 from consts import TagIds, Colors, UnitTypes, Icons, TagFields
-from default import app
+from dash_setup import app
 from handlers.consts import Commands
 from realtime_data import realtime
 from utilities import generate_sensors_output

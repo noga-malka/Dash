@@ -6,7 +6,7 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
 from consts import UnitTypes, TagIds, OutputDirectory, TagFields
-from default import app
+from dash_setup import app
 from tabs.set_config import load_data
 from utilities import load_configuration
 

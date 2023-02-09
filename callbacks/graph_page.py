@@ -4,7 +4,7 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from configurations import Settings
 from consts import TagIds, Theme, DatabaseReader, TagFields
-from default import app
+from dash_setup import app
 from realtime_data import realtime
 
 

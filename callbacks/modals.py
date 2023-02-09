@@ -5,7 +5,7 @@ from dash import Input, Output, callback_context, State
 from dash.exceptions import PreventUpdate
 
 from consts import TagIds, Icons, TagFields, InputModes
-from default import app
+from dash_setup import app
 from realtime_data import realtime
 from stoppable_thread import types
 

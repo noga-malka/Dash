@@ -3,7 +3,7 @@ from dash.exceptions import PreventUpdate
 
 from configurations import SetupConsts
 from consts import TagIds, Icons, TagFields
-from default import app
+from dash_setup import app
 from handlers.consts import Commands, HardwarePackets
 from realtime_data import realtime
 

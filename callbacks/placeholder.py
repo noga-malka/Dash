@@ -1,7 +1,7 @@
 from dash import Input, Output, State
 
 from consts import TagIds, TagFields, OutputDirectory
-from default import app
+from dash_setup import app
 from handlers.consts import Commands
 from realtime_data import realtime
 
