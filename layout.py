@@ -19,7 +19,7 @@ pages = {
 def generate_buttons():
     buttons = [
         dbc.Button([
-            html.I(className=f"fa {icon['icon']} fa-xl", style={'margin': '5px'}), icon['id']], id=icon['id'])
+            html.I(className=icon['icon'], style={'margin': '5px'}), icon['id']], id=icon['id'])
         for icon in TagIds.Icons.ALL
     ]
     return [html.Div([dbc.Button('Timer:', id='timer'), *buttons], className='flex center children-margin-2'),
@@ -54,7 +54,7 @@ def generate_layout():
                         dbc.Nav(
                             [dbc.NavLink(
                                 [html.Div([
-                                    html.Div(className=f"fa {icon['icon']['icon']} icon"),
+                                    html.Div(className=icon['icon']['icon']),
                                     html.Span(icon['label']),
                                 ]),
                                     html.Span(id=f"{icon['icon']['id']}_label")],

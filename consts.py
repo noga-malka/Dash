@@ -17,16 +17,28 @@ class TagIds:
     FAN_BUTTON = 'set_fan'
 
     class Icons:
-        SAVE = {'id': 'save', 'icon': 'fa-bookmark'}
-        CLEAN = {'id': 'clean', 'icon': 'fa-eraser'}
+        class Css:
+            DOWN = 'fa fa-angle-down fa-lg'
+            UP = 'fa fa-angle-up fa-lg'
+            SAVE = 'fa fa-bookmark fa-lg'
+            CLEAN = 'fa fa-eraser fa-lg'
 
-        SERIAL = {'id': 'serial', 'icon': 'fa-plug'}
-        BLUETOOTH = {'id': 'bluetooth', 'icon': 'fa-wifi'}
-        RANDOM = {'id': 'random', 'icon': 'fa-random'}
-        UPLOAD = {'id': 'upload', 'icon': 'fa-upload'}
+            SERIAL = 'fa fa-plug fa-lg icon'
+            BLUETOOTH = 'fa fa-wifi fa-lg icon'
+            RANDOM = 'fa fa-random fa-lg icon'
+            UPLOAD = 'fa fa-upload fa-lg icon'
 
-        DOWN = 'fa fa-angle-down'
-        UP = 'fa fa-angle-up'
+            CHECK = 'fa fa-check-circle fa-lg'
+            WARNING = 'fa fa-exclamation-circle fa-lg'
+            ERROR = 'fa fa-times-circle fa-lg'
+
+        SAVE = {'id': 'save', 'icon': Css.SAVE}
+        CLEAN = {'id': 'clean', 'icon': Css.CLEAN}
+
+        SERIAL = {'id': 'serial', 'icon': Css.SERIAL}
+        BLUETOOTH = {'id': 'bluetooth', 'icon': Css.BLUETOOTH}
+        RANDOM = {'id': 'random', 'icon': Css.RANDOM}
+        UPLOAD = {'id': 'upload', 'icon': Css.UPLOAD}
 
         ALL = [SAVE, CLEAN]
         INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},

@@ -54,7 +54,7 @@ def control_panel(buttons: list):
                 ],
                 id="control_panel", className='full-width'
             ),
-            html.Div(id='expand_panel', className=TagIds.Icons.DOWN, style={'padding': '10px', 'font-size': 'x-large'})
+            html.Div(id='expand_panel', className=TagIds.Icons.Css.DOWN, style={'padding': '10px'})
         ], className='flex center column align bg-info',
         style=corner_radius('bottom', 'right', '50px') | corner_radius('bottom', 'left', '50px'))
     ]

@@ -47,7 +47,7 @@ def toggle_collapse(expand_click, is_open):
     state = not is_open
     if not expand_click:
         raise PreventUpdate
-    return state, TagIds.Icons.UP if state else TagIds.Icons.DOWN
+    return state, TagIds.Icons.Css.UP if state else TagIds.Icons.Css.DOWN
 
 
 @app.callback(
