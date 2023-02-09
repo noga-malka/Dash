@@ -2,16 +2,17 @@ import time
 from threading import Thread, Event, Timer
 
 from configurations import logger
-from consts import IS_DEBUG
+from consts import InputModes
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.file_handler import FileHandler
 from handlers.handler_exception import DisconnectionEvent
 from handlers.mutliple_serial_handler import MultipleSerialHandler
-from handlers.random_handler import RandomHandler
 
-types = {'serial': MultipleSerialHandler(), 'bluetooth': BluetoothHandler(), 'upload': FileHandler()}
-if IS_DEBUG:
-    types['random'] = RandomHandler()
+types = {
+    InputModes.SERIAL: MultipleSerialHandler(),
+    InputModes.BLUETOOTH: BluetoothHandler(),
+    InputModes.FILE: FileHandler()
+}
 
 
 class Events:

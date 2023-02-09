@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import Dash, Input, Output, callback_context, State
 from dash.exceptions import PreventUpdate
 
-from consts import TagIds, Theme, NavButtons, Icons
+from consts import TagIds, Theme, NavButtons, InputModes
 from layout import generate_layout
 from realtime_data import realtime
 from stoppable_thread import types
@@ -13,14 +13,14 @@ app.layout = generate_layout()
 
 @app.callback(Output('mac_input', 'options'), Input('scan_bluetooth', 'n_clicks'))
 def scan_bluetooth(clicked):
-    types['bluetooth'].discover()
-    return list(types['bluetooth'].devices.keys())
+    types[InputModes.BLUETOOTH].discover()
+    return list(types[InputModes.BLUETOOTH].devices.keys())
 
 
 @app.callback(Output('serial_input', 'options'), Input('scan_comports', 'n_clicks'))
 def scan_comports(clicked):
-    types['serial'].discover()
-    return types['serial'].devices
+    types[InputModes.SERIAL].discover()
+    return types[InputModes.SERIAL].devices
 
 
 @app.callback(Output('selected_connections', 'children'), Input('add_serial', 'n_clicks'),
@@ -34,32 +34,29 @@ def scan_comports(add, clear, children, comport, input_type):
     raise PreventUpdate
 
 
-@app.callback([Output(icon['id'], 'style') for icon in Icons.ALL],
-              [Input(icon['id'], 'n_clicks') for icon in Icons.ALL], prevent_initial_call=True)
-def click_navigation_bar_buttons(*buttons):
-    colors = [None if callback_context.triggered_id != icon['id'] else 'red' for icon in Icons.ALL]
-    return [{'color': value} for value in colors]
-
-
 @app.callback(
-    [[Output(f"{icon['icon']['id']}_label", "children"), Output(f"{icon['icon']['id']}_link", "style")] for icon in
-     Icons.INPUT_MODES], Input('url', 'pathname'),
-    Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True
+    [[Output(f"{mode}_label", "children"), Output(f"{mode}_link", "style")] for mode in InputModes.ALL],
+    Input('url', 'pathname'), Input(TagIds.INTERVAL, 'n_intervals'), prevent_initial_call=True
 )
-def toggle_modal(path, interval):
+def display_connection_status(path, *args):
     path = path.strip('/')
     output = []
     if not realtime.in_types():
         raise PreventUpdate
     current = types[realtime.thread.handler_name].current
-    for icon in Icons.INPUT_MODES:
-        option = NavButtons.DEFAULT
-        if icon['icon']['id'] == path:
-            option = NavButtons.CLICKED
-            if realtime.thread.events.Finish.connect.is_set():
-                option = NavButtons.CONNECTED
-            elif realtime.thread.events.disconnect.is_set():
-                option = NavButtons.DISCONNECTED
+    for input_mode in InputModes.ALL:
+        option = check_status(input_mode, path)
         message = NavButtons.OPTIONS[option]['message'].format(current=current)
         output.append([message, {'background-color': NavButtons.OPTIONS[option]['color']}])
     return output
+
+
+def check_status(input_mode, path):
+    option = NavButtons.DEFAULT
+    if input_mode == path:
+        option = NavButtons.CLICKED
+        if realtime.thread.events.Finish.connect.is_set():
+            option = NavButtons.CONNECTED
+        elif realtime.thread.events.disconnect.is_set():
+            option = NavButtons.DISCONNECTED
+    return option

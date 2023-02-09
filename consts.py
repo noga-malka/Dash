@@ -81,11 +81,17 @@ class Icons:
     UPLOAD = {'id': 'upload', 'icon': Css.UPLOAD}
 
     ALL = [SAVE, CLEAN]
-    INPUT_MODES = [{'icon': SERIAL, 'label': 'Serial'},
-                   {'icon': BLUETOOTH, 'label': 'Bluetooth'},
-                   {'icon': UPLOAD, 'label': 'Load File'}]
-    if IS_DEBUG:
-        INPUT_MODES.append({'icon': RANDOM, 'label': 'Random Data'})
+
+
+class InputModes:
+    SERIAL = 'serial'
+    BLUETOOTH = 'bluetooth'
+    FILE = 'file'
+    ALL = {
+        SERIAL: {'icon': Icons.Css.SERIAL, 'label': 'Serial'},
+        BLUETOOTH: {'icon': Icons.Css.BLUETOOTH, 'label': 'Bluetooth'},
+        FILE: {'icon': Icons.Css.UPLOAD, 'label': 'From File'},
+    }
 
 
 class DatabaseReader(Enum):

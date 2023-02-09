@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from consts import TagIds, DaqConsts, Theme, Icons
+from consts import TagIds, DaqConsts, Theme, Icons, InputModes
 from tabs.extras import download_session, are_you_sure, configurate_board, bluetooth_modal, serial_modal
 from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
@@ -54,12 +54,12 @@ def generate_layout():
                         dbc.Nav(
                             [dbc.NavLink(
                                 [html.Div([
-                                    html.Div(className=icon['icon']['icon']),
+                                    html.Div(className=icon['icon']),
                                     html.Span(icon['label']),
                                 ]),
-                                    html.Span(id=f"{icon['icon']['id']}_label")],
-                                href=f"/{icon['icon']['id']}", id=f"{icon['icon']['id']}_link",
-                                active="exact") for icon in Icons.INPUT_MODES],
+                                    html.Span(id=f"{input_mode}_label")],
+                                href=f"/{input_mode}", id=f"{input_mode}_link",
+                                active="exact") for input_mode, icon in InputModes.ALL.items()],
                             vertical=True, pills=True, key=f'/{Icons.SERIAL["id"]}'
                         ),
                     ], className='sidebar'
