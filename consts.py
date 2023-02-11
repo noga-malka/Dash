@@ -99,6 +99,9 @@ class TagIds:
                 CO2 = 'set_co2'
                 CO2_VALUE = 'co2_value'
                 FAN = 'set_fan'
+                COMMAND = 'command'
+                DATA = 'custom_data'
+                SEND = 'send_command'
 
             UPLOAD_FILE = 'upload_file'
 

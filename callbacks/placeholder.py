@@ -2,7 +2,7 @@ from dash import Input, Output, State
 
 from consts import TagIds, TagFields, OutputDirectory
 from dash_setup import app
-from handlers.consts import Commands
+from handlers.consts import Commands, InputTypes
 from realtime_data import realtime
 
 
@@ -18,6 +18,15 @@ def send_command(fan_value):
 def send_command(co2_click, co2_value):
     if co2_click:
         realtime.send_command(Commands.SET_CO2, co2_value)
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'contentEditable'), Input(TagIds.Tabs.Monitors.Control.SEND, TagFields.CLICK),
+              State(TagIds.Tabs.Monitors.Control.COMMAND, TagFields.VALUE),
+              State(TagIds.Tabs.Monitors.Control.DATA, TagFields.VALUE),
+              prevent_initial_call=True)
+def send_command(click, command, data):
+    if click and command is not None and data is not None:
+        realtime.send_command(command, data, input_type=InputTypes.SENSORS)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.SP_SLIDER, TagFields.VALUE),
