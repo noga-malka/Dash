@@ -2,8 +2,9 @@ import dash_bootstrap_components as dbc
 import pandas
 from dash import html
 
-from configurations import Settings, Schema, group_sensors
+from configurations import Settings, Schema, group_sensors, logger
 from consts import UnitTypes
+from handlers.consts import Commands, InputTypes
 
 
 def generate_grid(components):
@@ -53,3 +54,19 @@ def load_configuration(config: dict):
 
 def corner_radius(vertical, horizontal, size='20px'):
     return {f'border-{vertical}-{horizontal}-radius': size}
+
+
+def packet_sender(function):
+    def inner(self, command, content, input_type=None):
+        packet = None
+        try:
+            input_type = input_type if input_type else Commands.CLASSIFIER[command]
+            packet = InputTypes.MAPPING[input_type]['packet_builder'].build_packet(command, content)
+            function(packet, input_type)
+            logger.info(f'successfully sent packet: {packet}')
+        except KeyError:
+            logger.warning(f'no handler with command {command}')
+        except AttributeError:
+            logger.warning(f'no connection. could not send {packet}')
+
+    return inner

@@ -1,6 +1,4 @@
-from typing import Union
-
-from handlers.consts import Commands
+from utilities import packet_sender
 
 
 class Handler:
@@ -21,7 +19,8 @@ class Handler:
     def interval_action(self):
         pass
 
-    def send_command(self, command, content):
+    @packet_sender
+    def send_command(self, packet, input_type=None):
         raise NotImplementedError()
 
     def read_lines(self) -> list[str]:
@@ -35,14 +34,3 @@ class Handler:
                 command, *content = line.split('\t')
                 parsed_data.append((command, content))
             return parsed_data
-
-    @staticmethod
-    def format(value: Union[str, int], byte_number: int = 1):
-        formatter = f'{{:0>{byte_number * 2}}}'
-        return formatter.format(value)
-
-    def build_command(self, command, content):
-        content = self.format(hex(int(content)).replace('0x', ''), byte_number=2)
-        command = self.format(hex(int(command)).replace('0x', ''))
-        length = self.format(int(len(content) / 2))
-        return bytes.fromhex(Commands.HEADER + command + length + content)

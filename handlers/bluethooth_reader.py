@@ -2,10 +2,9 @@ import socket
 
 import bluetooth
 
-from configurations import logger
-from handlers.consts import InputTypes, Commands
 from handlers.handler import Handler
 from handlers.handler_exception import DisconnectionEvent
+from utilities import packet_sender
 
 
 class BluetoothHandler(Handler):
@@ -43,10 +42,6 @@ class BluetoothHandler(Handler):
         self.buffer = self.buffer[end_line + 1:]
         return [output.decode()]
 
-    def send_command(self, command, content):
-        packet = InputTypes.MAPPING[Commands.CLASSIFIER[command]]['packet_builder'].build_packet(command, content)
-        if self.client:
-            logger.info(f'send packet: {packet}')
-            self.client.send(packet)
-        else:
-            logger.warning(f'no connection. could not send {packet}')
+    @packet_sender
+    def send_command(self, packet, input_type=None):
+        self.client.send(packet)

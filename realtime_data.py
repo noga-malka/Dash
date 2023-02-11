@@ -67,12 +67,12 @@ class RealtimeData:
     def add_dataframe(content: pandas.DataFrame, **kwargs):
         return DatabaseTypes.DATAFRAME, content
 
-    def send_command(self, command: str, content: str = '0', event: Event = None, timeout=5):
+    def send_command(self, command: str, content: str = '0', event: Event = None, timeout=5, input_type=None):
         if not event:
-            types[self.thread.handler_name].send_command(command, content)
+            types[self.thread.handler_name].send_command(command, content, input_type)
             return False
         event.clear()
-        types[self.thread.handler_name].send_command(command, content)
+        types[self.thread.handler_name].send_command(command, content, input_type)
         event.wait(timeout=timeout)
         return event.is_set()
 

@@ -1,9 +1,9 @@
 from serial.tools import list_ports
 
-from configurations import logger
 from handlers.consts import Commands, InputTypes
 from handlers.handler import Handler
 from handlers.serial_reader import SerialHandler
+from utilities import packet_sender
 
 
 class MultipleSerialHandler(Handler):
@@ -28,13 +28,9 @@ class MultipleSerialHandler(Handler):
         self.current = list(connections)
         return all(handler.is_connected for handler in self.handlers.values())
 
-    def send_command(self, command, content):
-        input_type = Commands.CLASSIFIER.get(command)
-        try:
-            packet = InputTypes.MAPPING[input_type]['packet_builder'].build_packet(command, content)
-            self.handlers[input_type].send_packet(packet)
-        except KeyError:
-            logger.warning(f'no handler with command {command}')
+    @packet_sender
+    def send_command(self, packet, input_type=None):
+        self.handlers[input_type].send_command(packet)
 
     def interval_action(self):
         if InputTypes.CO2_CONTROLLER in self.handlers:
