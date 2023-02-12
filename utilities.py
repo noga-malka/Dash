@@ -62,7 +62,7 @@ def packet_sender(function):
         try:
             input_type = input_type if input_type else Commands.CLASSIFIER[command]
             packet = InputTypes.MAPPING[input_type]['packet_builder'].build_packet(command, content)
-            function(packet, input_type)
+            function(self, packet, input_type)
             logger.info(f'successfully sent packet: {packet}')
         except KeyError:
             logger.warning(f'no handler with command {command}')
