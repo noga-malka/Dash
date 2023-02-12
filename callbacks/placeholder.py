@@ -29,11 +29,24 @@ def send_command(click, command, data):
         realtime.send_command(command, data, input_type=InputTypes.SENSORS)
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.SP_SLIDER, TagFields.VALUE),
+@app.callback(Output(TagIds.PLACEHOLDER, 'className'), Input(TagIds.Tabs.Monitors.Control.SP_SLIDER, TagFields.VALUE),
               prevent_initial_call=True)
 def send_command(sp_value):
     if sp_value:
         realtime.send_command(Commands.CO2Controller.SET_POINT, str(sp_value))
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.ENGINE_SPEED, TagFields.VALUE),
+              prevent_initial_call=True)
+def send_command(engine_speed):
+    if engine_speed is not None:
+        realtime.send_command(Commands.CHANGE_SPEED, engine_speed)
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'key'), Input(TagIds.Tabs.Monitors.Control.ENGINE, TagFields.ON),
+              prevent_initial_call=True)
+def send_command(engine_speed):
+    realtime.send_command(Commands.ACTIVATE_ENGINE, str(2 if engine_speed else 1))
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input(TagIds.Tabs.Monitors.UPLOAD_FILE, 'contents'),

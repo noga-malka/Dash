@@ -37,6 +37,8 @@ class Commands:
     SETUP_DS4 = 27
     SCAN = 28
     SEARCH_SENSOR = 29
+    ACTIVATE_ENGINE = 30
+    CHANGE_SPEED = 31
 
     class CO2Controller:
         CARRIAGE_RETURN = '\r'
@@ -61,6 +63,8 @@ class Commands:
         SETUP_DS4: InputTypes.SENSORS,
         SEARCH_SENSOR: InputTypes.SENSORS,
         SCAN: InputTypes.SENSORS,
+        ACTIVATE_ENGINE: InputTypes.SENSORS,
+        CHANGE_SPEED: InputTypes.SENSORS,
         CO2Controller.OPEN: InputTypes.CO2_CONTROLLER,
         CO2Controller.CLOSE: InputTypes.CO2_CONTROLLER,
         CO2Controller.AUTO: InputTypes.CO2_CONTROLLER,

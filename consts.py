@@ -102,6 +102,8 @@ class TagIds:
                 COMMAND = 'command'
                 DATA = 'custom_data'
                 SEND = 'send_command'
+                ENGINE = 'activate_engine'
+                ENGINE_SPEED = 'engine_speed'
 
             UPLOAD_FILE = 'upload_file'
 
