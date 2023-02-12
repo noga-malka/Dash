@@ -30,7 +30,7 @@ class MultipleSerialHandler(Handler):
 
     @packet_sender
     def send_command(self, packet, input_type=None):
-        self.handlers[input_type].send_command(packet)
+        self.handlers[input_type].client.write(packet)
 
     def interval_action(self):
         if InputTypes.CO2_CONTROLLER in self.handlers:
