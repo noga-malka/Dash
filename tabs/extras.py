@@ -84,15 +84,15 @@ def bluetooth_extra():
 
 def sensors_controllers():
     return [
-        generate_card('Send Custom Commands',
-                      [dbc.Input(id=TagIds.Tabs.Monitors.Control.COMMAND, type='number',
-                                 style={'width': '100px'}),
-                       dbc.Input(id=TagIds.Tabs.Monitors.Control.DATA, type='number',
-                                 style={'width': '100px'}),
-                       dbc.Button('send', id=TagIds.Tabs.Monitors.Control.SEND)]),
+        generate_card('Activate Engine',
+                      [daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE)]),
+        generate_card('Engine Speed', [
+            dcc.Slider(60, 360, id=TagIds.Tabs.Monitors.Control.ENGINE_SPEED,
+                       tooltip={'placement': 'bottom', 'always_visible': True},
+                       className='slider')]),
         generate_card('Reset CO2 sensors',
                       [dbc.Input(id=TagIds.Tabs.Monitors.Control.CO2_VALUE, type='number',
-                                 style={'width': '100px'}),
+                                 style={'width': '100px'}, value=400),
                        dbc.Button('reset', id=TagIds.Tabs.Monitors.Control.CO2)]),
         generate_card('Change Fan Speed', [
             dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.FAN,
