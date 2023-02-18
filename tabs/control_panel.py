@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash import dcc, html
 
-from consts import TagIds, Icons
+from consts import TagIds
 from handlers.consts import Commands
 from utilities import corner_radius
 
@@ -16,22 +16,8 @@ def generate_card(title: str, content: list):
                                                                                                              'right'))
 
 
-def control_panel(buttons: list):
-    return [
-        html.Div(
-            [
-                dbc.Collapse([html.Div(buttons, className='flex align children-margin center')],
-                             id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
-                html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, className=Icons.Css.DOWN,
-                         style={'padding': '10px'})
-            ],
-            className='flex center column align bg-info',
-            style=corner_radius('bottom', 'right', '50px') | corner_radius('bottom', 'left', '50px'))
-    ]
-
-
 def serial_extra():
-    return control_panel([
+    return [
         generate_card('Change DPC Mode', [
             dbc.RadioItems(id=TagIds.Tabs.Monitors.Control.DPC,
                            options=[{"label": command.title(), "value": command} for command in
@@ -42,11 +28,11 @@ def serial_extra():
                        className='slider')]),
         html.Div(style={'flex-grow': '1'}),
         *sensors_controllers(),
-    ])
+    ]
 
 
 def bluetooth_extra():
-    return control_panel(sensors_controllers())
+    return sensors_controllers()
 
 
 def sensors_controllers():
@@ -69,7 +55,4 @@ def sensors_controllers():
 
 
 def file_extra():
-    return control_panel([
-        dcc.Upload(id=TagIds.Tabs.Monitors.UPLOAD_FILE, style={'width': '100%'},
-                   children=html.Div(['Drag and Drop'], className='upload'))
-    ])
+    return [dcc.Upload(id=TagIds.Tabs.Monitors.UPLOAD_FILE, children=html.Div(['Drag and Drop'], className='upload'))]
