@@ -1,22 +1,7 @@
-from handlers.packetBuilders.dpc_builder import DPCPacketBuilder
-from handlers.packetBuilders.sensors_builder import SensorsPacketBuilder
-
-
 class InputTypes:
     SENSORS = 'sensors'
     CO2_CONTROLLER = 'CO2 controller'
     ENGINE = 'engine'
-
-    MAPPING = {
-        SENSORS: {
-            'header': '',
-            'packet_builder': SensorsPacketBuilder(),
-        },
-        CO2_CONTROLLER: {
-            'header': 'DPC\t',
-            'packet_builder': DPCPacketBuilder(),
-        },
-    }
 
 
 class HardwarePackets:
