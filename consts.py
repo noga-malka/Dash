@@ -133,7 +133,7 @@ class Icons:
     SERIAL = {'id': 'serial', 'icon': Css.SERIAL}
     BLUETOOTH = {'id': 'bluetooth', 'icon': Css.BLUETOOTH}
     RANDOM = {'id': 'random', 'icon': Css.RANDOM}
-    UPLOAD = {'id': 'upload', 'icon': Css.UPLOAD}
+    UPLOAD = {'id': 'file', 'icon': Css.UPLOAD}
 
     ALL = [SAVE, CLEAN]
 
