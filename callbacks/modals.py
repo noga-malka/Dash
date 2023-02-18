@@ -44,21 +44,29 @@ def toggle_modal(is_open, mac_address, *args):
 
 @app.callback(
     Output(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN),
-    [Output(input_type, TagFields.CHILDREN) for input_type in CONTROLS],
     State(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),
     Input(TagIds.Modals.Serial.CONNECT, TagFields.CLICK), Input('serial_link', TagFields.CLICK),
     prevent_initial_call=True)
 def toggle_modal(is_open, connections, *args):
-    controls = [actions['generator']().children for input_type, actions in CONTROLS.items()]
-    modal_status = not is_open
     if callback_context.triggered_id == TagIds.Modals.Serial.CONNECT:
         connections = dict([badge['props'][TagFields.CHILDREN].split(' : ') for badge in connections])
         realtime.thread.connect_handler(connections=connections)
-        for (index, input_type) in enumerate(CONTROLS):
-            if input_type in connections.values():
-                controls[index] = CONTROLS[input_type]['generator'](True).children
-        modal_status = False
-    return modal_status, *controls
+        return False
+    return not is_open
+
+
+@app.callback(
+    [Output(input_type, TagFields.CHILDREN) for input_type in CONTROLS],
+    Input(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN),
+    prevent_initial_call=True)
+def toggle_modal(is_open):
+    if is_open:
+        raise PreventUpdate
+    controls = [actions['generator']().children for input_type, actions in CONTROLS.items()]
+    for (index, input_type) in enumerate(CONTROLS):
+        if input_type in TYPES[realtime.thread.handler_name].handlers:
+            controls[index] = CONTROLS[input_type]['generator'](True).children
+    return controls
 
 
 @app.callback(Output(TagIds.Modals.Bluetooth.INPUT, TagFields.OPTIONS),
