@@ -4,16 +4,8 @@ from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme, Icons, InputModes
-from tabs.graph_monitor import GraphPage
-from tabs.live_monitor import LivePage
+from mappings import PAGES
 from tabs.modals import download_session, are_you_sure, configurate_board, bluetooth_modal, serial_modal
-from tabs.set_config import ConfigPage
-
-pages = {
-    'monitor': {'label': 'Monitor Panel', TagIds.Layout.CONTENT: LivePage()},
-    'graph': {'label': 'Graph Panel', TagIds.Layout.CONTENT: GraphPage()},
-    'config': {'label': 'Configurations', TagIds.Layout.CONTENT: ConfigPage()}
-}
 
 
 def generate_buttons():
@@ -73,7 +65,7 @@ def generate_layout():
                 dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.ONE_SECOND)),
                 html.Div(id=TagIds.PLACEHOLDER, style={'display': None}),
                 html.Div([dcc.Tabs(id=TagIds.TABS, value='monitor',
-                                   children=[dcc.Tab(label=pages[key]['label'], value=key) for key in pages]),
+                                   children=[dcc.Tab(label=PAGES[key]['label'], value=key) for key in PAGES]),
                           html.Div(id=TagIds.Layout.THEME)],
                          style={'width': '100%'})
             ], style={'display': 'flex'}),

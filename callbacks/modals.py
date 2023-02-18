@@ -6,8 +6,8 @@ from dash.exceptions import PreventUpdate
 
 from consts import TagIds, Icons, TagFields, InputModes
 from dash_setup import app
+from mappings import TYPES
 from realtime_data import realtime
-from stoppable_thread import types
 
 
 @app.callback(Output(TagIds.Modals.Save.MODAL, TagFields.IS_OPEN), Input(Icons.SAVE['id'], TagFields.CLICK),
@@ -58,14 +58,14 @@ def toggle_modal(is_open, connections, *args):
 @app.callback(Output(TagIds.Modals.Bluetooth.INPUT, TagFields.OPTIONS),
               Input(TagIds.Modals.Bluetooth.SCAN, TagFields.CLICK))
 def scan_for_bluetooth_addresses(clicked):
-    types[InputModes.BLUETOOTH].discover()
-    return list(types[InputModes.BLUETOOTH].devices.keys())
+    TYPES[InputModes.BLUETOOTH].discover()
+    return list(TYPES[InputModes.BLUETOOTH].devices.keys())
 
 
 @app.callback(Output(TagIds.Modals.Serial.INPUT, TagFields.OPTIONS), Input(TagIds.Modals.Serial.SCAN, TagFields.CLICK))
 def scan_for_serial_comports(clicked):
-    types[InputModes.SERIAL].discover()
-    return types[InputModes.SERIAL].devices
+    TYPES[InputModes.SERIAL].discover()
+    return TYPES[InputModes.SERIAL].devices
 
 
 @app.callback(Output(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),

@@ -2,17 +2,8 @@ import time
 from threading import Thread, Event, Timer
 
 from configurations import logger
-from consts import InputModes
-from handlers.bluethooth_reader import BluetoothHandler
-from handlers.file_handler import FileHandler
 from handlers.handler_exception import DisconnectionEvent
-from handlers.mutliple_serial_handler import MultipleSerialHandler
-
-types = {
-    InputModes.SERIAL: MultipleSerialHandler(),
-    InputModes.BLUETOOTH: BluetoothHandler(),
-    InputModes.FILE: FileHandler()
-}
+from mappings import TYPES
 
 
 class Events:
@@ -39,14 +30,14 @@ class StoppableThread(Thread):
     def set_handler(self, handler_name):
         self.events.change_input.set()
         self.events.Finish.connect.clear()
-        self.handler_name = handler_name if handler_name in types else ''
-        return types[self.handler_name].auto_connect
+        self.handler_name = handler_name if handler_name in TYPES else ''
+        return TYPES[self.handler_name].auto_connect
 
     def connect_handler(self, **kwargs):
         if self.handler_name:
             self.events.disconnect.clear()
-            types[self.handler_name].is_connected = types[self.handler_name].connect(**kwargs)
-            if types[self.handler_name].is_connected:
+            TYPES[self.handler_name].is_connected = TYPES[self.handler_name].connect(**kwargs)
+            if TYPES[self.handler_name].is_connected:
                 self.events.Finish.connect.set()
                 self.events.interval.set()
                 logger.debug(f'connected to handler {self.handler_name}')
@@ -77,7 +68,7 @@ class StoppableThread(Thread):
                     self._target(*self._args, **self._kwargs)
                     if self.events.interval.is_set():
                         self.events.interval.clear()
-                        types[self.handler_name].interval_action()
+                        TYPES[self.handler_name].interval_action()
                         Timer(self._interval, lambda: self.events.interval.set()).start()
                 except DisconnectionEvent as disconnect:
                     logger.error(disconnect)

@@ -5,16 +5,8 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, Theme, TagFields, NavButtons, InputModes
 from dash_setup import app
-from layout import pages
+from mappings import EXTRA, TYPES, PAGES
 from realtime_data import realtime
-from stoppable_thread import types
-from tabs.control_panel import file_extra, bluetooth_extra, serial_extra
-
-EXTRA = {
-    InputModes.FILE: file_extra(),
-    InputModes.BLUETOOTH: bluetooth_extra(),
-    InputModes.SERIAL: serial_extra()
-}
 
 
 @app.callback(Output(TagIds.Layout.EXTRA, TagFields.CHILDREN), Input(TagIds.LOCATION, TagFields.PATH))
@@ -24,7 +16,7 @@ def render_extra_content_by_input_mode(url):
 
 @app.callback(Output(TagIds.Layout.CONTENT, TagFields.CHILDREN), Input(TagIds.TABS, TagFields.VALUE))
 def render_content_by_tab(tab):
-    return pages[tab][TagIds.Layout.CONTENT].render()
+    return PAGES[tab][TagIds.Layout.CONTENT].render()
 
 
 @app.callback(Output(TagIds.Layout.THEME, TagFields.CHILDREN),
@@ -54,7 +46,7 @@ def display_connection_status(path, *args):
     output = []
     if not realtime.in_types():
         raise PreventUpdate
-    current = types[realtime.thread.handler_name].current
+    current = TYPES[realtime.thread.handler_name].current
     for input_mode in InputModes.ALL:
         option = check_status(input_mode, path)
         message = NavButtons.OPTIONS[option]['message'].format(current=current)
