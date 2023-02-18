@@ -23,7 +23,8 @@ class Commands:
     SCAN = 28
     SEARCH_SENSOR = 29
     ACTIVATE_ENGINE = 30
-    CHANGE_SPEED = 31
+    CHANGE_DEPTH = 31
+    CHANGE_RATE = 32
 
     class CO2Controller:
         CARRIAGE_RETURN = '\r'
@@ -49,7 +50,8 @@ class Commands:
         SEARCH_SENSOR: InputTypes.SENSORS,
         SCAN: InputTypes.SENSORS,
         ACTIVATE_ENGINE: InputTypes.SENSORS,
-        CHANGE_SPEED: InputTypes.SENSORS,
+        CHANGE_DEPTH: InputTypes.SENSORS,
+        CHANGE_RATE: InputTypes.SENSORS,
         CO2Controller.OPEN: InputTypes.CO2_CONTROLLER,
         CO2Controller.CLOSE: InputTypes.CO2_CONTROLLER,
         CO2Controller.AUTO: InputTypes.CO2_CONTROLLER,

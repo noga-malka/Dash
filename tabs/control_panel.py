@@ -50,8 +50,12 @@ def sensors_controls():
     return [
         generate_card('Activate Engine',
                       [daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE)]),
-        generate_card('Engine Speed', [
-            dcc.Slider(60, 360, id=TagIds.Tabs.Monitors.Control.ENGINE_SPEED,
+        generate_card('Breath Depth', [
+            dcc.Slider(60, 360, id=TagIds.Tabs.Monitors.Control.BREATH_DEPTH,
+                       tooltip={'placement': 'bottom', 'always_visible': True},
+                       className='slider')]),
+        generate_card('Breath Rate', [
+            dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.BREATH_RATE,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
         generate_card('Reset CO2 sensors',

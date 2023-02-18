@@ -98,7 +98,8 @@ class TagIds:
                 DATA = 'custom_data'
                 SEND = 'send_command'
                 ENGINE = 'activate_engine'
-                ENGINE_SPEED = 'engine_speed'
+                BREATH_DEPTH = 'breath_depth'
+                BREATH_RATE = 'breath_rate'
 
             UPLOAD_FILE = 'upload_file'
 

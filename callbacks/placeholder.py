@@ -36,11 +36,19 @@ def send_command(sp_value):
         realtime.send_command(Commands.CO2Controller.SET_POINT, str(sp_value))
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.ENGINE_SPEED, TagFields.VALUE),
+@app.callback(Output(TagIds.PLACEHOLDER, 'draggable'),
+              Input(TagIds.Tabs.Monitors.Control.BREATH_DEPTH, TagFields.VALUE),
               prevent_initial_call=True)
-def send_command(engine_speed):
-    if engine_speed is not None:
-        realtime.send_command(Commands.CHANGE_SPEED, engine_speed)
+def send_command(depth):
+    if depth is not None:
+        realtime.send_command(Commands.CHANGE_DEPTH, depth)
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.BREATH_RATE, TagFields.VALUE),
+              prevent_initial_call=True)
+def send_command(rate):
+    if rate is not None:
+        realtime.send_command(Commands.CHANGE_RATE, rate)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'key'), Input(TagIds.Tabs.Monitors.Control.ENGINE, TagFields.ON),
