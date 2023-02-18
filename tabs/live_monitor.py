@@ -20,8 +20,9 @@ class LivePage:
         return [
             html.Div(
                 [
-                    dbc.Collapse([html.Div(id=TagIds.Layout.EXTRA, className='flex align children-margin center')],
-                                 id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
+                    dbc.Collapse(
+                        [html.Div(id=TagIds.Layout.EXTRA, className='flex align children-margin space-between')],
+                        id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
                     html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, className=Icons.Css.DOWN,
                              style={'padding': '10px'})
                 ],

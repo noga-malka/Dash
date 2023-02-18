@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import dcc, html
 
 from consts import TagIds
-from handlers.consts import Commands
+from handlers.consts import Commands, InputTypes
 from utilities import corner_radius
 
 
@@ -17,16 +17,17 @@ def generate_card(title: str, content: list):
 
 def serial_extra():
     return [
-        generate_card('Change DPC Mode', [
-            dbc.RadioItems(id=TagIds.Tabs.Monitors.Control.DPC,
-                           options=[{"label": command.title(), "value": command} for command in
-                                    Commands.CO2Controller.MAPPING])]),
-        generate_card('Set Point in DPC', [
-            dcc.Slider(0, 2.5, id=TagIds.Tabs.Monitors.Control.SP_SLIDER, disabled=True,
-                       tooltip={'placement': 'bottom', 'always_visible': True},
-                       className='slider')]),
-        html.Div(style={'flex-grow': '1'}),
-        *sensors_controllers(),
+        html.Div([
+            generate_card('Change DPC Mode', [
+                dbc.RadioItems(id=TagIds.Tabs.Monitors.Control.DPC,
+                               options=[{"label": command.title(), "value": command} for command in
+                                        Commands.CO2Controller.MAPPING])]),
+            generate_card('Set Point in DPC', [
+                dcc.Slider(0, 2.5, id=TagIds.Tabs.Monitors.Control.SP_SLIDER, disabled=True,
+                           tooltip={'placement': 'bottom', 'always_visible': True},
+                           className='slider')]),
+        ], id=InputTypes.CO2_CONTROLLER, className='flex'),
+        sensors_controllers(),
     ]
 
 
@@ -35,7 +36,7 @@ def bluetooth_extra():
 
 
 def sensors_controllers():
-    return [
+    return html.Div([
         generate_card('Activate Engine',
                       [daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE)]),
         generate_card('Engine Speed', [
@@ -50,7 +51,7 @@ def sensors_controllers():
             dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.FAN,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
-    ]
+    ], id=InputTypes.SENSORS, className='flex')
 
 
 def file_extra():
