@@ -36,17 +36,26 @@ def send_command(sp_value):
         realtime.send_command(Commands.CO2Controller.SET_POINT, str(sp_value))
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.ENGINE_SPEED, TagFields.VALUE),
+@app.callback(Output(TagIds.PLACEHOLDER, 'draggable'),
+              Input(TagIds.Tabs.Monitors.Control.BREATH_DEPTH, TagFields.VALUE),
               prevent_initial_call=True)
-def send_command(engine_speed):
-    if engine_speed is not None:
-        realtime.send_command(Commands.CHANGE_SPEED, engine_speed)
+def send_command(depth):
+    if depth is not None:
+        realtime.send_command(Commands.CHANGE_DEPTH, depth)
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.BREATH_RATE, TagFields.VALUE),
+              prevent_initial_call=True)
+def send_command(rate):
+    if rate is not None:
+        realtime.send_command(Commands.CHANGE_RATE, rate)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'key'), Input(TagIds.Tabs.Monitors.Control.ENGINE, TagFields.ON),
               prevent_initial_call=True)
 def send_command(engine_speed):
-    realtime.send_command(Commands.ACTIVATE_ENGINE, str(2 if engine_speed else 1))
+    if engine_speed is not None:
+        realtime.send_command(Commands.ACTIVATE_ENGINE, str(2 if engine_speed else 1))
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input(TagIds.Tabs.Monitors.UPLOAD_FILE, 'contents'),
@@ -56,7 +65,7 @@ def load_data_from_file(content, file_name):
         realtime.thread.connect_handler(content=content, file_name=file_name)
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'lang'), Input(TagIds.Intervals.ONE_MINUTE, TagFields.INTERVAL))
+@app.callback(Output(TagIds.PLACEHOLDER, 'lang'), Input(TagIds.Intervals.SAVE_TEMPORARY_FILE, TagFields.INTERVAL))
 def save_temporary_file(intervals):
     realtime.database.to_csv(OutputDirectory.TEMP_FILE)
 

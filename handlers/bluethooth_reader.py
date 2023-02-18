@@ -13,16 +13,17 @@ class BluetoothHandler(Handler):
         self.devices = {}
         super(BluetoothHandler, self).__init__(False)
 
-    def discover(self):
-        self.devices = {name: mac for (mac, name) in bluetooth.discover_devices(lookup_names=True)}
+    @staticmethod
+    def discover():
+        return dict(bluetooth.discover_devices(lookup_names=True))
 
-    def connect(self, address='', **kwargs):
+    def connect(self, address='', label=None, **kwargs):
         self.disconnect()
         try:
             self.buffer = b''
-            self.current = address
+            self.current = label if label else address
             self.client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-            self.client.connect((self.devices.get(address, ''), 1))
+            self.client.connect((address, 1))
         except OSError:
             self.client = None
             return False
@@ -44,4 +45,7 @@ class BluetoothHandler(Handler):
 
     @packet_sender
     def send_command(self, packet, input_type=None):
+        self.send(packet)
+
+    def send(self, packet):
         self.client.send(packet)

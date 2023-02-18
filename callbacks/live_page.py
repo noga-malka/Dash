@@ -11,7 +11,7 @@ from utilities import generate_sensors_output
 
 
 @app.callback(generate_sensors_output(),
-              Input(TagIds.Intervals.ONE_SECOND, TagFields.INTERVAL), prevent_initial_call=True)
+              Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
 def update_sensors_data(interval):
     try:
         content = realtime.database.read()
@@ -23,7 +23,7 @@ def update_sensors_data(interval):
 
 
 @app.callback([Output(group + 'header', TagFields.STYLE) for group in group_sensors()],
-              Input(TagIds.Intervals.ONE_SECOND, TagFields.INTERVAL))
+              Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL))
 def update_disconnected_sensors(clicked):
     try:
         content = realtime.database.read()
@@ -41,7 +41,7 @@ def update_disconnected_sensors(clicked):
 
 @app.callback(
     Output(TagIds.Tabs.Monitors.Control.PANEL, TagFields.IS_OPEN),
-    Output(TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, TagFields.CLASS_NAME),
+    Output(TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, TagFields.CHILDREN),
     State(TagIds.Tabs.Monitors.Control.PANEL, TagFields.IS_OPEN),
     Input(TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, TagFields.CLICK), prevent_initial_call=True
 )
@@ -55,7 +55,7 @@ def toggle_control_panel(is_open, *args):
     prevent_initial_call=True)
 def enable_dpc_slider_only_in_auto_mode(mode):
     if mode:
-        realtime.send_command(Commands.CO2Controller.MAPPING[mode], '')
+        realtime.send_command(Commands.CO2Controller.COMMANDS[mode], '')
     return mode != 'auto'
 
 

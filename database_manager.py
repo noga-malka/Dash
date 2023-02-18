@@ -55,10 +55,9 @@ class DatabaseManager:
             self.data = pandas.concat([self.data, *dataframes])
 
     def add_row(self, content):
-        if all(content):
-            row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
-            if not row.empty:
-                self.data = self.data.append(row)
+        row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
+        if not row.empty and len(row.columns) >= len(self.data.columns):
+            self.data = self.data.append(row)
 
     def to_csv(self, path=None):
         return self.data.to_csv(path)

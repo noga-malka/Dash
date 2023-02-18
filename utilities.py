@@ -1,10 +1,13 @@
 import dash_bootstrap_components as dbc
 import pandas
+import serial
 from dash import html
 
 from configurations import Settings, Schema, group_sensors, logger
 from consts import UnitTypes
-from handlers.consts import Commands, InputTypes
+from handlers.consts import Commands
+from handlers.handler_exception import DisconnectionEvent
+from mappings.controls import CONTROLS
 
 
 def generate_grid(components):
@@ -52,21 +55,19 @@ def load_configuration(config: dict):
         sensor.__dict__.update(current_values)
 
 
-def corner_radius(vertical, horizontal, size='20px'):
-    return {f'border-{vertical}-{horizontal}-radius': size}
-
-
 def packet_sender(function):
     def inner(self, command, content, input_type=None):
         packet = None
         try:
             input_type = input_type if input_type else Commands.CLASSIFIER[command]
-            packet = InputTypes.MAPPING[input_type]['packet_builder'].build_packet(command, content)
+            packet = CONTROLS[input_type]['packet_builder'].build_packet(command, content)
             function(self, packet, input_type)
             logger.info(f'successfully sent packet: {packet}')
         except KeyError:
             logger.warning(f'no handler with command {command}')
         except AttributeError:
             logger.warning(f'no connection. could not send {packet}')
+        except (serial.SerialException, ConnectionAbortedError):
+            raise DisconnectionEvent(self.__class__.__name__)
 
     return inner

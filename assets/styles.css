@@ -68,6 +68,7 @@ width: 100%;
     border-radius: 5px;
     text-align: center;
     margin: 10px;
+    width: 500px;
 }
 .fa-check-circle{
     color: green;

@@ -1,4 +1,5 @@
 import serial
+from serial.tools import list_ports
 
 from handlers.consts import Uart
 from handlers.handler import Handler
@@ -10,11 +11,15 @@ class SerialHandler(Handler):
     def __init__(self):
         super(SerialHandler, self).__init__(False)
 
-    def connect(self, comport=None, **kwargs):
+    @staticmethod
+    def discover():
+        return {com[0]: com[0] for com in filter(lambda port: "USB" in port[2], list_ports.comports())}
+
+    def connect(self, address=None, **kwargs):
         self.disconnect()
         try:
-            self.current = comport
-            self.client = serial.Serial(comport, Uart.BAUDRATE, timeout=Uart.TIMEOUT)
+            self.current = address
+            self.client = serial.Serial(address, Uart.BAUDRATE, timeout=Uart.TIMEOUT)
         except serial.SerialException:
             self.client = None
             return False
@@ -30,4 +35,7 @@ class SerialHandler(Handler):
 
     @packet_sender
     def send_command(self, packet, input_type=None):
+        self.send(packet)
+
+    def send(self, packet):
         self.client.write(packet)

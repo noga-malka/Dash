@@ -3,6 +3,7 @@ import sys
 from enum import Enum
 
 import dash_bootstrap_components as dbc
+from dash_iconify import DashIconify
 
 IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 
@@ -39,14 +40,14 @@ class TagIds:
         EXTRA = 'extra_layout'
 
     class Intervals:
-        ONE_SECOND = 'interval'
-        THREE_SECONDS = 'read_board'
-        ONE_MINUTE = 'save_data'
+        SYNC_DATA = 'interval'
+        COUNT_SENSORS = 'read_board'
+        SAVE_TEMPORARY_FILE = 'save_data'
 
         VALUES = {
-            ONE_SECOND: 1000,
-            THREE_SECONDS: 3000,
-            ONE_MINUTE: 60000,
+            SYNC_DATA: 1000,
+            COUNT_SENSORS: 5000,
+            SAVE_TEMPORARY_FILE: 60000,
         }
 
         @staticmethod
@@ -64,21 +65,15 @@ class TagIds:
             YES = 'sure_yes'
             NO = 'sure_no'
 
-        class Bluetooth:
-            MODAL = 'bluetooth_modal'
-            SCAN = 'scan_bluetooth'
-            INPUT = 'mac_input'
-            CONNECT = 'mac_button'
-
-        class Serial:
-            MODAL = 'serial_modal'
+        class LiveStream:
+            MODAL = 'live_modal'
             CONNECTIONS = 'selected_connections'
-            SCAN = 'scan_comports'
-            ADD = 'add_serial'
-            CLEAR = 'clear_serial'
-            INPUT = 'serial_input'
+            SCAN = 'scan_connections'
+            ADD = 'add_connection'
+            CLEAR = 'clear_connections'
+            INPUT = 'input_stream'
             INPUT_TYPE = 'input_type'
-            CONNECT = 'serial_connect'
+            CONNECT = 'stream_connect'
 
     class Tabs:
         class Config:
@@ -103,22 +98,25 @@ class TagIds:
                 DATA = 'custom_data'
                 SEND = 'send_command'
                 ENGINE = 'activate_engine'
-                ENGINE_SPEED = 'engine_speed'
+                BREATH_DEPTH = 'breath_depth'
+                BREATH_RATE = 'breath_rate'
 
             UPLOAD_FILE = 'upload_file'
 
 
 class Icons:
     class Css:
-        DOWN = 'fa fa-angle-down fa-lg'
-        UP = 'fa fa-angle-up fa-lg'
-        SAVE = 'fa fa-bookmark fa-lg'
-        CLEAN = 'fa fa-eraser fa-lg'
+        DOWN = DashIconify(icon='material-symbols:keyboard-double-arrow-down-rounded', width=30)
+        UP = DashIconify(icon='material-symbols:keyboard-double-arrow-up-rounded', width=30)
+        SAVE = DashIconify(icon='material-symbols:save', width=30)
+        CLEAN = DashIconify(icon='majesticons:eraser', width=30)
+        TIMER = DashIconify(icon='material-symbols:timer-rounded', width=30)
 
-        SERIAL = 'fa fa-plug fa-lg icon'
-        BLUETOOTH = 'fa fa-wifi fa-lg icon'
-        RANDOM = 'fa fa-random fa-lg icon'
-        UPLOAD = 'fa fa-upload fa-lg icon'
+        LIVE_STREAM = DashIconify(icon='material-symbols:monitor-heart-outline-rounded', width=30)
+        UPLOAD = DashIconify(icon='material-symbols:upload-file-rounded', width=30)
+
+        CELSIUS = DashIconify(icon='carbon:temperature-celsius', width=30)
+        FAHRENHEIT = DashIconify(icon='carbon:temperature-fahrenheit', width=30)
 
         CHECK = 'fa fa-check-circle fa-lg'
         WARNING = 'fa fa-exclamation-circle fa-lg'
@@ -130,21 +128,14 @@ class Icons:
     SAVE = {'id': 'save', 'icon': Css.SAVE}
     CLEAN = {'id': 'clean', 'icon': Css.CLEAN}
 
-    SERIAL = {'id': 'serial', 'icon': Css.SERIAL}
-    BLUETOOTH = {'id': 'bluetooth', 'icon': Css.BLUETOOTH}
-    RANDOM = {'id': 'random', 'icon': Css.RANDOM}
-    UPLOAD = {'id': 'upload', 'icon': Css.UPLOAD}
-
     ALL = [SAVE, CLEAN]
 
 
 class InputModes:
-    SERIAL = 'serial'
-    BLUETOOTH = 'bluetooth'
+    STREAMING = 'streaming'
     FILE = 'file'
     ALL = {
-        SERIAL: {'icon': Icons.Css.SERIAL, 'label': 'Serial'},
-        BLUETOOTH: {'icon': Icons.Css.BLUETOOTH, 'label': 'Bluetooth'},
+        STREAMING: {'icon': Icons.Css.LIVE_STREAM, 'label': 'Live Stream'},
         FILE: {'icon': Icons.Css.UPLOAD, 'label': 'From File'},
     }
 
