@@ -55,7 +55,7 @@ def toggle_control_panel(is_open, *args):
     prevent_initial_call=True)
 def enable_dpc_slider_only_in_auto_mode(mode):
     if mode:
-        realtime.send_command(Commands.CO2Controller.MAPPING[mode], '')
+        realtime.send_command(Commands.CO2Controller.COMMANDS[mode], '')
     return mode != 'auto'
 
 

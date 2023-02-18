@@ -32,7 +32,7 @@ def dpc_controls():
         generate_card('Change DPC Mode', [
             dbc.RadioItems(id=TagIds.Tabs.Monitors.Control.DPC,
                            options=[{"label": command.title(), "value": command} for command in
-                                    Commands.CO2Controller.MAPPING])]),
+                                    Commands.CO2Controller.COMMANDS])]),
         generate_card('Set Point in DPC', [
             dcc.Slider(0, 2.5, id=TagIds.Tabs.Monitors.Control.SP_SLIDER, disabled=True,
                        tooltip={'placement': 'bottom', 'always_visible': True},

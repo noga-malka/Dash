@@ -48,7 +48,7 @@ class Commands:
         READ = 'FV'
         SET_POINT = 'SP,'
 
-        MAPPING = {
+        COMMANDS = {
             'close': CLOSE,
             'open': OPEN,
             'auto': AUTO,
