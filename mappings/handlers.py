@@ -1,7 +1,7 @@
 from consts import InputModes
 from handlers.bluethooth_reader import BluetoothHandler
 from handlers.file_handler import FileHandler
-from handlers.mutliple_serial_handler import MultipleSerialHandler
+from handlers.mutliple_serial_handler import MultipleInputsHandler
 from tabs.control_panel import file_extra, bluetooth_extra, serial_extra
 
 EXTRA = {
@@ -11,7 +11,7 @@ EXTRA = {
 }
 
 TYPES = {
-    InputModes.SERIAL: MultipleSerialHandler(),
+    InputModes.SERIAL: MultipleInputsHandler(),
     InputModes.BLUETOOTH: BluetoothHandler(),
     InputModes.FILE: FileHandler()
 }

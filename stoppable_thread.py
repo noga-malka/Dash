@@ -71,7 +71,10 @@ class StoppableThread(Thread):
                         TYPES[self.handler_name].interval_action()
                         Timer(self._interval, lambda: self.events.interval.set()).start()
                 except DisconnectionEvent as disconnect:
-                    logger.error(disconnect)
-                    self.events.clean.set()
-                    self.events.disconnect.set()
-                    self.events.Finish.connect.clear()
+                    self.disconnect(disconnect)
+
+    def disconnect(self, exception):
+        logger.error(exception)
+        self.events.clean.set()
+        self.events.disconnect.set()
+        self.events.Finish.connect.clear()

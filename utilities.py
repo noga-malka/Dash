@@ -1,10 +1,12 @@
 import dash_bootstrap_components as dbc
 import pandas
+import serial
 from dash import html
 
 from configurations import Settings, Schema, group_sensors, logger
 from consts import UnitTypes
 from handlers.consts import Commands
+from handlers.handler_exception import DisconnectionEvent
 from mappings.controls import CONTROLS
 
 
@@ -65,5 +67,7 @@ def packet_sender(function):
             logger.warning(f'no handler with command {command}')
         except AttributeError:
             logger.warning(f'no connection. could not send {packet}')
+        except (serial.SerialException, ConnectionAbortedError):
+            raise DisconnectionEvent(self.__class__.__name__)
 
     return inner

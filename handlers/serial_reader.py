@@ -35,4 +35,7 @@ class SerialHandler(Handler):
 
     @packet_sender
     def send_command(self, packet, input_type=None):
+        self.send(packet)
+
+    def send(self, packet):
         self.client.write(packet)

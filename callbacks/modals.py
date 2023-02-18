@@ -44,14 +44,14 @@ def toggle_modal(is_open, mac_address, options, *args):
 
 
 @app.callback(
-    Output(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN),
+    Output(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Serial.INPUT, TagFields.OPTIONS),
     State(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),
     Input(TagIds.Modals.Serial.CONNECT, TagFields.CLICK), Input('serial_link', TagFields.CLICK),
     prevent_initial_call=True)
-def toggle_modal(is_open, connections, *args):
+def toggle_modal(options, is_open, connections, *args):
     if callback_context.triggered_id == TagIds.Modals.Serial.CONNECT:
         connections = dict([badge['props'][TagFields.CHILDREN].split(' : ') for badge in connections])
-        realtime.thread.connect_handler(connections=connections)
+        realtime.thread.connect_handler(connections=connections, labels=options)
         return False
     return not is_open
 

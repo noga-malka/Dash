@@ -7,6 +7,7 @@ from configurations import Settings, logger, InputNames
 from consts import DatabaseTypes
 from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets
+from handlers.handler_exception import DisconnectionEvent
 from mappings.handlers import TYPES
 from stoppable_thread import StoppableThread
 
@@ -48,7 +49,7 @@ class RealtimeData:
     @staticmethod
     def parse_dpc_controller(content: str, **kwargs):
         try:
-            row = {InputNames.DPC: float(content[0])}
+            row = {InputNames.DPC: float(content[0].strip('>'))}
         except (ValueError, IndexError):
             row = {}
         return DatabaseTypes.ROW, row
@@ -69,13 +70,17 @@ class RealtimeData:
         return DatabaseTypes.DATAFRAME, content
 
     def send_command(self, command: str, content: str = '0', event: Event = None, timeout=5, input_type=None):
-        if not event:
+        try:
+            if not event:
+                TYPES[self.thread.handler_name].send_command(command, content, input_type)
+                return False
+            event.clear()
             TYPES[self.thread.handler_name].send_command(command, content, input_type)
+            event.wait(timeout=timeout)
+            return event.is_set()
+        except DisconnectionEvent as disconnect:
+            realtime.thread.disconnect(disconnect)
             return False
-        event.clear()
-        TYPES[self.thread.handler_name].send_command(command, content, input_type)
-        event.wait(timeout=timeout)
-        return event.is_set()
 
 
 realtime = RealtimeData()
