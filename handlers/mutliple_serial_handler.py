@@ -3,6 +3,7 @@ from serial.tools import list_ports
 from handlers.consts import Commands, InputTypes
 from handlers.handler import Handler
 from handlers.serial_reader import SerialHandler
+from mappings.controls import CONTROLS
 from utilities import packet_sender
 
 
@@ -39,5 +40,5 @@ class MultipleSerialHandler(Handler):
     def read_lines(self) -> list[str]:
         lines = []
         for input_type, connection in self.handlers.items():
-            lines += [InputTypes.MAPPING[input_type]['header'] + line for line in connection.read_lines()]
+            lines += [CONTROLS[input_type]['header'] + line for line in connection.read_lines()]
         return lines

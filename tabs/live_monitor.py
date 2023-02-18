@@ -2,8 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import html
 
 from configurations import group_sensors, Settings
-from consts import TagIds, Icons
-from utilities import create_card, corner_radius
+from utilities import create_card
 
 
 class LivePage:
@@ -18,16 +17,6 @@ class LivePage:
                     rows[index].append(group_name)
                     break
         return [
-            html.Div(
-                [
-                    dbc.Collapse(
-                        [html.Div(id=TagIds.Layout.EXTRA, className='flex align children-margin space-between')],
-                        id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
-                    html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, className=Icons.Css.DOWN,
-                             style={'padding': '10px'})
-                ],
-                className='flex center column align bg-info',
-                style=corner_radius(size='50px') | corner_radius(is_right=False, size='50px')),
             html.Div(
                 children=sum([self._build_row(row) for row in rows.values()], []),
                 className='children-margin flex center', style={'flex-wrap': 'wrap'})

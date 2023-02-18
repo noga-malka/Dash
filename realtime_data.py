@@ -7,7 +7,7 @@ from configurations import Settings, logger, InputNames
 from consts import DatabaseTypes
 from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets
-from mappings import TYPES
+from mappings.handlers import TYPES
 from stoppable_thread import StoppableThread
 
 

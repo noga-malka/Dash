@@ -5,8 +5,10 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, Theme, TagFields, NavButtons, InputModes
 from dash_setup import app
-from mappings import EXTRA, TYPES, PAGES
+from mappings.handlers import EXTRA, TYPES
+from mappings.tabs import PAGES
 from realtime_data import realtime
+from tabs.control_panel import create_control_panel
 
 
 @app.callback(Output(TagIds.Layout.EXTRA, TagFields.CHILDREN), Input(TagIds.LOCATION, TagFields.PATH))
@@ -23,7 +25,7 @@ def render_content_by_tab(tab):
               Input(ThemeSwitchAIO.ids.switch(TagIds.THEME), TagFields.VALUE))
 def change_theme(theme):
     Theme.DAQ_THEME['dark'] = theme
-    content = html.Div(id=TagIds.Layout.CONTENT, className='flex column')
+    content = [create_control_panel(), html.Div(id=TagIds.Layout.CONTENT, className='flex column')]
     return daq.DarkThemeProvider(theme=Theme.DAQ_THEME, children=content)
 
 

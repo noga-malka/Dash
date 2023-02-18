@@ -4,7 +4,8 @@ from dash import html
 
 from configurations import Settings, Schema, group_sensors, logger
 from consts import UnitTypes
-from handlers.consts import Commands, InputTypes
+from handlers.consts import Commands
+from mappings.controls import CONTROLS
 
 
 def generate_grid(components):
@@ -52,18 +53,12 @@ def load_configuration(config: dict):
         sensor.__dict__.update(current_values)
 
 
-def corner_radius(is_bottom: bool = True, is_right: bool = True, size='20px'):
-    vertical = 'bottom' if is_bottom else 'top'
-    horizontal = 'right' if is_right else 'left'
-    return {f'border-{vertical}-{horizontal}-radius': size}
-
-
 def packet_sender(function):
     def inner(self, command, content, input_type=None):
         packet = None
         try:
             input_type = input_type if input_type else Commands.CLASSIFIER[command]
-            packet = InputTypes.MAPPING[input_type]['packet_builder'].build_packet(command, content)
+            packet = CONTROLS[input_type]['packet_builder'].build_packet(command, content)
             function(self, packet, input_type)
             logger.info(f'successfully sent packet: {packet}')
         except KeyError:

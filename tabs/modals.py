@@ -4,7 +4,7 @@ from dash import dcc, html
 
 from configurations import SetupConsts, Settings
 from consts import TagIds
-from handlers.consts import InputTypes
+from mappings.controls import CONTROLS
 from utilities import modal_generator
 
 
@@ -23,7 +23,7 @@ def serial_modal():
         html.Div(
             [
                 html.Div(dcc.Loading(children=[dcc.Dropdown(options=[], id=TagIds.Modals.Serial.INPUT)])),
-                dcc.Dropdown(options=list(InputTypes.MAPPING), id=TagIds.Modals.Serial.INPUT_TYPE),
+                dcc.Dropdown(options=list(CONTROLS), id=TagIds.Modals.Serial.INPUT_TYPE),
             ], className='flex children-margin-2 flex-grow'),
         dbc.Button('Search Ports', id=TagIds.Modals.Serial.SCAN),
         html.Div(

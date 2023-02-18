@@ -3,7 +3,7 @@ from threading import Thread, Event, Timer
 
 from configurations import logger
 from handlers.handler_exception import DisconnectionEvent
-from mappings import TYPES
+from mappings.handlers import TYPES
 
 
 class Events:

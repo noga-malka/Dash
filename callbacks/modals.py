@@ -6,7 +6,8 @@ from dash.exceptions import PreventUpdate
 
 from consts import TagIds, Icons, TagFields, InputModes
 from dash_setup import app
-from mappings import TYPES, CONTROLS
+from mappings.controls import CONTROLS
+from mappings.handlers import TYPES
 from realtime_data import realtime
 
 

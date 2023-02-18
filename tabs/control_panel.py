@@ -2,9 +2,14 @@ import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash import dcc, html
 
-from consts import TagIds
+from consts import TagIds, Icons
 from handlers.consts import Commands, InputTypes
-from utilities import corner_radius
+
+
+def corner_radius(is_bottom: bool = True, is_right: bool = True, size='20px'):
+    vertical = 'bottom' if is_bottom else 'top'
+    horizontal = 'right' if is_right else 'left'
+    return {f'border-{vertical}-{horizontal}-radius': size}
 
 
 def generate_card(title: str, content: list):
@@ -70,3 +75,16 @@ def bluetooth_extra():
 
 def file_extra():
     return [dcc.Upload(id=TagIds.Tabs.Monitors.UPLOAD_FILE, children=html.Div(['Drag and Drop'], className='upload'))]
+
+
+def create_control_panel():
+    return html.Div(
+        [
+            dbc.Collapse(
+                [html.Div(id=TagIds.Layout.EXTRA, className='flex align children-margin space-between')],
+                id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
+            html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, className=Icons.Css.DOWN,
+                     style={'padding': '10px'})
+        ],
+        className='flex center column align bg-info',
+        style=corner_radius(size='50px') | corner_radius(is_right=False, size='50px'))
