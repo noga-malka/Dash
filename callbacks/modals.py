@@ -78,8 +78,7 @@ def scan_for_bluetooth_addresses(clicked):
 
 @app.callback(Output(TagIds.Modals.Serial.INPUT, TagFields.OPTIONS), Input(TagIds.Modals.Serial.SCAN, TagFields.CLICK))
 def scan_for_serial_comports(clicked):
-    TYPES[InputModes.SERIAL].discover()
-    return TYPES[InputModes.SERIAL].devices
+    return TYPES[InputModes.SERIAL].discover()
 
 
 @app.callback(Output(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),

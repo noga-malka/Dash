@@ -1,5 +1,3 @@
-from serial.tools import list_ports
-
 from handlers.consts import Commands, InputTypes
 from handlers.handler import Handler
 from handlers.serial_reader import SerialHandler
@@ -10,11 +8,11 @@ from utilities import packet_sender
 class MultipleSerialHandler(Handler):
     def __init__(self):
         self.handlers = {}
-        self.devices = []
         super(MultipleSerialHandler, self).__init__(False)
 
-    def discover(self):
-        self.devices = [com[0] for com in filter(lambda port: "USB" in port[2], list_ports.comports())]
+    @staticmethod
+    def discover():
+        return SerialHandler.discover()
 
     def disconnect(self):
         for connection in self.handlers.values():

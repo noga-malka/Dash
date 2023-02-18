@@ -1,4 +1,5 @@
 import serial
+from serial.tools import list_ports
 
 from handlers.consts import Uart
 from handlers.handler import Handler
@@ -9,6 +10,10 @@ from utilities import packet_sender
 class SerialHandler(Handler):
     def __init__(self):
         super(SerialHandler, self).__init__(False)
+
+    @staticmethod
+    def discover():
+        return {com[0]: com[0] for com in filter(lambda port: "USB" in port[2], list_ports.comports())}
 
     def connect(self, address=None, **kwargs):
         self.disconnect()
