@@ -12,8 +12,7 @@ def generate_card(title: str, content: list):
         html.Label(title),
         html.Hr(),
         html.Div(content, className='flex center align children-margin-2')
-    ], style={'padding': '10px', 'border-right': 'solid'} | corner_radius('bottom', 'right') | corner_radius('top',
-                                                                                                             'right'))
+    ], style={'padding': '10px', 'border-right': 'solid'} | corner_radius(is_bottom=False) | corner_radius())
 
 
 def serial_extra():

@@ -52,7 +52,9 @@ def load_configuration(config: dict):
         sensor.__dict__.update(current_values)
 
 
-def corner_radius(vertical, horizontal, size='20px'):
+def corner_radius(is_bottom: bool = True, is_right: bool = True, size='20px'):
+    vertical = 'bottom' if is_bottom else 'top'
+    horizontal = 'right' if is_right else 'left'
     return {f'border-{vertical}-{horizontal}-radius': size}
 
 

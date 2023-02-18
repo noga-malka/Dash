@@ -26,7 +26,7 @@ class LivePage:
                              style={'padding': '10px'})
                 ],
                 className='flex center column align bg-info',
-                style=corner_radius('bottom', 'right', '50px') | corner_radius('bottom', 'left', '50px')),
+                style=corner_radius(size='50px') | corner_radius(is_right=False, size='50px')),
             html.Div(
                 children=sum([self._build_row(row) for row in rows.values()], []),
                 className='children-margin flex center', style={'flex-wrap': 'wrap'})
