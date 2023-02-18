@@ -9,8 +9,8 @@ from tabs.live_monitor import LivePage
 from tabs.set_config import ConfigPage
 
 CONTROLS = {
-    InputTypes.CO2_CONTROLLER: dpc_controls,
-    InputTypes.SENSORS: sensors_controls,
+    InputTypes.CO2_CONTROLLER: {'generator': dpc_controls},
+    InputTypes.SENSORS: {'generator': sensors_controls},
 }
 
 EXTRA = {
