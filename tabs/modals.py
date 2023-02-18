@@ -8,7 +8,7 @@ from mappings.controls import CONTROLS
 from utilities import modal_generator
 
 
-def serial_modal():
+def live_stream_modal():
     inputs = [
         html.Div(id=TagIds.Modals.LiveStream.CONNECTIONS, children=[]),
         html.Div(
@@ -16,7 +16,7 @@ def serial_modal():
                 html.Div(dcc.Loading(children=[dcc.Dropdown(options=[], id=TagIds.Modals.LiveStream.INPUT)])),
                 dcc.Dropdown(options=list(CONTROLS), id=TagIds.Modals.LiveStream.INPUT_TYPE),
             ], className='flex children-margin-2 flex-grow'),
-        dbc.Button('Search Ports', id=TagIds.Modals.LiveStream.SCAN),
+        dbc.Button('Scan for Devices', id=TagIds.Modals.LiveStream.SCAN),
         html.Div(
             [
                 dbc.Button('Add Connection', id=TagIds.Modals.LiveStream.ADD),
@@ -24,7 +24,7 @@ def serial_modal():
             ], className='flex flex-grow children-margin-2'),
         dbc.Button('Connect', id=TagIds.Modals.LiveStream.CONNECT)
     ]
-    return modal_generator(TagIds.Modals.LiveStream.MODAL, 'Select Serial Connections', inputs, is_centered=False)
+    return modal_generator(TagIds.Modals.LiveStream.MODAL, 'Connect To Hardware', inputs, is_centered=False)
 
 
 def download_session():

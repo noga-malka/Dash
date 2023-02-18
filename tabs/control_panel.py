@@ -65,7 +65,7 @@ def sensors_controls():
     ]
 
 
-def serial_extra():
+def live_stream_extra():
     return [sensors_controls(), dpc_controls()]
 
 

@@ -111,7 +111,7 @@ class Icons:
         CLEAN = DashIconify(icon='majesticons:eraser', width=30)
         TIMER = DashIconify(icon='material-symbols:timer-rounded', width=30)
 
-        SERIAL = DashIconify(icon='material-symbols:monitor-heart-outline-rounded', width=30)
+        LIVE_STREAM = DashIconify(icon='material-symbols:monitor-heart-outline-rounded', width=30)
         UPLOAD = DashIconify(icon='material-symbols:upload-file-rounded', width=30)
 
         CELSIUS = DashIconify(icon='carbon:temperature-celsius', width=30)
@@ -131,10 +131,10 @@ class Icons:
 
 
 class InputModes:
-    SERIAL = 'streaming'
+    STREAMING = 'streaming'
     FILE = 'file'
     ALL = {
-        SERIAL: {'icon': Icons.Css.SERIAL, 'label': 'Live Stream'},
+        STREAMING: {'icon': Icons.Css.LIVE_STREAM, 'label': 'Live Stream'},
         FILE: {'icon': Icons.Css.UPLOAD, 'label': 'From File'},
     }
 

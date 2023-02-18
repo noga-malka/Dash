@@ -33,7 +33,7 @@ def toggle_modal(is_open, *args):
     Output(TagIds.Modals.LiveStream.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.LiveStream.INPUT, TagFields.OPTIONS),
     State(TagIds.Modals.LiveStream.MODAL, TagFields.IS_OPEN),
     State(TagIds.Modals.LiveStream.CONNECTIONS, TagFields.CHILDREN),
-    Input(TagIds.Modals.LiveStream.CONNECT, TagFields.CLICK), Input(InputModes.SERIAL + '_link', TagFields.CLICK),
+    Input(TagIds.Modals.LiveStream.CONNECT, TagFields.CLICK), Input(InputModes.STREAMING + '_link', TagFields.CLICK),
     prevent_initial_call=True)
 def toggle_modal(options, is_open, connections, *args):
     if callback_context.triggered_id == TagIds.Modals.LiveStream.CONNECT:
@@ -59,8 +59,8 @@ def toggle_modal(is_open):
 
 @app.callback(Output(TagIds.Modals.LiveStream.INPUT, TagFields.OPTIONS),
               Input(TagIds.Modals.LiveStream.SCAN, TagFields.CLICK))
-def scan_for_serial_comports(clicked):
-    return TYPES[InputModes.SERIAL].discover()
+def discover_connected_devices(clicked):
+    return TYPES[InputModes.STREAMING].discover()
 
 
 @app.callback(Output(TagIds.Modals.LiveStream.CONNECTIONS, TagFields.CHILDREN),
@@ -70,7 +70,7 @@ def scan_for_serial_comports(clicked):
               Input(TagIds.Modals.LiveStream.ADD, TagFields.CLICK),
               Input(TagIds.Modals.LiveStream.CLEAR, TagFields.CLICK),
               prevent_initial_call=True)
-def add_serial_connection_to_list(children, comport, input_type, *args):
+def add_connection_to_list(children, comport, input_type, *args):
     if callback_context.triggered_id == TagIds.Modals.LiveStream.CLEAR:
         return []
     if comport and input_type:
