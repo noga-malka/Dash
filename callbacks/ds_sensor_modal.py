@@ -39,11 +39,11 @@ def manage_buttons_click(reset_toggles, *args):
 @app.callback(Output(TagIds.Tabs.Config.SENSOR_STATUS, TagFields.CHILDREN),
               [Output(f'check_{name}', TagFields.DISABLED) for name in SetupConsts.COMMANDS],
               Output(TagIds.Tabs.Config.SCAN, TagFields.DISABLED), State(TagIds.Tabs.Config.MODAL, TagFields.IS_OPEN),
-              Input(TagIds.Intervals.THREE_SECONDS, TagFields.INTERVAL), prevent_initial_call=True)
+              Input(TagIds.Intervals.COUNT_SENSORS, TagFields.INTERVAL), prevent_initial_call=True)
 def check_connected_ds_sensors_count_periodically(is_open, *args):
     if not realtime.in_types() or not is_open:
         raise PreventUpdate
-    success = realtime.send_command(Commands.SEARCH_SENSOR, 0, realtime.thread.events.scan_sensor, timeout=2)
+    success = realtime.send_command(Commands.SEARCH_SENSOR, 0, realtime.thread.events.scan_sensor, timeout=4)
     sensor_count = realtime.database.get(HardwarePackets.ONE_WIRE, 0) if success else -1
     scan_board = sensor_count != 4
     enable_toggle = sensor_count != 1

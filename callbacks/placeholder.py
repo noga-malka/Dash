@@ -57,7 +57,7 @@ def load_data_from_file(content, file_name):
         realtime.thread.connect_handler(content=content, file_name=file_name)
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'lang'), Input(TagIds.Intervals.ONE_MINUTE, TagFields.INTERVAL))
+@app.callback(Output(TagIds.PLACEHOLDER, 'lang'), Input(TagIds.Intervals.SAVE_TEMPORARY_FILE, TagFields.INTERVAL))
 def save_temporary_file(intervals):
     realtime.database.to_csv(OutputDirectory.TEMP_FILE)
 

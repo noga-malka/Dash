@@ -11,7 +11,7 @@ from utilities import generate_sensors_output
 
 
 @app.callback(generate_sensors_output(),
-              Input(TagIds.Intervals.ONE_SECOND, TagFields.INTERVAL), prevent_initial_call=True)
+              Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
 def update_sensors_data(interval):
     try:
         content = realtime.database.read()
@@ -23,7 +23,7 @@ def update_sensors_data(interval):
 
 
 @app.callback([Output(group + 'header', TagFields.STYLE) for group in group_sensors()],
-              Input(TagIds.Intervals.ONE_SECOND, TagFields.INTERVAL))
+              Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL))
 def update_disconnected_sensors(clicked):
     try:
         content = realtime.database.read()

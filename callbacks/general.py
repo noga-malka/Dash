@@ -30,7 +30,7 @@ def change_theme(theme):
 
 
 @app.callback(Output(TagIds.CLOCK, TagFields.CHILDREN),
-              Input(TagIds.Intervals.ONE_SECOND, TagFields.INTERVAL), prevent_initial_call=True)
+              Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
 def update_timer(intervals):
     timestamp = 'Timer: '
     if realtime.database.is_not_empty():
@@ -40,7 +40,7 @@ def update_timer(intervals):
 
 @app.callback(
     [[Output(f"{mode}_label", TagFields.CHILDREN), Output(f"{mode}_link", TagFields.STYLE)] for mode in InputModes.ALL],
-    Input(TagIds.LOCATION, TagFields.PATH), Input(TagIds.Intervals.ONE_SECOND, TagFields.INTERVAL),
+    Input(TagIds.LOCATION, TagFields.PATH), Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL),
     prevent_initial_call=True
 )
 def display_connection_status(path, *args):

@@ -57,7 +57,7 @@ def configurate_board():
                            [
                                html.H5(id=TagIds.Tabs.Config.SENSOR_STATUS),
                                container,
-                               dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.THREE_SECONDS)),
+                               dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.COUNT_SENSORS)),
                            ])
 
 

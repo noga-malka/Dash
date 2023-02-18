@@ -40,14 +40,14 @@ class TagIds:
         EXTRA = 'extra_layout'
 
     class Intervals:
-        ONE_SECOND = 'interval'
-        THREE_SECONDS = 'read_board'
-        ONE_MINUTE = 'save_data'
+        SYNC_DATA = 'interval'
+        COUNT_SENSORS = 'read_board'
+        SAVE_TEMPORARY_FILE = 'save_data'
 
         VALUES = {
-            ONE_SECOND: 1000,
-            THREE_SECONDS: 3000,
-            ONE_MINUTE: 60000,
+            SYNC_DATA: 1000,
+            COUNT_SENSORS: 5000,
+            SAVE_TEMPORARY_FILE: 60000,
         }
 
         @staticmethod
