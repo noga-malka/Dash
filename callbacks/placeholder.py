@@ -46,7 +46,8 @@ def send_command(engine_speed):
 @app.callback(Output(TagIds.PLACEHOLDER, 'key'), Input(TagIds.Tabs.Monitors.Control.ENGINE, TagFields.ON),
               prevent_initial_call=True)
 def send_command(engine_speed):
-    realtime.send_command(Commands.ACTIVATE_ENGINE, str(2 if engine_speed else 1))
+    if engine_speed is not None:
+        realtime.send_command(Commands.ACTIVATE_ENGINE, str(2 if engine_speed else 1))
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input(TagIds.Tabs.Monitors.UPLOAD_FILE, 'contents'),
