@@ -3,9 +3,8 @@ import dash_daq as daq
 from dash import dcc, html
 
 from configurations import SetupConsts, Settings
-from consts import TagIds, Icons
+from consts import TagIds
 from handlers.consts import InputTypes
-from tabs.control_panel import bluetooth_extra, serial_extra, file_extra
 from utilities import modal_generator
 
 
@@ -79,10 +78,3 @@ def generate_setup_buttons():
     return html.Div([dbc.Button('reset toggles', id=TagIds.Tabs.Config.RESET_TOGGLES),
                      dbc.Button('scan sensors', id=TagIds.Tabs.Config.SCAN, disabled=True)],
                     className='flex align children-margin')
-
-
-EXTRA = {
-    Icons.UPLOAD['id']: file_extra(),
-    Icons.BLUETOOTH['id']: bluetooth_extra(),
-    Icons.SERIAL['id']: serial_extra()
-}

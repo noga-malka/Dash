@@ -60,7 +60,7 @@ def generate_layout():
                                     html.Span(id=f"{input_mode}_label")],
                                 href=f"/{input_mode}", id=f"{input_mode}_link",
                                 active="exact") for input_mode, icon in InputModes.ALL.items()],
-                            vertical=True, pills=True, key=f'/{Icons.SERIAL["id"]}'
+                            vertical=True, pills=True
                         ),
                     ], className='sidebar'
                 ),

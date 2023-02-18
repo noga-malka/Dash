@@ -130,11 +130,6 @@ class Icons:
     SAVE = {'id': 'save', 'icon': Css.SAVE}
     CLEAN = {'id': 'clean', 'icon': Css.CLEAN}
 
-    SERIAL = {'id': 'serial', 'icon': Css.SERIAL}
-    BLUETOOTH = {'id': 'bluetooth', 'icon': Css.BLUETOOTH}
-    RANDOM = {'id': 'random', 'icon': Css.RANDOM}
-    UPLOAD = {'id': 'file', 'icon': Css.UPLOAD}
-
     ALL = [SAVE, CLEAN]
 
 

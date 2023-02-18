@@ -8,7 +8,13 @@ from dash_setup import app
 from layout import pages
 from realtime_data import realtime
 from stoppable_thread import types
-from tabs.modals import EXTRA
+from tabs.control_panel import file_extra, bluetooth_extra, serial_extra
+
+EXTRA = {
+    InputModes.FILE: file_extra(),
+    InputModes.BLUETOOTH: bluetooth_extra(),
+    InputModes.SERIAL: serial_extra()
+}
 
 
 @app.callback(Output(TagIds.Layout.EXTRA, TagFields.CHILDREN), Input(TagIds.LOCATION, TagFields.PATH))
