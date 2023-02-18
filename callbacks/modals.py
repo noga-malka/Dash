@@ -31,13 +31,14 @@ def toggle_modal(is_open, *args):
 
 @app.callback(
     Output(TagIds.Modals.Bluetooth.MODAL, TagFields.IS_OPEN),
-    State(TagIds.Modals.Bluetooth.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Bluetooth.INPUT, TagFields.VALUE),
+    State(TagIds.Modals.Bluetooth.MODAL, TagFields.IS_OPEN),
+    State(TagIds.Modals.Bluetooth.INPUT, TagFields.VALUE), State(TagIds.Modals.Bluetooth.INPUT, TagFields.OPTIONS),
     Input(TagIds.Modals.Bluetooth.CONNECT, TagFields.CLICK), Input('bluetooth_link', TagFields.CLICK),
     prevent_initial_call=True)
-def toggle_modal(is_open, mac_address, *args):
+def toggle_modal(is_open, mac_address, options, *args):
     if callback_context.triggered_id == TagIds.Modals.Bluetooth.CONNECT:
         if mac_address:
-            realtime.thread.connect_handler(address=mac_address)
+            realtime.thread.connect_handler(address=mac_address, label=options[mac_address])
         return False
     return not is_open
 
@@ -72,8 +73,7 @@ def toggle_modal(is_open):
 @app.callback(Output(TagIds.Modals.Bluetooth.INPUT, TagFields.OPTIONS),
               Input(TagIds.Modals.Bluetooth.SCAN, TagFields.CLICK))
 def scan_for_bluetooth_addresses(clicked):
-    TYPES[InputModes.BLUETOOTH].discover()
-    return list(TYPES[InputModes.BLUETOOTH].devices.keys())
+    return TYPES[InputModes.BLUETOOTH].discover()
 
 
 @app.callback(Output(TagIds.Modals.Serial.INPUT, TagFields.OPTIONS), Input(TagIds.Modals.Serial.SCAN, TagFields.CLICK))
