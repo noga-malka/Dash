@@ -81,7 +81,7 @@ def create_control_panel():
     return html.Div(
         [
             dbc.Collapse(
-                [html.Div(id=TagIds.Layout.EXTRA, className='flex align children-margin space-between')],
+                [html.Div(id=TagIds.Layout.EXTRA, className='flex align children-margin space-around')],
                 id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
             html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, className=Icons.Css.DOWN,
                      style={'padding': '10px'})
