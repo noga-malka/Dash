@@ -4,9 +4,9 @@ from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme, Icons, InputModes
-from tabs.extras import download_session, are_you_sure, configurate_board, bluetooth_modal, serial_modal
 from tabs.graph_monitor import GraphPage
 from tabs.live_monitor import LivePage
+from tabs.modals import download_session, are_you_sure, configurate_board, bluetooth_modal, serial_modal
 from tabs.set_config import ConfigPage
 
 pages = {

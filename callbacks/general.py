@@ -8,7 +8,7 @@ from dash_setup import app
 from layout import pages
 from realtime_data import realtime
 from stoppable_thread import types
-from tabs.extras import EXTRA
+from tabs.modals import EXTRA
 
 
 @app.callback(Output(TagIds.Layout.EXTRA, TagFields.CHILDREN), Input(TagIds.LOCATION, TagFields.PATH))
