@@ -64,21 +64,15 @@ class TagIds:
             YES = 'sure_yes'
             NO = 'sure_no'
 
-        class Bluetooth:
-            MODAL = 'bluetooth_modal'
-            SCAN = 'scan_bluetooth'
-            INPUT = 'mac_input'
-            CONNECT = 'mac_button'
-
-        class Serial:
-            MODAL = 'serial_modal'
+        class LiveStream:
+            MODAL = 'live_modal'
             CONNECTIONS = 'selected_connections'
-            SCAN = 'scan_comports'
-            ADD = 'add_serial'
-            CLEAR = 'clear_serial'
-            INPUT = 'serial_input'
+            SCAN = 'scan_connections'
+            ADD = 'add_connection'
+            CLEAR = 'clear_connections'
+            INPUT = 'input_stream'
             INPUT_TYPE = 'input_type'
-            CONNECT = 'serial_connect'
+            CONNECT = 'stream_connect'
 
     class Tabs:
         class Config:
@@ -134,12 +128,10 @@ class Icons:
 
 
 class InputModes:
-    SERIAL = 'serial'
-    BLUETOOTH = 'bluetooth'
+    SERIAL = 'streaming'
     FILE = 'file'
     ALL = {
-        SERIAL: {'icon': Icons.Css.SERIAL, 'label': 'Serial'},
-        BLUETOOTH: {'icon': Icons.Css.BLUETOOTH, 'label': 'Bluetooth'},
+        SERIAL: {'icon': Icons.Css.SERIAL, 'label': 'Live Stream'},
         FILE: {'icon': Icons.Css.UPLOAD, 'label': 'From File'},
     }
 

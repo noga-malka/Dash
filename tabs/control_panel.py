@@ -68,11 +68,6 @@ def sensors_controls():
 def serial_extra():
     return [sensors_controls(), dpc_controls()]
 
-
-def bluetooth_extra():
-    return sensors_controls(True)
-
-
 def file_extra():
     return [dcc.Upload(id=TagIds.Tabs.Monitors.UPLOAD_FILE, children=html.Div(['Drag and Drop'], className='upload'))]
 

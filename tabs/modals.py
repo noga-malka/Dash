@@ -8,32 +8,23 @@ from mappings.controls import CONTROLS
 from utilities import modal_generator
 
 
-def bluetooth_modal():
-    inputs = [
-        dcc.Loading(children=[dcc.Dropdown(options=[], id=TagIds.Modals.Bluetooth.INPUT, className='full-width')]),
-        dbc.Button('Search', id=TagIds.Modals.Bluetooth.SCAN),
-        dbc.Button('Connect', id=TagIds.Modals.Bluetooth.CONNECT)
-    ]
-    return modal_generator(TagIds.Modals.Bluetooth.MODAL, 'Enter Mac Address', inputs, is_centered=False)
-
-
 def serial_modal():
     inputs = [
-        html.Div(id=TagIds.Modals.Serial.CONNECTIONS, children=[]),
+        html.Div(id=TagIds.Modals.LiveStream.CONNECTIONS, children=[]),
         html.Div(
             [
-                html.Div(dcc.Loading(children=[dcc.Dropdown(options=[], id=TagIds.Modals.Serial.INPUT)])),
-                dcc.Dropdown(options=list(CONTROLS), id=TagIds.Modals.Serial.INPUT_TYPE),
+                html.Div(dcc.Loading(children=[dcc.Dropdown(options=[], id=TagIds.Modals.LiveStream.INPUT)])),
+                dcc.Dropdown(options=list(CONTROLS), id=TagIds.Modals.LiveStream.INPUT_TYPE),
             ], className='flex children-margin-2 flex-grow'),
-        dbc.Button('Search Ports', id=TagIds.Modals.Serial.SCAN),
+        dbc.Button('Search Ports', id=TagIds.Modals.LiveStream.SCAN),
         html.Div(
             [
-                dbc.Button('Add Connection', id=TagIds.Modals.Serial.ADD),
-                dbc.Button('Clear All', id=TagIds.Modals.Serial.CLEAR),
+                dbc.Button('Add Connection', id=TagIds.Modals.LiveStream.ADD),
+                dbc.Button('Clear All', id=TagIds.Modals.LiveStream.CLEAR),
             ], className='flex flex-grow children-margin-2'),
-        dbc.Button('Connect', id=TagIds.Modals.Serial.CONNECT)
+        dbc.Button('Connect', id=TagIds.Modals.LiveStream.CONNECT)
     ]
-    return modal_generator(TagIds.Modals.Serial.MODAL, 'Select Serial Connections', inputs, is_centered=False)
+    return modal_generator(TagIds.Modals.LiveStream.MODAL, 'Select Serial Connections', inputs, is_centered=False)
 
 
 def download_session():

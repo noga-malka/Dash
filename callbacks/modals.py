@@ -30,26 +30,13 @@ def toggle_modal(is_open, *args):
 
 
 @app.callback(
-    Output(TagIds.Modals.Bluetooth.MODAL, TagFields.IS_OPEN),
-    State(TagIds.Modals.Bluetooth.MODAL, TagFields.IS_OPEN),
-    State(TagIds.Modals.Bluetooth.INPUT, TagFields.VALUE), State(TagIds.Modals.Bluetooth.INPUT, TagFields.OPTIONS),
-    Input(TagIds.Modals.Bluetooth.CONNECT, TagFields.CLICK), Input('bluetooth_link', TagFields.CLICK),
-    prevent_initial_call=True)
-def toggle_modal(is_open, mac_address, options, *args):
-    if callback_context.triggered_id == TagIds.Modals.Bluetooth.CONNECT:
-        if mac_address:
-            realtime.thread.connect_handler(address=mac_address, label=options[mac_address])
-        return False
-    return not is_open
-
-
-@app.callback(
-    Output(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Serial.INPUT, TagFields.OPTIONS),
-    State(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),
-    Input(TagIds.Modals.Serial.CONNECT, TagFields.CLICK), Input('serial_link', TagFields.CLICK),
+    Output(TagIds.Modals.LiveStream.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.LiveStream.INPUT, TagFields.OPTIONS),
+    State(TagIds.Modals.LiveStream.MODAL, TagFields.IS_OPEN),
+    State(TagIds.Modals.LiveStream.CONNECTIONS, TagFields.CHILDREN),
+    Input(TagIds.Modals.LiveStream.CONNECT, TagFields.CLICK), Input(InputModes.SERIAL + '_link', TagFields.CLICK),
     prevent_initial_call=True)
 def toggle_modal(options, is_open, connections, *args):
-    if callback_context.triggered_id == TagIds.Modals.Serial.CONNECT:
+    if callback_context.triggered_id == TagIds.Modals.LiveStream.CONNECT:
         connections = dict([badge['props'][TagFields.CHILDREN].split(' : ') for badge in connections])
         realtime.thread.connect_handler(connections=connections, labels=options)
         return False
@@ -58,7 +45,7 @@ def toggle_modal(options, is_open, connections, *args):
 
 @app.callback(
     [Output(input_type, TagFields.CHILDREN) for input_type in CONTROLS],
-    Input(TagIds.Modals.Serial.MODAL, TagFields.IS_OPEN),
+    Input(TagIds.Modals.LiveStream.MODAL, TagFields.IS_OPEN),
     prevent_initial_call=True)
 def toggle_modal(is_open):
     if is_open:
@@ -70,25 +57,21 @@ def toggle_modal(is_open):
     return controls
 
 
-@app.callback(Output(TagIds.Modals.Bluetooth.INPUT, TagFields.OPTIONS),
-              Input(TagIds.Modals.Bluetooth.SCAN, TagFields.CLICK))
-def scan_for_bluetooth_addresses(clicked):
-    return TYPES[InputModes.BLUETOOTH].discover()
-
-
-@app.callback(Output(TagIds.Modals.Serial.INPUT, TagFields.OPTIONS), Input(TagIds.Modals.Serial.SCAN, TagFields.CLICK))
+@app.callback(Output(TagIds.Modals.LiveStream.INPUT, TagFields.OPTIONS),
+              Input(TagIds.Modals.LiveStream.SCAN, TagFields.CLICK))
 def scan_for_serial_comports(clicked):
     return TYPES[InputModes.SERIAL].discover()
 
 
-@app.callback(Output(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),
-              State(TagIds.Modals.Serial.CONNECTIONS, TagFields.CHILDREN),
-              State(TagIds.Modals.Serial.INPUT, TagFields.VALUE),
-              State(TagIds.Modals.Serial.INPUT_TYPE, TagFields.VALUE),
-              Input(TagIds.Modals.Serial.ADD, TagFields.CLICK), Input(TagIds.Modals.Serial.CLEAR, TagFields.CLICK),
+@app.callback(Output(TagIds.Modals.LiveStream.CONNECTIONS, TagFields.CHILDREN),
+              State(TagIds.Modals.LiveStream.CONNECTIONS, TagFields.CHILDREN),
+              State(TagIds.Modals.LiveStream.INPUT, TagFields.VALUE),
+              State(TagIds.Modals.LiveStream.INPUT_TYPE, TagFields.VALUE),
+              Input(TagIds.Modals.LiveStream.ADD, TagFields.CLICK),
+              Input(TagIds.Modals.LiveStream.CLEAR, TagFields.CLICK),
               prevent_initial_call=True)
 def add_serial_connection_to_list(children, comport, input_type, *args):
-    if callback_context.triggered_id == TagIds.Modals.Serial.CLEAR:
+    if callback_context.triggered_id == TagIds.Modals.LiveStream.CLEAR:
         return []
     if comport and input_type:
         return children + [dbc.Badge(f'{comport} : {input_type}', pill=True)]

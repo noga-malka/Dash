@@ -5,7 +5,7 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme, Icons, InputModes
 from mappings.tabs import PAGES
-from tabs.modals import download_session, are_you_sure, configurate_board, bluetooth_modal, serial_modal
+from tabs.modals import download_session, are_you_sure, configurate_board, serial_modal
 
 
 def generate_buttons():
@@ -57,7 +57,6 @@ def generate_layout():
                     ], className='sidebar'
                 ),
                 serial_modal(),
-                bluetooth_modal(),
                 download_session(),
                 are_you_sure(),
                 configurate_board(),
