@@ -15,28 +15,34 @@ def generate_card(title: str, content: list):
     ], style={'padding': '10px', 'border-right': 'solid'} | corner_radius(is_bottom=False) | corner_radius())
 
 
-def serial_extra():
+def controls(input_type):
+    def decorator(function):
+        def inner(is_connected: bool = False):
+            content = function() if is_connected else generate_card(f'Input "{input_type}" - Not Connected', [])
+            return html.Div(content, id=input_type, className='flex')
+
+        return inner
+
+    return decorator
+
+
+@controls(InputTypes.CO2_CONTROLLER)
+def dpc_controls():
     return [
-        html.Div([
-            generate_card('Change DPC Mode', [
-                dbc.RadioItems(id=TagIds.Tabs.Monitors.Control.DPC,
-                               options=[{"label": command.title(), "value": command} for command in
-                                        Commands.CO2Controller.MAPPING])]),
-            generate_card('Set Point in DPC', [
-                dcc.Slider(0, 2.5, id=TagIds.Tabs.Monitors.Control.SP_SLIDER, disabled=True,
-                           tooltip={'placement': 'bottom', 'always_visible': True},
-                           className='slider')]),
-        ], id=InputTypes.CO2_CONTROLLER, className='flex'),
-        sensors_controllers(),
+        generate_card('Change DPC Mode', [
+            dbc.RadioItems(id=TagIds.Tabs.Monitors.Control.DPC,
+                           options=[{"label": command.title(), "value": command} for command in
+                                    Commands.CO2Controller.MAPPING])]),
+        generate_card('Set Point in DPC', [
+            dcc.Slider(0, 2.5, id=TagIds.Tabs.Monitors.Control.SP_SLIDER, disabled=True,
+                       tooltip={'placement': 'bottom', 'always_visible': True},
+                       className='slider')]),
     ]
 
 
-def bluetooth_extra():
-    return sensors_controllers()
-
-
-def sensors_controllers():
-    return html.Div([
+@controls(InputTypes.SENSORS)
+def sensors_controls():
+    return [
         generate_card('Activate Engine',
                       [daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE)]),
         generate_card('Engine Speed', [
@@ -51,7 +57,15 @@ def sensors_controllers():
             dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.FAN,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
-    ], id=InputTypes.SENSORS, className='flex')
+    ]
+
+
+def serial_extra():
+    return [sensors_controls(), dpc_controls()]
+
+
+def bluetooth_extra():
+    return sensors_controls(True)
 
 
 def file_extra():
