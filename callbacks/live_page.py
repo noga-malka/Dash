@@ -41,7 +41,7 @@ def update_disconnected_sensors(clicked):
 
 @app.callback(
     Output(TagIds.Tabs.Monitors.Control.PANEL, TagFields.IS_OPEN),
-    Output(TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, TagFields.CLASS_NAME),
+    Output(TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, TagFields.CHILDREN),
     State(TagIds.Tabs.Monitors.Control.PANEL, TagFields.IS_OPEN),
     Input(TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, TagFields.CLICK), prevent_initial_call=True
 )

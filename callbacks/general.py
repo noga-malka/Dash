@@ -3,7 +3,7 @@ from dash import Output, Input, html
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from consts import TagIds, Theme, TagFields, NavButtons, InputModes
+from consts import TagIds, Theme, TagFields, NavButtons, InputModes, Icons
 from dash_setup import app
 from mappings.handlers import EXTRA, TYPES
 from mappings.tabs import PAGES
@@ -35,7 +35,7 @@ def update_timer(intervals):
     timestamp = 'Timer: '
     if realtime.database.is_not_empty():
         timestamp += realtime.database.time_gap()
-    return timestamp
+    return Icons.Css.TIMER, timestamp
 
 
 @app.callback(

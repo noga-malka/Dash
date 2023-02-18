@@ -68,6 +68,7 @@ def sensors_controls():
 def serial_extra():
     return [sensors_controls(), dpc_controls()]
 
+
 def file_extra():
     return [dcc.Upload(id=TagIds.Tabs.Monitors.UPLOAD_FILE, children=html.Div(['Drag and Drop'], className='upload'))]
 
@@ -78,8 +79,7 @@ def create_control_panel():
             dbc.Collapse(
                 [html.Div(id=TagIds.Layout.EXTRA, className='flex align children-margin space-around')],
                 id=TagIds.Tabs.Monitors.Control.PANEL, className='full-width'),
-            html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, className=Icons.Css.DOWN,
-                     style={'padding': '10px'})
+            html.Div(id=TagIds.Tabs.Monitors.Control.TOGGLE_PANEL, children=Icons.Css.DOWN)
         ],
         className='flex center column align bg-info',
         style=corner_radius(size='50px') | corner_radius(is_right=False, size='50px'))

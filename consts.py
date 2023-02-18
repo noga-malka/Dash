@@ -3,6 +3,7 @@ import sys
 from enum import Enum
 
 import dash_bootstrap_components as dbc
+from dash_iconify import DashIconify
 
 IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 
@@ -104,15 +105,17 @@ class TagIds:
 
 class Icons:
     class Css:
-        DOWN = 'fa fa-angle-down fa-lg'
-        UP = 'fa fa-angle-up fa-lg'
-        SAVE = 'fa fa-bookmark fa-lg'
-        CLEAN = 'fa fa-eraser fa-lg'
+        DOWN = DashIconify(icon='material-symbols:keyboard-double-arrow-down-rounded', width=30)
+        UP = DashIconify(icon='material-symbols:keyboard-double-arrow-up-rounded', width=30)
+        SAVE = DashIconify(icon='material-symbols:save', width=30)
+        CLEAN = DashIconify(icon='majesticons:eraser', width=30)
+        TIMER = DashIconify(icon='material-symbols:timer-rounded', width=30)
 
-        SERIAL = 'fa fa-plug fa-lg icon'
-        BLUETOOTH = 'fa fa-wifi fa-lg icon'
-        RANDOM = 'fa fa-random fa-lg icon'
-        UPLOAD = 'fa fa-upload fa-lg icon'
+        SERIAL = DashIconify(icon='material-symbols:monitor-heart-outline-rounded', width=30)
+        UPLOAD = DashIconify(icon='material-symbols:upload-file-rounded', width=30)
+
+        CELSIUS = DashIconify(icon='carbon:temperature-celsius', width=30)
+        FAHRENHEIT = DashIconify(icon='carbon:temperature-fahrenheit', width=30)
 
         CHECK = 'fa fa-check-circle fa-lg'
         WARNING = 'fa fa-exclamation-circle fa-lg'

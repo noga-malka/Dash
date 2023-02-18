@@ -10,11 +10,11 @@ from tabs.modals import download_session, are_you_sure, configurate_board, seria
 
 def generate_buttons():
     buttons = [
-        dbc.Button([
-            html.I(className=icon['icon'], style={'margin': '5px'}), icon['id']], id=icon['id'])
+        dbc.Button([icon['icon'], icon['id']], id=icon['id'])
         for icon in Icons.ALL
     ]
-    return [html.Div([dbc.Button('Timer:', id=TagIds.CLOCK), *buttons], className='flex center children-margin-2'),
+    return [html.Div([dbc.Button([Icons.Css.TIMER, 'Timer:'], id=TagIds.CLOCK), *buttons],
+                     className='flex center children-margin-2'),
             *[dbc.Tooltip(icon['id'], target=icon['id'], placement="top") for icon in Icons.ALL]]
 
 
@@ -28,9 +28,9 @@ def generate_layout():
             html.Div(
                 children=[
                     html.Div([
-                        html.Label('F°'),
+                        Icons.Css.FAHRENHEIT,
                         daq.BooleanSwitch(id=TagIds.TEMP_SWITCH, on=True),
-                        html.Label('C°'),
+                        Icons.Css.CELSIUS,
                     ], className='flex center align children-margin-2'),
                     *generate_buttons(),
                     ThemeSwitchAIO(aio_id=TagIds.THEME, themes=[Theme.DARK, Theme.LIGHT],
@@ -45,11 +45,8 @@ def generate_layout():
                         html.Hr(),
                         dbc.Nav(
                             [dbc.NavLink(
-                                [html.Div([
-                                    html.Div(className=icon['icon']),
-                                    html.Span(icon['label']),
-                                ]),
-                                    html.Span(id=f"{input_mode}_label")],
+                                [html.Div([icon['icon'], html.Span(icon['label'])]),
+                                 html.Span(id=f"{input_mode}_label")],
                                 href=f"/{input_mode}", id=f"{input_mode}_link",
                                 active="exact") for input_mode, icon in InputModes.ALL.items()],
                             vertical=True, pills=True
