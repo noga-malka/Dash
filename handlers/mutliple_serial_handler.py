@@ -24,7 +24,7 @@ class MultipleSerialHandler(Handler):
         self.disconnect()
         for comport, action in connections.items():
             self.handlers[action] = SerialHandler()
-            self.handlers[action].is_connected = self.handlers[action].connect(comport=comport)
+            self.handlers[action].is_connected = self.handlers[action].connect(address=comport)
         self.current = list(connections)
         return all(handler.is_connected for handler in self.handlers.values())
 

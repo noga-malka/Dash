@@ -10,11 +10,11 @@ class SerialHandler(Handler):
     def __init__(self):
         super(SerialHandler, self).__init__(False)
 
-    def connect(self, comport=None, **kwargs):
+    def connect(self, address=None, **kwargs):
         self.disconnect()
         try:
-            self.current = comport
-            self.client = serial.Serial(comport, Uart.BAUDRATE, timeout=Uart.TIMEOUT)
+            self.current = address
+            self.client = serial.Serial(address, Uart.BAUDRATE, timeout=Uart.TIMEOUT)
         except serial.SerialException:
             self.client = None
             return False
