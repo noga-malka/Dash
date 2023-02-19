@@ -49,7 +49,7 @@ def dpc_controls():
 def sensors_controls():
     return [
         generate_card('Activate Engine',
-                      [daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE)]),
+                      [html.Label('Off'), daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE), html.Label('On')]),
         generate_card('Breath Depth', [
             dcc.Slider(60, 360, id=TagIds.Tabs.Monitors.Control.BREATH_DEPTH,
                        tooltip={'placement': 'bottom', 'always_visible': True},
