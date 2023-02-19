@@ -55,7 +55,7 @@ def sensors_controls():
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
         generate_card('Breath Rate', [
-            dcc.Slider(50, 150, id=TagIds.Tabs.Monitors.Control.BREATH_RATE,
+            dcc.Slider(50, 150, id=TagIds.Tabs.Monitors.Control.BREATH_RATE, value=100,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
         generate_card('Reset CO2 sensors',
