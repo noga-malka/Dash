@@ -60,7 +60,7 @@ def sensors_controls():
                        className='slider')]),
         generate_card('Reset CO2 sensors',
                       [dbc.Input(id=TagIds.Tabs.Monitors.Control.CO2_VALUE, type='number',
-                                 style={'width': '100px'}, value=400),
+                                 style={'width': '80px'}, value=400),
                        dbc.Button('reset', id=TagIds.Tabs.Monitors.Control.CO2)]),
         generate_card('Change Fan Speed', [
             dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.FAN,
