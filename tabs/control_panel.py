@@ -49,18 +49,18 @@ def dpc_controls():
 def sensors_controls():
     return [
         generate_card('Activate Engine',
-                      [daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE)]),
+                      [html.Label('Off'), daq.BooleanSwitch(id=TagIds.Tabs.Monitors.Control.ENGINE), html.Label('On')]),
         generate_card('Breath Depth', [
             dcc.Slider(60, 360, id=TagIds.Tabs.Monitors.Control.BREATH_DEPTH,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
         generate_card('Breath Rate', [
-            dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.BREATH_RATE,
+            dcc.Slider(50, 150, id=TagIds.Tabs.Monitors.Control.BREATH_RATE, value=100,
                        tooltip={'placement': 'bottom', 'always_visible': True},
                        className='slider')]),
         generate_card('Reset CO2 sensors',
                       [dbc.Input(id=TagIds.Tabs.Monitors.Control.CO2_VALUE, type='number',
-                                 style={'width': '100px'}, value=400),
+                                 style={'width': '80px'}, value=400),
                        dbc.Button('reset', id=TagIds.Tabs.Monitors.Control.CO2)]),
         generate_card('Change Fan Speed', [
             dcc.Slider(0, 100, id=TagIds.Tabs.Monitors.Control.FAN,
