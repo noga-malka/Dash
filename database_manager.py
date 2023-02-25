@@ -3,7 +3,7 @@ import re
 
 import pandas
 
-from consts import DatabaseTypes, DatabaseReader
+from consts import DatabaseTypes, DatabaseReader, GraphConsts
 
 
 class DatabaseManager:
@@ -35,7 +35,8 @@ class DatabaseManager:
         return re.search('([0-9]{2}|:)+', str(total)).group(0)
 
     def read(self, index=DatabaseReader.LAST):
-        return self.data if index == DatabaseReader.ALL else self.data.iloc[index.value]
+        return self.data.iloc[-1 * GraphConsts.MAX_ROWS:] if index == DatabaseReader.ALL else self.data.iloc[
+            index.value]
 
     def save_single_value(self, values):
         for (key, value, event) in values:

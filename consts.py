@@ -161,6 +161,10 @@ class DatabaseTypes:
     DATAFRAME = 'dataframe'
 
 
+class GraphConsts:
+    MAX_ROWS = 10000
+
+
 class DaqConsts:
     GRADIENT = {"gradient": True, "ranges": {"red": [0, 20], "yellow": [20, 50], "green": [50, 100]}}
     ICONS = {"right": Icons.Css.MOON, "left": Icons.Css.SUN}
