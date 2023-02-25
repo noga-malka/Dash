@@ -59,6 +59,16 @@ def enable_dpc_slider_only_in_auto_mode(mode):
     return mode != 'auto'
 
 
+@app.callback(Output(TagIds.Buttons.RECORDING, TagFields.CHILDREN),
+              Output(TagIds.Buttons.RECORDING + '_tooltip', TagFields.CHILDREN),
+              Input(TagIds.Buttons.RECORDING, TagFields.CLICK))
+def toggle_modal(click):
+    if not click:
+        raise PreventUpdate
+    icon = Icons.STOP_RECORD if click % 2 else Icons.START_RECORD
+    return [icon['icon'], icon['label']], icon['label']
+
+
 @app.callback([[Output(sensor_key, TagFields.MIN), Output(sensor_key, TagFields.MAX), Output(sensor_key, 'units'),
                 Output(sensor_key + '_led', TagFields.LABEL)] for sensor_key in Settings.SENSORS],
               Input(TagIds.TEMP_SWITCH, TagFields.ON))

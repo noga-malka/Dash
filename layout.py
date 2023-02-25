@@ -9,13 +9,13 @@ from tabs.modals import download_session, are_you_sure, configurate_board, live_
 
 
 def generate_buttons():
-    buttons = [
-        dbc.Button([icon['icon'], icon['id']], id=icon['id'])
-        for icon in Icons.ALL
-    ]
-    return [html.Div([dbc.Button([Icons.Css.TIMER, 'Timer:'], id=TagIds.CLOCK), *buttons],
-                     className='flex center children-margin-2'),
-            *[dbc.Tooltip(icon['id'], target=icon['id'], placement="top") for icon in Icons.ALL]]
+    buttons = []
+    for icon in Icons.ALL:
+        buttons += [
+            dbc.Button([icon['icon'], icon['label']], id=icon['id']),
+            dbc.Tooltip(icon['label'], target=icon['id'], placement="top", id=icon['id'] + '_tooltip')
+        ]
+    return [html.Div(buttons, className='flex center children-margin-2')]
 
 
 def generate_layout():

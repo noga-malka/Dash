@@ -54,6 +54,11 @@ class TagIds:
         def create_interval(name: str):
             return dict(id=name, interval=TagIds.Intervals.VALUES[name], n_intervals=0)
 
+    class Buttons:
+        RECORDING = 'recording'
+        SAVE = 'save_button'
+        CLEAN = 'clean_button'
+
     class Modals:
         class Save:
             MODAL = 'save_file'
@@ -111,6 +116,8 @@ class Icons:
         SAVE = DashIconify(icon='material-symbols:save', width=30)
         CLEAN = DashIconify(icon='majesticons:eraser', width=30)
         TIMER = DashIconify(icon='material-symbols:timer-rounded', width=30)
+        START_RECORD = DashIconify(icon='material-symbols:play-circle-rounded', width=30)
+        STOP_RECORD = DashIconify(icon='ic:round-stop-circle', width=30)
 
         LIVE_STREAM = DashIconify(icon='material-symbols:monitor-heart-outline-rounded', width=30)
         UPLOAD = DashIconify(icon='material-symbols:upload-file-rounded', width=30)
@@ -125,10 +132,12 @@ class Icons:
         MOON = 'fa fa-moon'
         SUN = 'fa fa-sun'
 
-    SAVE = {'id': 'save', 'icon': Css.SAVE}
-    CLEAN = {'id': 'clean', 'icon': Css.CLEAN}
-
-    ALL = [SAVE, CLEAN]
+    SAVE = dict(id=TagIds.Buttons.SAVE, label='Save', icon=Css.SAVE)
+    CLEAN = dict(id=TagIds.Buttons.CLEAN, label='Reset', icon=Css.CLEAN)
+    START_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Start Recording', icon=Css.START_RECORD)
+    STOP_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Stop Recording', icon=Css.STOP_RECORD)
+    TIMER = dict(id=TagIds.CLOCK, label='Timer', icon=Css.TIMER)
+    ALL = [TIMER, SAVE, CLEAN, START_RECORD]
 
 
 class InputModes:
