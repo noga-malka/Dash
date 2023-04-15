@@ -3,7 +3,7 @@ from typing import Callable
 
 import pandas
 
-from configurations import Settings, logger
+from configurations import logger
 from consts import DatabaseTypes
 from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets
@@ -60,7 +60,7 @@ class RealtimeData:
             except ValueError:
                 data = content[index + 1]
             sample[content[index]] = data
-        return DatabaseTypes.ROW, {key: value for key, value in sample.items() if key in Settings.SENSORS}
+        return DatabaseTypes.ROW, sample
 
     @staticmethod
     def add_dataframe(content: pandas.DataFrame, **kwargs):

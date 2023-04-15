@@ -16,6 +16,7 @@ logging.getLogger('callbacks').disabled = not IS_DEBUG
 class InputNames:
     TACH = 'Tach'
     TEMP = 'Temp'
+    TIMER = 'Time'
 
 
 class SensorNames:

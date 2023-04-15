@@ -3,6 +3,7 @@ from dash import Output, Input, html
 from dash.exceptions import PreventUpdate
 from dash_bootstrap_templates import ThemeSwitchAIO
 
+from configurations import InputNames
 from consts import TagIds, Theme, TagFields, NavButtons, InputModes, Icons
 from dash_setup import app
 from mappings.handlers import EXTRA, TYPES
@@ -34,7 +35,7 @@ def change_theme(theme):
 def update_timer(intervals):
     timestamp = 'Timer: '
     if realtime.database.is_not_empty():
-        timestamp += realtime.database.time_gap()
+        timestamp += realtime.database.read()[InputNames.TIMER]
     return Icons.Css.TIMER, timestamp
 
 
