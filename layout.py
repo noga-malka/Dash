@@ -5,7 +5,7 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme, Icons, InputModes
 from mappings.tabs import PAGES
-from tabs.modals import download_session, are_you_sure, configurate_board, live_stream_modal
+from tabs.modals import download_session, are_you_sure, live_stream_modal
 
 
 def generate_buttons():
@@ -56,7 +56,6 @@ def generate_layout():
                 live_stream_modal(),
                 download_session(),
                 are_you_sure(),
-                configurate_board(),
                 dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.SAVE_TEMPORARY_FILE)),
                 dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.SYNC_DATA)),
                 html.Div(id=TagIds.PLACEHOLDER, style={'display': None}),

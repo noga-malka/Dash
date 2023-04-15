@@ -14,32 +14,13 @@ logging.getLogger('callbacks').disabled = not IS_DEBUG
 
 
 class InputNames:
-    CO2 = 'CO2 sensor CO2'
-    CO2_HUMIDITY = 'CO2 sensor Hum'
-    CO2_TEMP = 'CO2 sensor Temp'
-    HTU_HUMIDITY = 'HTU21DF-1 sensor Humidity'
-    HTU_TEMP = 'HTU21DF-1 sensor Temp'
-    DS_TEMP_1 = 'Mouth Temp'
-    DS_TEMP_2 = 'Lungs Temp'
-    DS_TEMP_3 = 'Canister Top Temp'
-    DS_TEMP_4 = 'Canister Bottom Temp'
-    PRESSURE_1 = 'pressure 1'
-    PRESSURE_2 = 'pressure 2'
-    PRESSURE_1_TEMP = 'Temp pressure 1'
-    PRESSURE_2_TEMP = 'Temp pressure 2'
-    DPC = 'DPC'
+    TACH = 'Tach'
+    TEMP = 'Temp'
 
 
 class SensorNames:
-    CO2 = 'CO2 sensor'
-    HTU = 'HTU21DF-1 sensor'
-    DS1 = 'Mouth'
-    DS2 = 'Lungs'
-    DS3 = 'Canister Top'
-    DS4 = 'Canister Bottom'
-    PRESSURE1 = 'Pressure 1'
-    PRESSURE2 = 'Pressure 2'
-    DPC = 'DPC Volume'
+    FAN = 'Fan Speed'
+    TEMP = 'Temperature'
 
 
 class ContentType:
@@ -62,24 +43,11 @@ class Sensor(BaseModel):
 
 
 class Labels:
-    CO2 = 'CO2'
     TEMP = 'Temperature'
-    HUMIDITY = 'Humidity'
-    PRESSURE = 'Pressure'
-    DPC = 'DPC'
+    FAN = 'Fan'
 
 
 class SensorInstance:
-    CO2 = Sensor(label=Labels.CO2,
-                 minimum=0,
-                 low_error=0,
-                 low_warning=0,
-                 high_warning=6000,
-                 high_error=8000,
-                 maximum=10000,
-                 unit_type=UnitTypes.PPM,
-                 possible_units=[UnitTypes.PPM])
-
     Temperature = Sensor(label=Labels.TEMP,
                          minimum=10,
                          low_error=20,
@@ -90,7 +58,7 @@ class SensorInstance:
                          unit_type=UnitTypes.CELSIUS,
                          possible_units=[UnitTypes.CELSIUS, UnitTypes.FAHRENHEIT])
 
-    Humidity = Sensor(label=Labels.HUMIDITY,
+    FanSpeed = Sensor(label=Labels.FAN,
                       minimum=0,
                       low_error=10,
                       low_warning=20,
@@ -100,26 +68,6 @@ class SensorInstance:
                       unit_type=UnitTypes.PERCENTAGE,
                       possible_units=[UnitTypes.PERCENTAGE])
 
-    Pressure = Sensor(label=Labels.PRESSURE,
-                      minimum=-1,
-                      low_error=-0.5,
-                      low_warning=-0.45,
-                      high_warning=0.45,
-                      high_error=0.5,
-                      maximum=1,
-                      unit_type=UnitTypes.PRESSURE,
-                      possible_units=[UnitTypes.PRESSURE])
-
-    DPC = Sensor(label=Labels.DPC,
-                 minimum=0,
-                 low_error=0.25,
-                 low_warning=0.5,
-                 high_warning=2,
-                 high_error=2.25,
-                 maximum=2.5,
-                 unit_type=UnitTypes.SET_POINT,
-                 possible_units=[UnitTypes.SET_POINT])
-
 
 class Schema:
     SENSOR_SCHEMA = Sensor.schema()['properties']
@@ -127,11 +75,8 @@ class Schema:
     NUMERIC_FIELDS = {key for key, field in SENSOR_SCHEMA.items() if field.get('content_type') == ContentType.NUMERIC}
 
     MONITOR_TYPES = {
-        Labels.CO2: GaugeMonitor(180, False, True, max_percent=1000000),
         Labels.TEMP: TemperatureMonitor(90),
-        Labels.HUMIDITY: GaugeMonitor(110),
-        Labels.PRESSURE: GaugeMonitor(110),
-        Labels.DPC: GaugeMonitor(110),
+        Labels.FAN: GaugeMonitor(110),
     }
 
 
@@ -152,73 +97,26 @@ def set_sensors(groups):
 
 class Settings:
     DEFAULT = {
-        SensorNames.CO2: {
-            InputNames.CO2: SensorInstance.CO2,
-            InputNames.CO2_HUMIDITY: SensorInstance.Humidity,
-            InputNames.CO2_TEMP: SensorInstance.Temperature,
+        SensorNames.FAN: {
+            InputNames.TACH: SensorInstance.FanSpeed,
         },
-        SensorNames.HTU: {
-            InputNames.HTU_HUMIDITY: SensorInstance.Humidity,
-            InputNames.HTU_TEMP: SensorInstance.Temperature,
-        },
-        SensorNames.DS1: {
-            InputNames.DS_TEMP_1: SensorInstance.Temperature,
-        },
-        SensorNames.DS2: {
-            InputNames.DS_TEMP_2: SensorInstance.Temperature
-        },
-        SensorNames.DS3: {
-            InputNames.DS_TEMP_3: SensorInstance.Temperature
-        },
-        SensorNames.DS4: {
-            InputNames.DS_TEMP_4: SensorInstance.Temperature
-        },
-        SensorNames.PRESSURE1: {
-            InputNames.PRESSURE_1: SensorInstance.Pressure,
-            InputNames.PRESSURE_1_TEMP: SensorInstance.Temperature,
-        },
-        SensorNames.PRESSURE2: {
-            InputNames.PRESSURE_2: SensorInstance.Pressure,
-            InputNames.PRESSURE_2_TEMP: SensorInstance.Temperature,
-        },
-        SensorNames.DPC: {
-            InputNames.DPC: SensorInstance.DPC,
+        SensorNames.TEMP: {
+            InputNames.TEMP: SensorInstance.Temperature,
         },
     }
     SENSORS = set_sensors(DEFAULT)
 
     DISPLAY = [
-        [InputNames.DPC, InputNames.CO2, InputNames.CO2_TEMP, InputNames.CO2_HUMIDITY, InputNames.HTU_TEMP,
-         InputNames.HTU_HUMIDITY],
-        [InputNames.DS_TEMP_1, InputNames.DS_TEMP_2, InputNames.DS_TEMP_3, InputNames.DS_TEMP_4, InputNames.PRESSURE_1,
-         InputNames.PRESSURE_1_TEMP, InputNames.PRESSURE_2, InputNames.PRESSURE_2_TEMP]
+        [InputNames.TACH, InputNames.TEMP],
     ]
 
     GRAPHS = {
-        'CO2': [
-            InputNames.CO2,
-        ],
-        'DPC': [
-            InputNames.DPC,
-        ],
         'Temperature': [
-            InputNames.CO2_TEMP,
-            InputNames.HTU_TEMP,
-            InputNames.DS_TEMP_1,
-            InputNames.DS_TEMP_2,
-            InputNames.DS_TEMP_3,
-            InputNames.DS_TEMP_4,
-            InputNames.PRESSURE_1_TEMP,
-            InputNames.PRESSURE_2_TEMP,
+            InputNames.TEMP,
         ],
-        'Humidity': [
-            InputNames.CO2_HUMIDITY,
-            InputNames.HTU_HUMIDITY,
+        'Fan Speed': [
+            InputNames.TACH,
         ],
-        'Pressure': [
-            InputNames.PRESSURE_1,
-            InputNames.PRESSURE_2,
-        ]
     }
 
 
@@ -231,6 +129,4 @@ def group_sensors():
 
 
 class SetupConsts:
-    COMMANDS = {
-        InputNames.DS_TEMP_1: 24, InputNames.DS_TEMP_2: 25, InputNames.DS_TEMP_3: 26, InputNames.DS_TEMP_4: 27
-    }
+    COMMANDS = {}

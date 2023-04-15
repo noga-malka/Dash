@@ -3,7 +3,7 @@ from typing import Callable
 
 import pandas
 
-from configurations import Settings, logger, InputNames
+from configurations import Settings, logger
 from consts import DatabaseTypes
 from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets
@@ -24,7 +24,6 @@ class RealtimeData:
             HardwarePackets.ONE_WIRE: self.save_output,
             HardwarePackets.DATA: self.add_row,
             HardwarePackets.FILE: self.add_dataframe,
-            HardwarePackets.DPC: self.parse_dpc_controller,
         }
 
     def in_types(self):
@@ -45,14 +44,6 @@ class RealtimeData:
                 self.database.save(self._current)
             except (KeyError, IndexError, ValueError, UnicodeDecodeError):
                 logger.warning(f'Failed to parse row: {data}')
-
-    @staticmethod
-    def parse_dpc_controller(content: str, **kwargs):
-        try:
-            row = {InputNames.DPC: float(content[0].strip('>'))}
-        except (ValueError, IndexError):
-            row = {}
-        return DatabaseTypes.ROW, row
 
     def save_output(self, command: str, content: str, **kwargs):
         return DatabaseTypes.SINGLE_VALUE, (command, int(content[0]), self.thread.events.scan_sensor)
