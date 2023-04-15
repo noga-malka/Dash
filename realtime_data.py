@@ -53,7 +53,13 @@ class RealtimeData:
 
     @staticmethod
     def add_row(content: str, **kwargs):
-        sample = {content[index]: float(content[index + 1]) for index in range(0, len(content), 2)}
+        sample = {}
+        for index in range(0, len(content), 2):
+            try:
+                data = float(content[index + 1])
+            except ValueError:
+                data = content[index + 1]
+            sample[content[index]] = data
         return DatabaseTypes.ROW, {key: value for key, value in sample.items() if key in Settings.SENSORS}
 
     @staticmethod

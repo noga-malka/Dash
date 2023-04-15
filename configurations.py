@@ -50,23 +50,23 @@ class Labels:
 class SensorInstance:
     Temperature = Sensor(label=Labels.TEMP,
                          minimum=10,
-                         low_error=20,
-                         low_warning=25,
-                         high_warning=35,
-                         high_error=38,
+                         low_error=10,
+                         low_warning=10,
+                         high_warning=50,
+                         high_error=50,
                          maximum=50,
                          unit_type=UnitTypes.CELSIUS,
                          possible_units=[UnitTypes.CELSIUS, UnitTypes.FAHRENHEIT])
 
     FanSpeed = Sensor(label=Labels.FAN,
                       minimum=0,
-                      low_error=10,
-                      low_warning=20,
-                      high_warning=80,
-                      high_error=90,
-                      maximum=100,
-                      unit_type=UnitTypes.PERCENTAGE,
-                      possible_units=[UnitTypes.PERCENTAGE])
+                      low_error=0,
+                      low_warning=0,
+                      high_warning=300,
+                      high_error=300,
+                      maximum=300,
+                      unit_type=UnitTypes.TACHO,
+                      possible_units=[UnitTypes.TACHO])
 
 
 class Schema:

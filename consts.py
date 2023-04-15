@@ -60,6 +60,12 @@ class TagIds:
         CLEAN = 'clean_button'
 
     class Modals:
+        class Bluetooth:
+            MODAL = 'bluetooth_modal'
+            SCAN = 'scan_bluetooth'
+            INPUT = 'mac_input'
+            CONNECT = 'mac_button'
+
         class Save:
             MODAL = 'save_file'
             DOWNLOAD = 'download_text'
@@ -119,7 +125,7 @@ class Icons:
         START_RECORD = DashIconify(icon='material-symbols:play-circle-rounded', width=30)
         STOP_RECORD = DashIconify(icon='ic:round-stop-circle', width=30)
 
-        LIVE_STREAM = DashIconify(icon='material-symbols:monitor-heart-outline-rounded', width=30)
+        BLUETOOTH = DashIconify(icon='material-symbols:bluetooth', width=30)
         UPLOAD = DashIconify(icon='material-symbols:upload-file-rounded', width=30)
 
         CELSIUS = DashIconify(icon='carbon:temperature-celsius', width=30)
@@ -141,10 +147,10 @@ class Icons:
 
 
 class InputModes:
-    STREAMING = 'streaming'
+    BLUETOOTH = 'bluetooth'
     FILE = 'file'
     ALL = {
-        STREAMING: {'icon': Icons.Css.LIVE_STREAM, 'label': 'Live Stream'},
+        BLUETOOTH: {'icon': Icons.Css.BLUETOOTH, 'label': 'Live Stream'},
         FILE: {'icon': Icons.Css.UPLOAD, 'label': 'From File'},
     }
 
@@ -218,7 +224,7 @@ class UnitTypes:
     CELSIUS = 'C°'
     FAHRENHEIT = 'F°'
     PPM = 'PPM'
-    PERCENTAGE = '%'
+    TACHO = 'RPS'
     PRESSURE = 'BAR'
     SET_POINT = 'SP'
     CONVERT = {

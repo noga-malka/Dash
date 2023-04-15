@@ -5,7 +5,7 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 from consts import TagIds, DaqConsts, Theme, Icons, InputModes
 from mappings.tabs import PAGES
-from tabs.modals import download_session, are_you_sure, live_stream_modal
+from tabs.modals import download_session, are_you_sure, bluetooth_modal
 
 
 def generate_buttons():
@@ -53,7 +53,7 @@ def generate_layout():
                         ),
                     ], className='sidebar'
                 ),
-                live_stream_modal(),
+                bluetooth_modal(),
                 download_session(),
                 are_you_sure(),
                 dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.SAVE_TEMPORARY_FILE)),

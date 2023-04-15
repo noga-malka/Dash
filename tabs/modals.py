@@ -4,27 +4,16 @@ from dash import dcc, html
 
 from configurations import SetupConsts, Settings
 from consts import TagIds
-from mappings.controls import CONTROLS
 from utilities import modal_generator
 
 
-def live_stream_modal():
+def bluetooth_modal():
     inputs = [
-        html.Div(id=TagIds.Modals.LiveStream.CONNECTIONS, children=[]),
-        html.Div(
-            [
-                html.Div(dcc.Loading(children=[dcc.Dropdown(options=[], id=TagIds.Modals.LiveStream.INPUT)])),
-                dcc.Dropdown(options=list(CONTROLS), id=TagIds.Modals.LiveStream.INPUT_TYPE),
-            ], className='flex children-margin-2 flex-grow'),
-        dbc.Button('Scan for Devices', id=TagIds.Modals.LiveStream.SCAN),
-        html.Div(
-            [
-                dbc.Button('Add Connection', id=TagIds.Modals.LiveStream.ADD),
-                dbc.Button('Clear All', id=TagIds.Modals.LiveStream.CLEAR),
-            ], className='flex flex-grow children-margin-2'),
-        dbc.Button('Connect', id=TagIds.Modals.LiveStream.CONNECT)
+        dcc.Loading(children=[dcc.Dropdown(options=[], id=TagIds.Modals.Bluetooth.INPUT, className='full-width')]),
+        dbc.Button('Search', id=TagIds.Modals.Bluetooth.SCAN),
+        dbc.Button('Connect', id=TagIds.Modals.Bluetooth.CONNECT)
     ]
-    return modal_generator(TagIds.Modals.LiveStream.MODAL, 'Connect To Hardware', inputs, is_centered=False)
+    return modal_generator(TagIds.Modals.Bluetooth.MODAL, 'Enter Mac Address', inputs, is_centered=False)
 
 
 def download_session():

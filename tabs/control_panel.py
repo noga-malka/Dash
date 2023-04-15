@@ -70,7 +70,7 @@ def sensors_controls():
 
 
 def live_stream_extra():
-    return [sensors_controls(), dpc_controls()]
+    return [sensors_controls()]
 
 
 def file_extra():
