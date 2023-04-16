@@ -5,9 +5,8 @@ from dash import html
 
 from configurations import Settings, Schema, group_sensors, logger
 from consts import UnitTypes
-from handlers.consts import Commands
 from handlers.handler_exception import DisconnectionEvent
-from mappings.controls import CONTROLS
+from handlers.packetBuilders.sensors_builder import SensorsPacketBuilder
 
 
 def generate_grid(components):
@@ -56,12 +55,11 @@ def load_configuration(config: dict):
 
 
 def packet_sender(function):
-    def inner(self, command, content, input_type=None):
+    def inner(self, command, content):
         packet = None
         try:
-            input_type = input_type if input_type else Commands.CLASSIFIER[command]
-            packet = CONTROLS[input_type]['packet_builder'].build_packet(command, content)
-            function(self, packet, input_type)
+            packet = SensorsPacketBuilder().build_packet(command, content)
+            function(self, packet)
             logger.info(f'successfully sent packet: {packet}')
         except KeyError:
             logger.warning(f'no handler with command {command}')

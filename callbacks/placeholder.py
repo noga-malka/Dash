@@ -2,7 +2,7 @@ from dash import Input, Output, State
 
 from consts import TagIds, TagFields, OutputDirectory
 from dash_setup import app
-from handlers.consts import Commands, InputTypes
+from handlers.consts import Commands
 from realtime_data import realtime
 
 
@@ -13,11 +13,11 @@ def send_command(fan_value):
         realtime.send_command(Commands.SET_FAN, fan_value)
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'role'), Input(TagIds.Tabs.Monitors.Control.CO2, TagFields.CLICK),
-              State(TagIds.Tabs.Monitors.Control.SET_DEVICE_ID, TagFields.VALUE), prevent_initial_call=True)
-def send_command(co2_click, co2_value):
+@app.callback(Output(TagIds.PLACEHOLDER, 'role'), Input(TagIds.Tabs.Monitors.Control.SET_DEVICE_ID, TagFields.CLICK),
+              State(TagIds.Tabs.Monitors.Control.DEVICE_ID_VALUE, TagFields.VALUE), prevent_initial_call=True)
+def send_command(co2_click, device_id):
     if co2_click:
-        realtime.send_command(Commands.SET_CO2, co2_value)
+        realtime.send_command(Commands.SET_DEVICE_ID, device_id)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'contentEditable'), Input(TagIds.Tabs.Monitors.Control.SEND, TagFields.CLICK),
@@ -26,22 +26,7 @@ def send_command(co2_click, co2_value):
               prevent_initial_call=True)
 def send_command(click, command, data):
     if click and command is not None and data is not None:
-        realtime.send_command(command, data, input_type=InputTypes.SENSORS)
-
-
-@app.callback(Output(TagIds.PLACEHOLDER, 'className'), Input(TagIds.Tabs.Monitors.Control.SP_SLIDER, TagFields.VALUE),
-              prevent_initial_call=True)
-def send_command(sp_value):
-    if sp_value:
-        realtime.send_command(Commands.CO2Controller.SET_POINT, str(sp_value))
-
-
-@app.callback(Output(TagIds.PLACEHOLDER, 'draggable'),
-              Input(TagIds.Tabs.Monitors.Control.BREATH_DEPTH, TagFields.VALUE),
-              prevent_initial_call=True)
-def send_command(depth):
-    if depth is not None:
-        realtime.send_command(Commands.CHANGE_DEPTH, depth)
+        realtime.send_command(command, data)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input(TagIds.Tabs.Monitors.UPLOAD_FILE, 'contents'),

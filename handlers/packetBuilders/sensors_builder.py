@@ -10,7 +10,7 @@ class SensorsPacketBuilder(PacketBuilder):
         return formatter.format(value)
 
     def build_packet(self, command: int, content: str):
-        content = self.format(hex(int(content)).replace('0x', ''), byte_number=2)
+        content = self.format(hex(int(content)).replace('0x', ''), byte_number=1)
         command = self.format(hex(int(command)).replace('0x', ''))
         length = self.format(int(len(content) / 2))
         return bytes.fromhex('aa55aa' + command + length + content)

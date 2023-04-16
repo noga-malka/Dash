@@ -44,7 +44,7 @@ class BluetoothHandler(Handler):
         return [output.decode()]
 
     @packet_sender
-    def send_command(self, packet, input_type=None):
+    def send_command(self, packet):
         self.send(packet)
 
     def send(self, packet):

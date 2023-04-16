@@ -5,7 +5,6 @@ from dash.exceptions import PreventUpdate
 from configurations import Settings, Schema, group_sensors
 from consts import TagIds, Colors, UnitTypes, Icons, TagFields
 from dash_setup import app
-from handlers.consts import Commands
 from realtime_data import realtime
 from utilities import generate_sensors_output
 
@@ -47,16 +46,6 @@ def update_disconnected_sensors(clicked):
 )
 def toggle_control_panel(is_open, *args):
     return not is_open, Icons.Css.UP if not is_open else Icons.Css.DOWN
-
-
-@app.callback(
-    Output(TagIds.Tabs.Monitors.Control.SP_SLIDER, TagFields.DISABLED),
-    Input(TagIds.Tabs.Monitors.Control.DPC, TagFields.VALUE),
-    prevent_initial_call=True)
-def enable_dpc_slider_only_in_auto_mode(mode):
-    if mode:
-        realtime.send_command(Commands.CO2Controller.COMMANDS[mode], '')
-    return mode != 'auto'
 
 
 @app.callback(Output(TagIds.Buttons.RECORDING, TagFields.CHILDREN),

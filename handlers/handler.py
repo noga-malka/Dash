@@ -20,7 +20,7 @@ class Handler:
         pass
 
     @packet_sender
-    def send_command(self, packet, input_type=None):
+    def send_command(self, packet):
         raise NotImplementedError()
 
     def read_lines(self) -> list[str]:
