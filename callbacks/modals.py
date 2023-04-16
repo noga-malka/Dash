@@ -10,14 +10,6 @@ from mappings.handlers import TYPES
 from realtime_data import realtime
 
 
-@app.callback(Output(TagIds.Modals.Save.MODAL, TagFields.IS_OPEN), Input(Icons.SAVE['id'], TagFields.CLICK),
-              State(TagIds.Modals.Save.MODAL, TagFields.IS_OPEN))
-def toggle_modal(click, is_open):
-    if click:
-        return not is_open
-    return is_open
-
-
 @app.callback(Output(TagIds.Modals.Clean.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Clean.MODAL, TagFields.IS_OPEN),
               Input(Icons.CLEAN['id'], TagFields.CLICK),
               Input(TagIds.Modals.Clean.NO, TagFields.CLICK), Input(TagIds.Modals.Clean.YES, TagFields.CLICK),

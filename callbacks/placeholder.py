@@ -14,7 +14,7 @@ def send_command(fan_value):
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'role'), Input(TagIds.Tabs.Monitors.Control.CO2, TagFields.CLICK),
-              State(TagIds.Tabs.Monitors.Control.CO2_VALUE, TagFields.VALUE), prevent_initial_call=True)
+              State(TagIds.Tabs.Monitors.Control.SET_DEVICE_ID, TagFields.VALUE), prevent_initial_call=True)
 def send_command(co2_click, co2_value):
     if co2_click:
         realtime.send_command(Commands.SET_CO2, co2_value)
@@ -42,20 +42,6 @@ def send_command(sp_value):
 def send_command(depth):
     if depth is not None:
         realtime.send_command(Commands.CHANGE_DEPTH, depth)
-
-
-@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.BREATH_RATE, TagFields.VALUE),
-              prevent_initial_call=True)
-def send_command(rate):
-    if rate is not None:
-        realtime.send_command(Commands.CHANGE_RATE, rate)
-
-
-@app.callback(Output(TagIds.PLACEHOLDER, 'key'), Input(TagIds.Tabs.Monitors.Control.ENGINE, TagFields.ON),
-              prevent_initial_call=True)
-def send_command(engine_speed):
-    if engine_speed is not None:
-        realtime.send_command(Commands.ACTIVATE_ENGINE, str(2 if engine_speed else 1))
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input(TagIds.Tabs.Monitors.UPLOAD_FILE, 'contents'),

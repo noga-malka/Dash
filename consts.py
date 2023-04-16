@@ -103,7 +103,7 @@ class TagIds:
                 SP_SLIDER = 'sp_slider'
                 DPC = 'dpc_mode_selector'
                 CO2 = 'set_co2'
-                CO2_VALUE = 'co2_value'
+                SET_DEVICE_ID = 'set_device_id'
                 FAN = 'set_fan'
                 COMMAND = 'command'
                 DATA = 'custom_data'
@@ -138,12 +138,11 @@ class Icons:
         MOON = 'fa fa-moon'
         SUN = 'fa fa-sun'
 
-    SAVE = dict(id=TagIds.Buttons.SAVE, label='Save', icon=Css.SAVE)
-    CLEAN = dict(id=TagIds.Buttons.CLEAN, label='Reset', icon=Css.CLEAN)
+    CLEAN = dict(id=TagIds.Buttons.CLEAN, label='Reset Live Data', icon=Css.CLEAN)
     START_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Start Recording', icon=Css.START_RECORD)
     STOP_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Stop Recording', icon=Css.STOP_RECORD)
     TIMER = dict(id=TagIds.CLOCK, label='Timer', icon=Css.TIMER)
-    ALL = [TIMER, SAVE, CLEAN, START_RECORD]
+    ALL = [TIMER, CLEAN, START_RECORD]
 
 
 class InputModes:
