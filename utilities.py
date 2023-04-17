@@ -60,11 +60,11 @@ def packet_sender(function):
         try:
             packet = SensorsPacketBuilder().build_packet(command, content)
             function(self, packet)
-            logger.info(f'successfully sent packet: {packet}')
+            logger.info(f'successfully sent packet: {packet}. command: {command}')
         except KeyError:
             logger.warning(f'no handler with command {command}')
         except AttributeError:
-            logger.warning(f'no connection. could not send {packet}')
+            logger.warning(f'no connection. could not send {packet} for command {command}')
         except (serial.SerialException, ConnectionAbortedError):
             raise DisconnectionEvent(self.__class__.__name__)
 

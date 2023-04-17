@@ -222,10 +222,8 @@ def to_fahrenheit(value):
 class UnitTypes:
     CELSIUS = 'C°'
     FAHRENHEIT = 'F°'
-    PPM = 'PPM'
     TACHO = 'RPS'
-    PRESSURE = 'BAR'
-    SET_POINT = 'SP'
+    PERCENTAGE = '%'
     CONVERT = {
         FAHRENHEIT: to_fahrenheit
     }

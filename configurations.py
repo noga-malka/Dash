@@ -17,11 +17,13 @@ class InputNames:
     TACH = 'Tach'
     TEMP = 'Temp'
     TIMER = 'Time'
+    BATTERY = 'Vbat'
 
 
 class SensorNames:
     FAN = 'Fan Speed'
     TEMP = 'Temperature'
+    BATTERY = 'Battery'
 
 
 class ContentType:
@@ -46,6 +48,7 @@ class Sensor(BaseModel):
 class Labels:
     TEMP = 'Temperature'
     FAN = 'Fan'
+    BATTERY = 'battery'
 
 
 class SensorInstance:
@@ -69,6 +72,16 @@ class SensorInstance:
                       unit_type=UnitTypes.TACHO,
                       possible_units=[UnitTypes.TACHO])
 
+    Battery = Sensor(label=Labels.BATTERY,
+                     minimum=0,
+                     low_error=0,
+                     low_warning=0,
+                     high_warning=100,
+                     high_error=100,
+                     maximum=100,
+                     unit_type=UnitTypes.PERCENTAGE,
+                     possible_units=[UnitTypes.PERCENTAGE])
+
 
 class Schema:
     SENSOR_SCHEMA = Sensor.schema()['properties']
@@ -78,6 +91,7 @@ class Schema:
     MONITOR_TYPES = {
         Labels.TEMP: TemperatureMonitor(90),
         Labels.FAN: GaugeMonitor(110),
+        Labels.BATTERY: GaugeMonitor(110),
     }
 
 
@@ -104,11 +118,14 @@ class Settings:
         SensorNames.TEMP: {
             InputNames.TEMP: SensorInstance.Temperature,
         },
+        SensorNames.BATTERY: {
+            InputNames.BATTERY: SensorInstance.Battery,
+        },
     }
     SENSORS = set_sensors(DEFAULT)
 
     DISPLAY = [
-        [InputNames.TACH, InputNames.TEMP],
+        [InputNames.TACH, InputNames.TEMP, InputNames.BATTERY],
     ]
 
     GRAPHS = {
@@ -117,6 +134,12 @@ class Settings:
         ],
         'Fan Speed': [
             InputNames.TACH,
+        ],
+        'Battery': [
+            InputNames.BATTERY,
+        ],
+        'Timer': [
+            InputNames.TIMER,
         ],
     }
 
