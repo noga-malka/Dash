@@ -43,6 +43,7 @@ class DatabaseManager:
             self.single_values[key] = value
             if event:
                 event.set()
+        print(self.single_values)
 
     def get(self, key, default_value=None):
         return self.single_values.get(key, default_value)

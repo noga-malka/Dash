@@ -111,6 +111,8 @@ class TagIds:
                 ENGINE = 'activate_engine'
                 BREATH_DEPTH = 'breath_depth'
                 BREATH_RATE = 'breath_rate'
+                RESET_COUNTERS = 'reset_counters'
+                READ_TIME = 'read_time'
 
             UPLOAD_FILE = 'upload_file'
 

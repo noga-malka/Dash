@@ -6,10 +6,11 @@ class InputTypes:
 
 class HardwarePackets:
     DATA = 'Data'
-    SETUP = 'setup'
-    ONE_WIRE = 'OneWire_count'
     FILE = 'file'
-    DPC = 'DPC'
+    RUN_TIME = 'RunTime'
+    TOTAL_TIME = 'TotalTime'
+    DEVICE_ID = 'DeviceID'
+    FILES_LIST = 'FILE:'
 
 
 class Commands:

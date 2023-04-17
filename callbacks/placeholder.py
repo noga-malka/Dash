@@ -13,6 +13,22 @@ def send_command(fan_value):
         realtime.send_command(Commands.SET_FAN, fan_value)
 
 
+@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.READ_TIME, TagFields.CLICK),
+              prevent_initial_call=True)
+def send_command(click):
+    if click is not None:
+        realtime.send_command(Commands.READ_ELAPSED_TIME)
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'key'),
+              Input(TagIds.Tabs.Monitors.Control.RESET_COUNTERS, TagFields.CLICK),
+              prevent_initial_call=True)
+def send_command(click):
+    if click is not None:
+        realtime.send_command(Commands.RESET_COUNTERS)
+        realtime.send_command(Commands.READ_ELAPSED_TIME)
+
+
 @app.callback(Output(TagIds.PLACEHOLDER, 'role'), Input(TagIds.Tabs.Monitors.Control.SET_DEVICE_ID, TagFields.CLICK),
               State(TagIds.Tabs.Monitors.Control.DEVICE_ID_VALUE, TagFields.VALUE), prevent_initial_call=True)
 def send_command(co2_click, device_id):

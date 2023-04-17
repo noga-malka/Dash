@@ -20,10 +20,12 @@ class RealtimeData:
         self._current = {}
 
         self._mapping: dict[str, Callable] = {
-            HardwarePackets.SETUP: self.setup,
-            HardwarePackets.ONE_WIRE: self.save_output,
             HardwarePackets.DATA: self.add_row,
             HardwarePackets.FILE: self.add_dataframe,
+            HardwarePackets.DEVICE_ID: self.save_single_output,
+            HardwarePackets.TOTAL_TIME: self.save_single_output,
+            HardwarePackets.RUN_TIME: self.save_single_output,
+            HardwarePackets.FILES_LIST: self.save_multiple_outputs,
         }
 
     def in_types(self):
@@ -45,11 +47,13 @@ class RealtimeData:
             except (KeyError, IndexError, ValueError, UnicodeDecodeError):
                 logger.warning(f'Failed to parse row: {data}')
 
-    def save_output(self, command: str, content: str, **kwargs):
-        return DatabaseTypes.SINGLE_VALUE, (command, int(content[0]), self.thread.events.scan_sensor)
+    @staticmethod
+    def save_multiple_outputs(command: str, content: str, **kwargs):
+        return DatabaseTypes.SINGLE_VALUE, (command, content, None)
 
-    def setup(self, command: str, content: str, **kwargs):
-        return DatabaseTypes.SINGLE_VALUE, (command, content, self.thread.events.set_device)
+    @staticmethod
+    def save_single_output(command: str, content: str, **kwargs):
+        return DatabaseTypes.SINGLE_VALUE, (command, content[0], None)
 
     @staticmethod
     def add_row(content: str, **kwargs):
