@@ -5,6 +5,7 @@ from dash.exceptions import PreventUpdate
 from configurations import Settings, Schema, group_sensors
 from consts import TagIds, Colors, UnitTypes, Icons, TagFields
 from dash_setup import app
+from handlers.consts import Commands
 from realtime_data import realtime
 from utilities import generate_sensors_output
 
@@ -55,6 +56,8 @@ def toggle_modal(click):
     if not click:
         raise PreventUpdate
     icon = Icons.STOP_RECORD if click % 2 else Icons.START_RECORD
+    command = Commands.START_RECORD if click % 2 else Commands.STOP_RECORD
+    realtime.send_command(command)
     return [icon['icon'], icon['label']], icon['label']
 
 

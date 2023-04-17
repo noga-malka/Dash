@@ -18,6 +18,7 @@ class InputNames:
     TEMP = 'Temp'
     TIMER = 'Time'
     BATTERY = 'Vbat'
+    RECORD_STATUS = 'Record'
 
 
 class SensorNames:
@@ -140,6 +141,9 @@ class Settings:
         ],
         'Timer': [
             InputNames.TIMER,
+        ],
+        'Record': [
+            InputNames.RECORD_STATUS,
         ],
     }
 
