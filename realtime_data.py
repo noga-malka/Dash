@@ -70,13 +70,13 @@ class RealtimeData:
     def add_dataframe(content: pandas.DataFrame, **kwargs):
         return DatabaseTypes.DATAFRAME, content
 
-    def send_command(self, command: str, content: str = '0', event: Event = None, timeout=5):
+    def send_command(self, command: str, content: str = '0', event: Event = None, timeout=5, content_length: int = 2):
         try:
             if not event:
-                TYPES[self.thread.handler_name].send_command(command, content)
+                TYPES[self.thread.handler_name].send_command(command, content, content_length)
                 return False
             event.clear()
-            TYPES[self.thread.handler_name].send_command(command, content)
+            TYPES[self.thread.handler_name].send_command(command, content, content_length)
             event.wait(timeout=timeout)
             return event.is_set()
         except DisconnectionEvent as disconnect:

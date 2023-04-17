@@ -55,10 +55,10 @@ def load_configuration(config: dict):
 
 
 def packet_sender(function):
-    def inner(self, command, content):
+    def inner(self, command, content, content_length: int = 2):
         packet = None
         try:
-            packet = SensorsPacketBuilder().build_packet(command, content)
+            packet = SensorsPacketBuilder().build_packet(command, content, content_length)
             function(self, packet)
             logger.info(f'successfully sent packet: {packet}. command: {command}')
         except KeyError:

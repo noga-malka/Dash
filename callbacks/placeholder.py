@@ -33,7 +33,7 @@ def send_command(click):
               State(TagIds.Tabs.Monitors.Control.DEVICE_ID_VALUE, TagFields.VALUE), prevent_initial_call=True)
 def send_command(co2_click, device_id):
     if co2_click:
-        realtime.send_command(Commands.SET_DEVICE_ID, device_id)
+        realtime.send_command(Commands.SET_DEVICE_ID, device_id, content_length=1)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'contentEditable'), Input(TagIds.Tabs.Monitors.Control.SEND, TagFields.CLICK),
