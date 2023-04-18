@@ -32,7 +32,10 @@ def generate_layout():
                         daq.BooleanSwitch(id=TagIds.TEMP_SWITCH, on=True),
                         Icons.Css.CELSIUS,
                     ], className='flex center align children-margin-2'),
-                    *generate_buttons(),
+                    html.Div([
+                        *generate_buttons(),
+                        Icons.Css.RECORD_ICON,
+                    ], className='flex center align children-margin-2'),
                     ThemeSwitchAIO(aio_id=TagIds.THEME, themes=[Theme.DARK, Theme.LIGHT],
                                    switch_props={"persistence": True}, icons=DaqConsts.ICONS),
                 ], className='bg-info space-between',

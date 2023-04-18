@@ -39,6 +39,15 @@ def update_timer(intervals):
     return Icons.Css.TIMER, timestamp
 
 
+@app.callback(Output(TagIds.Icons.RECORDING_STATUS, 'color'),
+              Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
+def update_timer(intervals):
+    recording = False
+    if realtime.database.is_not_empty():
+        recording = realtime.database.read()[InputNames.RECORD_STATUS] == 'Recording'
+    return 'red' if recording else 'white'
+
+
 @app.callback(
     [[Output(f"{mode}_label", TagFields.CHILDREN), Output(f"{mode}_link", TagFields.STYLE)] for mode in InputModes.ALL],
     Input(TagIds.LOCATION, TagFields.PATH), Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL),

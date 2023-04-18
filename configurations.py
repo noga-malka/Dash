@@ -142,9 +142,6 @@ class Settings:
         'Timer': [
             InputNames.TIMER,
         ],
-        'Record': [
-            InputNames.RECORD_STATUS,
-        ],
     }
 
 

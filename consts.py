@@ -34,6 +34,9 @@ class TagIds:
     CLOCK = 'timer'
     THEME = 'theme'
 
+    class Icons:
+        RECORDING_STATUS = 'recording_status_icon'
+
     class Layout:
         THEME = 'theme_layout'
         CONTENT = 'content_layout'
@@ -126,6 +129,7 @@ class Icons:
         TIMER = DashIconify(icon='material-symbols:timer-rounded', width=30)
         START_RECORD = DashIconify(icon='material-symbols:play-circle-rounded', width=30)
         STOP_RECORD = DashIconify(icon='ic:round-stop-circle', width=30)
+        RECORD_ICON = DashIconify(id=TagIds.Icons.RECORDING_STATUS, icon='bi:record-circle', width=40)
 
         BLUETOOTH = DashIconify(icon='material-symbols:bluetooth', width=30)
         UPLOAD = DashIconify(icon='material-symbols:upload-file-rounded', width=30)
