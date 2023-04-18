@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import dash_bootstrap_components as dbc
 from dash import Input, Output, callback_context, State
 from dash.exceptions import PreventUpdate
@@ -65,7 +63,12 @@ def add_connection_to_list(children, comport, input_type, *args):
     raise PreventUpdate
 
 
-@app.callback(Output(TagIds.Modals.Save.DOWNLOAD, TagFields.DATA), Input(TagIds.Modals.Save.BUTTON, TagFields.CLICK))
-def toggle_modal(click):
-    creation_time = datetime.now().strftime("%Y_%m_%d %H-%M-%S")
-    return dict(filename=f'output_{creation_time}.csv', content=realtime.database.to_csv())
+@app.callback(Output(TagIds.Modals.Save.DOWNLOAD, TagFields.DATA),
+              State(TagIds.Modals.Save.FILE_OPTIONS, TagFields.VALUE),
+              Input(TagIds.Modals.Save.LOAD, TagFields.CLICK), prevent_initial_call=True)
+def toggle_modal(file_name, click):
+    realtime.database.reset_dataframes()
+    realtime.thread.events.live_mode.clear()
+    realtime.send_command(Commands.READ_SINGLE_FILE, file_name)
+    realtime.thread.events.live_mode.wait()
+    return dict(filename=file_name.strip('/'), content=realtime.database.download_playback())

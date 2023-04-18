@@ -1,3 +1,5 @@
+import datetime
+
 import numpy
 from dash import Input, Output, dash, State
 from dash.exceptions import PreventUpdate
@@ -55,9 +57,12 @@ def toggle_control_panel(is_open, *args):
 def toggle_modal(click):
     if not click:
         raise PreventUpdate
-    icon = Icons.STOP_RECORD if click % 2 else Icons.START_RECORD
-    command = Commands.START_RECORD if click % 2 else Commands.STOP_RECORD
-    realtime.send_command(command)
+    if click % 2:
+        realtime.send_command(Commands.START_RECORD, datetime.datetime.now().strftime('%Y%m%d%H%M'))
+        icon = Icons.STOP_RECORD
+    else:
+        realtime.send_command(Commands.STOP_RECORD)
+        icon = Icons.START_RECORD
     return [icon['icon'], icon['label']], icon['label']
 
 

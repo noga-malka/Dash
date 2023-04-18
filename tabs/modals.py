@@ -18,11 +18,12 @@ def download_session():
     return modal_generator(TagIds.Modals.Files.MODAL, 'Choose File',
                            [
                                dcc.RadioItems(id=TagIds.Modals.Save.FILE_OPTIONS),
-                               dcc.Download(id=TagIds.Modals.Save.DOWNLOAD),
-                               html.Div([
-                                   dbc.Button('Load File', id=TagIds.Modals.Save.LOAD),
-                                   dbc.Button('Save File', id=TagIds.Modals.Save.BUTTON, disabled=True),
-                               ], className='flex center align children-margin-2')
+                               dcc.Loading([
+                                   dcc.Download(id=TagIds.Modals.Save.DOWNLOAD),
+                                   html.Div([
+                                       dbc.Button('Download File', id=TagIds.Modals.Save.LOAD),
+                                   ], className='flex center align children-margin-2')
+                               ])
                            ])
 
 

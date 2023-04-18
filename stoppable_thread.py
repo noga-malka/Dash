@@ -14,6 +14,7 @@ class Events:
     set_device = Event()
     scan_sensor = Event()
     interval = Event()
+    live_mode = Event()
 
     class Finish:
         connect = Event()

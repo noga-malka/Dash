@@ -179,6 +179,7 @@ class DatabaseTypes:
     ROW = 'row'
     SINGLE_VALUE = 'single'
     DATAFRAME = 'dataframe'
+    PLAYBACK = 'playback'
 
 
 class GraphConsts:

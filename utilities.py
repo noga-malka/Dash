@@ -6,7 +6,7 @@ from dash import html
 from configurations import Settings, Schema, group_sensors, logger
 from consts import UnitTypes
 from handlers.handler_exception import DisconnectionEvent
-from handlers.packetBuilders.sensors_builder import SensorsPacketBuilder
+from handlers.packetBuilders.mapping import MAPPING
 
 
 def generate_grid(components):
@@ -58,7 +58,7 @@ def packet_sender(function):
     def inner(self, command, content, content_length: int = 2):
         packet = None
         try:
-            packet = SensorsPacketBuilder().build_packet(command, content, content_length)
+            packet = MAPPING[command]().build_packet(command, content, content_length)
             function(self, packet)
             logger.info(f'successfully sent packet: {packet}. command: {command}')
         except KeyError:

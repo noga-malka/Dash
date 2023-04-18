@@ -11,6 +11,7 @@ class HardwarePackets:
     TOTAL_TIME = 'TotalTime'
     DEVICE_ID = 'DeviceID'
     FILES_LIST = 'FILE'
+    PLAYBACK = 'Playback'
 
     DISPLAY = [RUN_TIME, TOTAL_TIME, DEVICE_ID]
 

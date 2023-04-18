@@ -9,11 +9,13 @@ from consts import DatabaseTypes, DatabaseReader, GraphConsts
 class DatabaseManager:
     def __init__(self):
         self.data = None
+        self.playback = None
         self.single_values = None
         self._mapping = {
             DatabaseTypes.SINGLE_VALUE: self.save_single_value,
             DatabaseTypes.ROW: self.add_row,
             DatabaseTypes.DATAFRAME: self.merge,
+            DatabaseTypes.PLAYBACK: self.add_playback,
         }
         self.reset()
 
@@ -21,8 +23,12 @@ class DatabaseManager:
         for data_type, args in current_data.items():
             self._mapping[data_type](args)
 
-    def reset(self, event=None):
+    def reset_dataframes(self):
         self.data = pandas.DataFrame()
+        self.playback = pandas.DataFrame()
+
+    def reset(self, event=None):
+        self.reset_dataframes()
         self.single_values = {}
         if event:
             event.set()
@@ -43,7 +49,6 @@ class DatabaseManager:
             self.single_values[key] = value
             if event:
                 event.set()
-        print(self.single_values)
 
     def get(self, key, default_value=None):
         return self.single_values.get(key, default_value)
@@ -56,6 +61,11 @@ class DatabaseManager:
         if dataframes:
             self.data = pandas.concat([self.data, *dataframes])
 
+    def add_playback(self, content):
+        row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
+        if not row.empty and len(row.columns) >= len(self.playback.columns):
+            self.playback = self.playback.append(row)
+
     def add_row(self, content):
         row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
         if not row.empty and len(row.columns) >= len(self.data.columns):
@@ -63,3 +73,6 @@ class DatabaseManager:
 
     def to_csv(self, path=None):
         return self.data.to_csv(path)
+
+    def download_playback(self):
+        return self.playback.to_csv()
