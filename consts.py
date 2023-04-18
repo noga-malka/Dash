@@ -123,6 +123,7 @@ class TagIds:
                 RESET_COUNTERS = 'reset_counters'
                 READ_TIME = 'read_time'
                 READ_DEVICE_ID = 'read_device_id'
+                CLEAR_SD = 'clear_sd'
 
             UPLOAD_FILE = 'upload_file'
 

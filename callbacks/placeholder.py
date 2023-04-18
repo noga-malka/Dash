@@ -37,6 +37,13 @@ def send_command(click):
         realtime.send_command(Commands.READ_ELAPSED_TIME)
 
 
+@app.callback(Output(TagIds.PLACEHOLDER, 'spellCheck'), Input(TagIds.Tabs.Monitors.Control.CLEAR_SD, TagFields.CLICK),
+              prevent_initial_call=True)
+def send_command(click):
+    if click is not None:
+        realtime.send_command(Commands.DELETE_FILES)
+
+
 @app.callback(Output(TagIds.PLACEHOLDER, 'role'), Input(TagIds.Tabs.Monitors.Control.SET_DEVICE_ID, TagFields.CLICK),
               State(TagIds.Tabs.Monitors.Control.DEVICE_ID_VALUE, TagFields.VALUE), prevent_initial_call=True)
 def send_command(co2_click, device_id):
