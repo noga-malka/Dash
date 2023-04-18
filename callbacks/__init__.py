@@ -3,3 +3,4 @@ from callbacks.graph_page import *
 from callbacks.live_page import *
 from callbacks.modals import *
 from callbacks.placeholder import *
+from callbacks.settings_page import *

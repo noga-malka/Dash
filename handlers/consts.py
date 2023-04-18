@@ -12,6 +12,8 @@ class HardwarePackets:
     DEVICE_ID = 'DeviceID'
     FILES_LIST = 'FILE:'
 
+    DISPLAY = [RUN_TIME, TOTAL_TIME, DEVICE_ID]
+
 
 class Commands:
     HEADER = 'aa55aa'

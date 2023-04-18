@@ -40,6 +40,7 @@ def sensors_controls():
                        dbc.Button('set', id=TagIds.Tabs.Monitors.Control.SET_DEVICE_ID)]),
         generate_card('Reset Counters', [dbc.Button('Reset', id=TagIds.Tabs.Monitors.Control.RESET_COUNTERS)]),
         generate_card('Read Timers', [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_TIME)]),
+        generate_card('Read Device ID', [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_DEVICE_ID)]),
     ]
 
 

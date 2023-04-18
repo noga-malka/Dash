@@ -116,6 +116,7 @@ class TagIds:
                 BREATH_RATE = 'breath_rate'
                 RESET_COUNTERS = 'reset_counters'
                 READ_TIME = 'read_time'
+                READ_DEVICE_ID = 'read_device_id'
 
             UPLOAD_FILE = 'upload_file'
 

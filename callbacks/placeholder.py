@@ -20,6 +20,14 @@ def send_command(click):
         realtime.send_command(Commands.READ_ELAPSED_TIME)
 
 
+@app.callback(Output(TagIds.PLACEHOLDER, 'dir'),
+              Input(TagIds.Tabs.Monitors.Control.READ_DEVICE_ID, TagFields.CLICK),
+              prevent_initial_call=True)
+def send_command(click):
+    if click is not None:
+        realtime.send_command(Commands.READ_DEVICE_ID)
+
+
 @app.callback(Output(TagIds.PLACEHOLDER, 'key'),
               Input(TagIds.Tabs.Monitors.Control.RESET_COUNTERS, TagFields.CLICK),
               prevent_initial_call=True)
