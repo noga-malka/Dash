@@ -61,8 +61,12 @@ class TagIds:
         RECORDING = 'recording'
         SAVE = 'save_button'
         CLEAN = 'clean_button'
+        FILES = 'manage_files'
 
     class Modals:
+        class Files:
+            MODAL = 'files_modal'
+
         class Bluetooth:
             MODAL = 'bluetooth_modal'
             SCAN = 'scan_bluetooth'
@@ -134,6 +138,7 @@ class Icons:
 
         BLUETOOTH = DashIconify(icon='material-symbols:bluetooth', width=30)
         UPLOAD = DashIconify(icon='material-symbols:upload-file-rounded', width=30)
+        FILES = DashIconify(icon='solar:folder-with-files-bold', width=30)
 
         CELSIUS = DashIconify(icon='carbon:temperature-celsius', width=30)
         FAHRENHEIT = DashIconify(icon='carbon:temperature-fahrenheit', width=30)
@@ -149,7 +154,8 @@ class Icons:
     START_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Start Recording', icon=Css.START_RECORD)
     STOP_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Stop Recording', icon=Css.STOP_RECORD)
     TIMER = dict(id=TagIds.CLOCK, label='Timer', icon=Css.TIMER)
-    ALL = [TIMER, CLEAN, START_RECORD]
+    MANAGE_FILES = dict(id=TagIds.Buttons.FILES, label='Manage Files', icon=Css.FILES)
+    ALL = [TIMER, CLEAN, START_RECORD, MANAGE_FILES]
 
 
 class InputModes:

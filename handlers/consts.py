@@ -10,7 +10,7 @@ class HardwarePackets:
     RUN_TIME = 'RunTime'
     TOTAL_TIME = 'TotalTime'
     DEVICE_ID = 'DeviceID'
-    FILES_LIST = 'FILE:'
+    FILES_LIST = 'FILE'
 
     DISPLAY = [RUN_TIME, TOTAL_TIME, DEVICE_ID]
 

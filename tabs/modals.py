@@ -1,8 +1,6 @@
 import dash_bootstrap_components as dbc
-import dash_daq as daq
 from dash import dcc, html
 
-from configurations import SetupConsts, Settings
 from consts import TagIds
 from utilities import modal_generator
 
@@ -17,7 +15,7 @@ def bluetooth_modal():
 
 
 def download_session():
-    return modal_generator(TagIds.Modals.Save.MODAL, 'Download Session',
+    return modal_generator(TagIds.Modals.Files.MODAL, 'Choose File',
                            [
                                dcc.Download(id=TagIds.Modals.Save.DOWNLOAD),
                                dbc.Button('Download csv', id=TagIds.Modals.Save.BUTTON)
@@ -31,23 +29,6 @@ def are_you_sure():
             className='flex children-margin')
     ]
     return modal_generator(TagIds.Modals.Clean.MODAL, 'Are You Sure?', buttons)
-
-
-def configurate_board():
-    labels = columnize([html.Label(Settings.SENSORS[name].group) for name in SetupConsts.COMMANDS])
-    toggles = columnize(
-        [daq.BooleanSwitch(id=f'check_{name}', disabled=True) for name in SetupConsts.COMMANDS])
-    status = columnize([html.Div([html.Div(style={'margin': '5px'}, id=f'check_{name}_icon'),
-                                  html.Label(id=f'check_{name}_address')]) for name in SetupConsts.COMMANDS])
-
-    rows = html.Div([labels, toggles, dcc.Loading(status)], className='flex space-between')
-    container = html.Div([rows, generate_setup_buttons()], className='flex column center')
-    return modal_generator('config_board', 'Set board sensors',
-                           [
-                               html.H5(id=TagIds.Tabs.Config.SENSOR_STATUS),
-                               container,
-                               dcc.Interval(**TagIds.Intervals.create_interval(TagIds.Intervals.COUNT_SENSORS)),
-                           ])
 
 
 def columnize(components):

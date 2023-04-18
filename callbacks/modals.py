@@ -6,6 +6,7 @@ from dash.exceptions import PreventUpdate
 
 from consts import TagIds, Icons, TagFields, InputModes
 from dash_setup import app
+from handlers.consts import Commands
 from mappings.handlers import TYPES
 from realtime_data import realtime
 
@@ -18,6 +19,15 @@ def toggle_modal(is_open, *args):
     if callback_context.triggered_id == TagIds.Modals.Clean.YES:
         realtime.thread.events.clean.set()
     return not is_open
+
+
+@app.callback(Output(TagIds.Modals.Files.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Files.MODAL, TagFields.IS_OPEN),
+              Input(Icons.MANAGE_FILES['id'], TagFields.CLICK), prevent_initial_call=True)
+def toggle_modal(is_open, *args):
+    if is_open:
+        return False
+    realtime.send_command(Commands.GET_FILE_LIST)
+    return True
 
 
 @app.callback(
