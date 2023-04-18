@@ -40,12 +40,14 @@ def update_timer(intervals):
 
 
 @app.callback(Output(TagIds.Icons.RECORDING_STATUS, 'color'),
+              Output(TagIds.Modals.Save.FILE_OPTIONS, TagFields.OPTIONS),
               Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
 def update_timer(intervals):
     recording = False
     if realtime.database.is_not_empty():
         recording = realtime.database.read()[InputNames.RECORD_STATUS] == 'Recording'
-    return 'red' if recording else 'white'
+    files = realtime.database.single_values.get('FILE', ['No Files Found'])
+    return 'red' if recording else 'white', [file_name for file_name in files if file_name]
 
 
 @app.callback(

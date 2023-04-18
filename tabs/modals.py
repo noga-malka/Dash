@@ -17,8 +17,12 @@ def bluetooth_modal():
 def download_session():
     return modal_generator(TagIds.Modals.Files.MODAL, 'Choose File',
                            [
+                               dcc.RadioItems(id=TagIds.Modals.Save.FILE_OPTIONS),
                                dcc.Download(id=TagIds.Modals.Save.DOWNLOAD),
-                               dbc.Button('Download csv', id=TagIds.Modals.Save.BUTTON)
+                               html.Div([
+                                   dbc.Button('Load File', id=TagIds.Modals.Save.LOAD),
+                                   dbc.Button('Save File', id=TagIds.Modals.Save.BUTTON, disabled=True),
+                               ], className='flex center align children-margin-2')
                            ])
 
 

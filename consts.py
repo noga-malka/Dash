@@ -74,9 +74,11 @@ class TagIds:
             CONNECT = 'mac_button'
 
         class Save:
+            FILE_OPTIONS = 'file_options'
             MODAL = 'save_file'
             DOWNLOAD = 'download_text'
             BUTTON = 'save_session'
+            LOAD = 'load_file'
 
         class Clean:
             MODAL = 'are_you_sure'
