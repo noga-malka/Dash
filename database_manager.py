@@ -62,7 +62,7 @@ class DatabaseManager:
             self.data = pandas.concat([self.data, *dataframes])
 
     def add_playback(self, content):
-        row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
+        row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[''])
         if not row.empty and len(row.columns) >= len(self.playback.columns):
             self.playback = self.playback.append(row)
 

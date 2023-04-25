@@ -1,3 +1,5 @@
+import time
+
 import dash_bootstrap_components as dbc
 from dash import Input, Output, callback_context, State
 from dash.exceptions import PreventUpdate
@@ -71,4 +73,5 @@ def toggle_modal(file_name, click):
     realtime.thread.events.live_mode.clear()
     realtime.send_command(Commands.READ_SINGLE_FILE, file_name)
     realtime.thread.events.live_mode.wait()
-    return dict(filename=file_name.strip('/'), content=realtime.database.download_playback())
+    time.sleep(1)
+    return dict(filename=file_name.strip('/'), content=realtime.database.playback.to_csv())

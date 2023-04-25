@@ -12,4 +12,4 @@ class TextPacketBuilder(PacketBuilder):
     def build_packet(self, command: int, content: str, content_length: int):
         command = self.format(hex(int(command)).replace('0x', ''))
         length = self.format(hex(len(content)).replace('0x', ''))
-        return bytes.fromhex('aa55aa' + command + length) + bytes(content, 'ascii')
+        return bytes.fromhex('aa55aa' + command + length) + bytes(content, 'ascii') + bytes(0)
