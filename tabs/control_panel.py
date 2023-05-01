@@ -33,7 +33,9 @@ def controls(input_type):
 @controls(InputTypes.SENSORS)
 def sensors_controls():
     return [
-        generate_card('Set Fan', [dcc.RadioItems([128, 192, 256], id=TagIds.Tabs.Monitors.Control.FAN)]),
+        generate_card('Set Fan (RPS)', [dbc.Input(id=TagIds.Tabs.Monitors.Control.FAN_VALUE, type='number',
+                                                  style={'width': '80px'}, value=0, max=270, min=0),
+                                        dbc.Button('set', id=TagIds.Tabs.Monitors.Control.SET_FAN)]),
         generate_card('Set Device ID',
                       [dbc.Input(id=TagIds.Tabs.Monitors.Control.DEVICE_ID_VALUE, type='number',
                                  style={'width': '80px'}, value=0, max=255, min=0),

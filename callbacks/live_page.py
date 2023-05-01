@@ -1,5 +1,3 @@
-import datetime
-
 import numpy
 from dash import Input, Output, dash, State
 from dash.exceptions import PreventUpdate
@@ -7,7 +5,6 @@ from dash.exceptions import PreventUpdate
 from configurations import Settings, Schema, group_sensors
 from consts import TagIds, Colors, UnitTypes, Icons, TagFields
 from dash_setup import app
-from handlers.consts import Commands
 from realtime_data import realtime
 from utilities import generate_sensors_output
 
@@ -49,21 +46,6 @@ def update_disconnected_sensors(clicked):
 )
 def toggle_control_panel(is_open, *args):
     return not is_open, Icons.Css.UP if not is_open else Icons.Css.DOWN
-
-
-@app.callback(Output(TagIds.Buttons.RECORDING, TagFields.CHILDREN),
-              Output(TagIds.Buttons.RECORDING + '_tooltip', TagFields.CHILDREN),
-              Input(TagIds.Buttons.RECORDING, TagFields.CLICK))
-def toggle_modal(click):
-    if not click:
-        raise PreventUpdate
-    if click % 2:
-        realtime.send_command(Commands.START_RECORD, datetime.datetime.now().strftime('%Y%m%d%H%M'))
-        icon = Icons.STOP_RECORD
-    else:
-        realtime.send_command(Commands.STOP_RECORD)
-        icon = Icons.START_RECORD
-    return [icon['icon'], icon['label']], icon['label']
 
 
 @app.callback([[Output(sensor_key, TagFields.MIN), Output(sensor_key, TagFields.MAX), Output(sensor_key, 'units'),

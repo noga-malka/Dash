@@ -1,47 +1,47 @@
-from dash import Input, Output, State
+from datetime import datetime
+
+from dash import Input, Output, State, callback_context
 
 from consts import TagIds, TagFields, OutputDirectory
 from dash_setup import app
 from handlers.consts import Commands
 from realtime_data import realtime
 
+command_mapping = {
+    TagIds.Buttons.STOP_RECORD: Commands.STOP_RECORD,
+    TagIds.Tabs.Monitors.Control.READ_TIME: Commands.READ_ELAPSED_TIME,
+    TagIds.Tabs.Monitors.Control.READ_DEVICE_ID: Commands.READ_DEVICE_ID,
+    TagIds.Tabs.Monitors.Control.CLEAR_SD: Commands.DELETE_FILES,
+    TagIds.Tabs.Monitors.Control.RESET_COUNTERS: Commands.RESET_COUNTERS,
+}
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'title'), Input(TagIds.Tabs.Monitors.Control.FAN, TagFields.VALUE),
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'title'),
+              Input(TagIds.Tabs.Monitors.Control.SET_FAN, TagFields.CLICK),
+              Input(TagIds.Tabs.Monitors.Control.FAN_VALUE, TagFields.VALUE),
               prevent_initial_call=True)
-def send_command(fan_value):
-    if fan_value is not None:
+def send_command(click, fan_value):
+    if click:
         realtime.send_command(Commands.SET_FAN, fan_value)
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'), Input(TagIds.Tabs.Monitors.Control.READ_TIME, TagFields.CLICK),
-              prevent_initial_call=True)
-def send_command(click):
-    if click is not None:
-        realtime.send_command(Commands.READ_ELAPSED_TIME)
-
-
-@app.callback(Output(TagIds.PLACEHOLDER, 'dir'),
+@app.callback(Output(TagIds.PLACEHOLDER, 'n_clicks'),
+              Input(TagIds.Buttons.STOP_RECORD, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.READ_DEVICE_ID, TagFields.CLICK),
-              prevent_initial_call=True)
-def send_command(click):
-    if click is not None:
-        realtime.send_command(Commands.READ_DEVICE_ID)
-
-
-@app.callback(Output(TagIds.PLACEHOLDER, 'key'),
+              Input(TagIds.Tabs.Monitors.Control.CLEAR_SD, TagFields.CLICK),
+              Input(TagIds.Tabs.Monitors.Control.READ_TIME, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.RESET_COUNTERS, TagFields.CLICK),
               prevent_initial_call=True)
-def send_command(click):
-    if click is not None:
-        realtime.send_command(Commands.RESET_COUNTERS)
-        realtime.send_command(Commands.READ_ELAPSED_TIME)
+def send_command(*clicks):
+    if any(clicks):
+        realtime.send_command(command_mapping[callback_context.triggered_id])
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'spellCheck'), Input(TagIds.Tabs.Monitors.Control.CLEAR_SD, TagFields.CLICK),
+@app.callback(Output(TagIds.PLACEHOLDER, 'spellCheck'), Input(TagIds.Buttons.START_RECORD, TagFields.CLICK),
               prevent_initial_call=True)
 def send_command(click):
     if click is not None:
-        realtime.send_command(Commands.DELETE_FILES)
+        realtime.send_command(Commands.START_RECORD, datetime.now().strftime('%Y%m%d%H%M'))
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'role'), Input(TagIds.Tabs.Monitors.Control.SET_DEVICE_ID, TagFields.CLICK),
@@ -49,15 +49,6 @@ def send_command(click):
 def send_command(co2_click, device_id):
     if co2_click:
         realtime.send_command(Commands.SET_DEVICE_ID, device_id, content_length=1)
-
-
-@app.callback(Output(TagIds.PLACEHOLDER, 'contentEditable'), Input(TagIds.Tabs.Monitors.Control.SEND, TagFields.CLICK),
-              State(TagIds.Tabs.Monitors.Control.COMMAND, TagFields.VALUE),
-              State(TagIds.Tabs.Monitors.Control.DATA, TagFields.VALUE),
-              prevent_initial_call=True)
-def send_command(click, command, data):
-    if click and command is not None and data is not None:
-        realtime.send_command(command, data)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'children'), Input(TagIds.Tabs.Monitors.UPLOAD_FILE, 'contents'),

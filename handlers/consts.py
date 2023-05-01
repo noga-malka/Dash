@@ -22,7 +22,7 @@ class Commands:
     READ_DEVICE_ID = 42
     READ_ELAPSED_TIME = 36
     RESET_COUNTERS = 35
-    SET_FAN = 34
+    SET_FAN = 45
     START_RECORD = 38
     STOP_RECORD = 39
 

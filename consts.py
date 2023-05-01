@@ -58,7 +58,8 @@ class TagIds:
             return dict(id=name, interval=TagIds.Intervals.VALUES[name], n_intervals=0)
 
     class Buttons:
-        RECORDING = 'recording'
+        START_RECORD = 'start_recording'
+        STOP_RECORD = 'stop_recording'
         SAVE = 'save_button'
         CLEAN = 'clean_button'
         FILES = 'manage_files'
@@ -113,10 +114,8 @@ class TagIds:
                 DPC = 'dpc_mode_selector'
                 SET_DEVICE_ID = 'set_device_id'
                 DEVICE_ID_VALUE = 'device_id_value'
-                FAN = 'set_fan'
-                COMMAND = 'command'
-                DATA = 'custom_data'
-                SEND = 'send_command'
+                SET_FAN = 'set_fan'
+                FAN_VALUE = 'fan_value'
                 ENGINE = 'activate_engine'
                 BREATH_DEPTH = 'breath_depth'
                 BREATH_RATE = 'breath_rate'
@@ -154,11 +153,11 @@ class Icons:
         SUN = 'fa fa-sun'
 
     CLEAN = dict(id=TagIds.Buttons.CLEAN, label='Reset Live Data', icon=Css.CLEAN)
-    START_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Start Recording', icon=Css.START_RECORD)
-    STOP_RECORD = dict(id=TagIds.Buttons.RECORDING, label='Stop Recording', icon=Css.STOP_RECORD)
+    START_RECORD = dict(id=TagIds.Buttons.START_RECORD, label='Start Recording', icon=Css.START_RECORD)
+    STOP_RECORD = dict(id=TagIds.Buttons.STOP_RECORD, label='Stop Recording', icon=Css.STOP_RECORD)
     TIMER = dict(id=TagIds.CLOCK, label='Timer', icon=Css.TIMER)
     MANAGE_FILES = dict(id=TagIds.Buttons.FILES, label='Manage Files', icon=Css.FILES)
-    ALL = [TIMER, CLEAN, START_RECORD, MANAGE_FILES]
+    ALL = [TIMER, CLEAN, START_RECORD, STOP_RECORD, MANAGE_FILES]
 
 
 class InputModes:
