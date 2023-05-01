@@ -35,7 +35,8 @@ def change_theme(theme):
 def update_timer(intervals):
     timestamp = 'Timer: '
     if realtime.database.is_not_empty():
-        timestamp += realtime.database.read()[InputNames.TIMER]
+        current_time = realtime.database.read()[InputNames.TIMER]
+        timestamp += ":".join(f'{field:0>2}' for field in current_time.split(':'))
     return Icons.Css.TIMER, timestamp
 
 
