@@ -74,4 +74,4 @@ def toggle_modal(file_name, click):
     realtime.send_command(Commands.READ_SINGLE_FILE, file_name)
     realtime.thread.events.live_mode.wait()
     time.sleep(1)
-    return dict(filename=file_name.strip('/'), content=realtime.database.playback.to_csv())
+    return dict(filename=file_name.strip('/'), content=realtime.database.file_content)

@@ -72,8 +72,9 @@ class RealtimeData:
             self.thread.events.live_mode.set()
         return DatabaseTypes.ROW, self.add_row(content)
 
-    def add_playback_row(self, content: str, **kwargs):
-        return DatabaseTypes.PLAYBACK, self.add_row(content)
+    @staticmethod
+    def add_playback_row(content: str, **kwargs):
+        return DatabaseTypes.PLAYBACK, content[0]
 
     @staticmethod
     def add_dataframe(content: pandas.DataFrame, **kwargs):

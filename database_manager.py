@@ -10,6 +10,7 @@ class DatabaseManager:
     def __init__(self):
         self.data = None
         self.playback = None
+        self.file_content = ""
         self.single_values = None
         self._mapping = {
             DatabaseTypes.SINGLE_VALUE: self.save_single_value,
@@ -25,7 +26,7 @@ class DatabaseManager:
 
     def reset_dataframes(self):
         self.data = pandas.DataFrame()
-        self.playback = pandas.DataFrame()
+        self.file_content = ""
 
     def reset(self, event=None):
         self.reset_dataframes()
@@ -62,9 +63,7 @@ class DatabaseManager:
             self.data = pandas.concat([self.data, *dataframes])
 
     def add_playback(self, content):
-        row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[''])
-        if not row.empty and len(row.columns) >= len(self.playback.columns):
-            self.playback = self.playback.append(row)
+        self.file_content = "\n".join([self.file_content, *content])
 
     def add_row(self, content):
         row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
@@ -73,6 +72,3 @@ class DatabaseManager:
 
     def to_csv(self, path=None):
         return self.data.to_csv(path)
-
-    def download_playback(self):
-        return self.playback.to_csv()
