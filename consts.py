@@ -180,6 +180,7 @@ class DatabaseTypes:
     SINGLE_VALUE = 'single'
     DATAFRAME = 'dataframe'
     PLAYBACK = 'playback'
+    IGNORE = 'ignore'
 
 
 class GraphConsts:

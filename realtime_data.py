@@ -22,6 +22,7 @@ class RealtimeData:
         self._mapping: dict[str, Callable] = {
             HardwarePackets.DATA: self.add_live_row,
             HardwarePackets.PLAYBACK: self.add_playback_row,
+            HardwarePackets.PLAYBACK_END: self.end_playback,
             HardwarePackets.FILE: self.add_dataframe,
             HardwarePackets.DEVICE_ID: self.save_single_output,
             HardwarePackets.TOTAL_TIME: self.save_single_output,
@@ -67,9 +68,11 @@ class RealtimeData:
             sample[content[index]] = data
         return sample
 
+    def end_playback(self, content: str, **kwargs):
+        self.thread.events.live_mode.set()
+        return DatabaseTypes.IGNORE, content
+
     def add_live_row(self, content: str, **kwargs):
-        if not self.thread.events.live_mode.is_set():
-            self.thread.events.live_mode.set()
         return DatabaseTypes.ROW, self.add_row(content)
 
     @staticmethod

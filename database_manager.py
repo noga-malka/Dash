@@ -22,7 +22,8 @@ class DatabaseManager:
 
     def save(self, current_data: dict):
         for data_type, args in current_data.items():
-            self._mapping[data_type](args)
+            if data_type in self._mapping:
+                self._mapping[data_type](args)
 
     def reset_dataframes(self):
         self.data = pandas.DataFrame()
