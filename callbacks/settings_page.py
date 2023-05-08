@@ -1,4 +1,5 @@
 from dash import Output, Input
+from dash.exceptions import PreventUpdate
 
 from consts import TagIds, TagFields
 from dash_setup import app
@@ -9,16 +10,23 @@ from realtime_data import realtime
 @app.callback(Output(HardwarePackets.RUN_TIME, TagFields.CHILDREN),
               Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
 def update_timer(intervals):
-    return realtime.database.single_values.get(HardwarePackets.RUN_TIME, 'No Data')
+    return compare_to_previous(HardwarePackets.RUN_TIME)
 
 
 @app.callback(Output(HardwarePackets.TOTAL_TIME, TagFields.CHILDREN),
               Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
 def update_timer(intervals):
-    return realtime.database.single_values.get(HardwarePackets.TOTAL_TIME, 'No Data')
+    return compare_to_previous(HardwarePackets.TOTAL_TIME)
 
 
 @app.callback(Output(HardwarePackets.DEVICE_ID, TagFields.CHILDREN),
               Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
 def update_timer(intervals):
-    return realtime.database.single_values.get(HardwarePackets.DEVICE_ID, 'No Data')
+    return compare_to_previous(HardwarePackets.DEVICE_ID)
+
+
+def compare_to_previous(key: str):
+    current, changed = realtime.database.get_value(key, check_previous=True)
+    if changed:
+        return current
+    raise PreventUpdate

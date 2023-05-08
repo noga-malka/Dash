@@ -3,7 +3,7 @@ import re
 
 import pandas
 
-from consts import DatabaseTypes, DatabaseReader, GraphConsts
+from consts import DatabaseTypes, DatabaseReader, GraphConsts, DatabaseConsts
 
 
 class DatabaseManager:
@@ -12,6 +12,7 @@ class DatabaseManager:
         self.playback = None
         self.file_content = ""
         self.single_values = None
+        self.previous_values = None
         self._mapping = {
             DatabaseTypes.SINGLE_VALUE: self.save_single_value,
             DatabaseTypes.ROW: self.add_row,
@@ -32,6 +33,7 @@ class DatabaseManager:
     def reset(self, event=None):
         self.reset_dataframes()
         self.single_values = {}
+        self.previous_values = {}
         if event:
             event.set()
 
@@ -47,13 +49,18 @@ class DatabaseManager:
             index.value]
 
     def save_single_value(self, values):
+        self.previous_values = self.single_values.copy()
         for (key, value, event) in values:
             self.single_values[key] = value
             if event:
                 event.set()
 
-    def get(self, key, default_value=None):
-        return self.single_values.get(key, default_value)
+    def get_value(self, key, default_value=DatabaseConsts.DEFAULT_VALUE, check_previous=False):
+        current_value = self.single_values.get(key, default_value)
+        if check_previous:
+            previous_value = self.previous_values.get(key, default_value)
+            return current_value, previous_value == current_value or previous_value == DatabaseConsts.DEFAULT_VALUE
+        return current_value
 
     def set(self, key, value):
         self.single_values[key] = value

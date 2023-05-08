@@ -183,6 +183,10 @@ class DatabaseTypes:
     IGNORE = 'ignore'
 
 
+class DatabaseConsts:
+    DEFAULT_VALUE = 'No Data'
+
+
 class GraphConsts:
     MAX_ROWS = 10000
 
