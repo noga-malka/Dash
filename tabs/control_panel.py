@@ -43,6 +43,8 @@ def sensors_controls():
         generate_card('Reset Counters', [dbc.Button('Reset', id=TagIds.Tabs.Monitors.Control.RESET_COUNTERS)]),
         generate_card('Delete SD files', [dbc.Button('Delete', id=TagIds.Tabs.Monitors.Control.CLEAR_SD)]),
         generate_card('Read Timers', [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_TIME)]),
+        generate_card('Read Software Version',
+                      [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_SOFTWARE_VERSION)]),
         generate_card('Read Device ID', [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_DEVICE_ID)]),
     ]
 

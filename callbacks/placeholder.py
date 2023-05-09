@@ -11,6 +11,7 @@ command_mapping = {
     TagIds.Buttons.STOP_RECORD: Commands.STOP_RECORD,
     TagIds.Tabs.Monitors.Control.READ_TIME: Commands.READ_ELAPSED_TIME,
     TagIds.Tabs.Monitors.Control.READ_DEVICE_ID: Commands.READ_DEVICE_ID,
+    TagIds.Tabs.Monitors.Control.READ_SOFTWARE_VERSION: Commands.SOFTWARE_VERSION,
     TagIds.Tabs.Monitors.Control.CLEAR_SD: Commands.DELETE_FILES,
     TagIds.Tabs.Monitors.Control.RESET_COUNTERS: Commands.RESET_COUNTERS,
 }
@@ -31,6 +32,7 @@ def send_command(click, fan_value):
               Input(TagIds.Tabs.Monitors.Control.CLEAR_SD, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.READ_TIME, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.RESET_COUNTERS, TagFields.CLICK),
+              Input(TagIds.Tabs.Monitors.Control.READ_SOFTWARE_VERSION, TagFields.CLICK),
               prevent_initial_call=True)
 def send_command(*clicks):
     if any(clicks):

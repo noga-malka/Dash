@@ -11,6 +11,7 @@ MAPPING = {
     Commands.READ_ELAPSED_TIME: SensorsPacketBuilder,
     Commands.RESET_COUNTERS: SensorsPacketBuilder,
     Commands.SET_FAN: SensorsPacketBuilder,
+    Commands.SOFTWARE_VERSION: SensorsPacketBuilder,
     Commands.GET_FILE_LIST: SensorsPacketBuilder,
     Commands.DELETE_FILES: SensorsPacketBuilder,
 }
