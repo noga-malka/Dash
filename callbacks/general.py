@@ -46,7 +46,7 @@ def update_timer(intervals):
 def update_timer(intervals):
     recording = False
     if realtime.database.is_not_empty():
-        recording = realtime.database.read()[InputNames.RECORD_STATUS] == 'Recording'
+        recording = realtime.database.read().get(InputNames.RECORD_STATUS) == 'Recording'
     files = realtime.database.get_value('FILE', ['No Files Found'])
     return 'red' if recording else 'white', [file_name for file_name in files if file_name]
 

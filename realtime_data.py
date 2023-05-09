@@ -78,7 +78,8 @@ class RealtimeData:
 
     @staticmethod
     def add_playback_row(content: str, **kwargs):
-        return DatabaseTypes.PLAYBACK, content[0]
+        if len(content[0].split(',')) == 10:
+            return DatabaseTypes.PLAYBACK, content[0]
 
     @staticmethod
     def add_dataframe(content: pandas.DataFrame, **kwargs):
