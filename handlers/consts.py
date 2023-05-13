@@ -13,7 +13,7 @@ class HardwarePackets:
     SOFTWARE_VERSION = 'SV'
     FILES_LIST = 'FILE'
     PLAYBACK = 'Playback'
-    PLAYBACK_END = 'Playback  ENDData'
+    PLAYBACK_END = 'END\r'
 
     DISPLAY = [RUN_TIME, TOTAL_TIME, DEVICE_ID, SOFTWARE_VERSION]
 

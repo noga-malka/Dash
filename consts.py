@@ -80,6 +80,7 @@ class TagIds:
             DOWNLOAD = 'download_text'
             BUTTON = 'save_session'
             LOAD = 'load_file'
+            EXIT = 'exit_button'
 
         class Clean:
             MODAL = 'are_you_sure'

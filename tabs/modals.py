@@ -23,8 +23,9 @@ def download_session():
                                    html.Div([
                                        dbc.Button('Download File', id=TagIds.Modals.Save.LOAD),
                                    ], className='flex center align children-margin-2')
-                               ])
-                           ])
+                               ]),
+                               dbc.Button('Exit', id=TagIds.Modals.Save.EXIT)
+                           ], close_button=False)
 
 
 def are_you_sure():

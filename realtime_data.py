@@ -47,7 +47,7 @@ class RealtimeData:
                     self._current.setdefault(data_type, [])
                     self._current[data_type].append(args)
                 self.database.save(self._current)
-            except (KeyError, IndexError, ValueError, UnicodeDecodeError):
+            except (KeyError, IndexError, ValueError, UnicodeDecodeError, TypeError):
                 logger.warning(f'Failed to parse row: {data}')
 
     @staticmethod

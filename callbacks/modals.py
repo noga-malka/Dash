@@ -21,13 +21,17 @@ def toggle_modal(is_open, *args):
     return not is_open
 
 
-@app.callback(Output(TagIds.Modals.Files.MODAL, TagFields.IS_OPEN), State(TagIds.Modals.Files.MODAL, TagFields.IS_OPEN),
-              Input(Icons.MANAGE_FILES['id'], TagFields.CLICK), prevent_initial_call=True)
-def toggle_modal(is_open, *args):
-    if is_open:
-        return False
-    realtime.send_command(Commands.GET_FILE_LIST)
-    return True
+@app.callback(Output(TagIds.Modals.Files.MODAL, TagFields.IS_OPEN),
+              Input(TagIds.Modals.Save.EXIT, TagFields.CLICK),
+              Input(Icons.MANAGE_FILES['id'], TagFields.CLICK),
+              prevent_initial_call=True)
+def toggle_modal(*args):
+    should_open = callback_context.triggered_id == Icons.MANAGE_FILES['id']
+    if should_open:
+        realtime.send_command(Commands.GET_FILE_LIST)
+    else:
+        realtime.thread.events.live_mode.set()
+    return should_open
 
 
 @app.callback(
