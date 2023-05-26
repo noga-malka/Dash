@@ -10,6 +10,7 @@ from realtime_data import realtime
 command_mapping = {
     TagIds.Buttons.STOP_RECORD: Commands.STOP_RECORD,
     TagIds.Tabs.Monitors.Control.READ_TIME: Commands.READ_ELAPSED_TIME,
+    TagIds.Tabs.Monitors.Control.READ_CLOCK: Commands.READ_CLOCK,
     TagIds.Tabs.Monitors.Control.READ_DEVICE_ID: Commands.READ_DEVICE_ID,
     TagIds.Tabs.Monitors.Control.READ_SOFTWARE_VERSION: Commands.SOFTWARE_VERSION,
     TagIds.Tabs.Monitors.Control.CLEAR_SD: Commands.DELETE_FILES,
@@ -19,10 +20,10 @@ command_mapping = {
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'title'),
               Input(TagIds.Tabs.Monitors.Control.SET_FAN, TagFields.CLICK),
-              Input(TagIds.Tabs.Monitors.Control.FAN_VALUE, TagFields.VALUE),
+              State(TagIds.Tabs.Monitors.Control.FAN_VALUE, TagFields.VALUE),
               prevent_initial_call=True)
 def send_command(click, fan_value):
-    if click:
+    if click and fan_value:
         realtime.send_command(Commands.SET_FAN, fan_value)
 
 
@@ -31,6 +32,7 @@ def send_command(click, fan_value):
               Input(TagIds.Tabs.Monitors.Control.READ_DEVICE_ID, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.CLEAR_SD, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.READ_TIME, TagFields.CLICK),
+              Input(TagIds.Tabs.Monitors.Control.READ_CLOCK, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.RESET_COUNTERS, TagFields.CLICK),
               Input(TagIds.Tabs.Monitors.Control.READ_SOFTWARE_VERSION, TagFields.CLICK),
               prevent_initial_call=True)
@@ -39,11 +41,19 @@ def send_command(*clicks):
         realtime.send_command(command_mapping[callback_context.triggered_id])
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'spellCheck'), Input(TagIds.Buttons.START_RECORD, TagFields.CLICK),
+@app.callback(Output(TagIds.PLACEHOLDER, 'contextMenu'), Input(TagIds.Buttons.START_RECORD, TagFields.CLICK),
               prevent_initial_call=True)
 def send_command(click):
     if click is not None:
         realtime.send_command(Commands.START_RECORD, datetime.now().strftime('%Y%m%d%H%M'))
+
+
+@app.callback(Output(TagIds.PLACEHOLDER, 'spellCheck'), Input(TagIds.Tabs.Monitors.Control.SYNC_CLOCK, TagFields.CLICK),
+              prevent_initial_call=True)
+def send_command(click):
+    if click is not None:
+        content = datetime.now().strftime('%y,%m,%d,%H,%M').split(',')
+        realtime.send_command(Commands.WRITE_CLOCK, content, content_length=1)
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'role'), Input(TagIds.Tabs.Monitors.Control.SET_DEVICE_ID, TagFields.CLICK),

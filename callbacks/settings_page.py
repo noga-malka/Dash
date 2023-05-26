@@ -31,6 +31,12 @@ def update_timer(intervals):
     return compare_to_previous(HardwarePackets.SOFTWARE_VERSION)
 
 
+@app.callback(Output(HardwarePackets.CLOCK, TagFields.CHILDREN),
+              Input(TagIds.Intervals.SYNC_DATA, TagFields.INTERVAL), prevent_initial_call=True)
+def update_timer(intervals):
+    return compare_to_previous(HardwarePackets.CLOCK)
+
+
 def compare_to_previous(key: str):
     current, changed = realtime.database.get_value(key, check_previous=True)
     if changed:

@@ -11,11 +11,12 @@ class HardwarePackets:
     TOTAL_TIME = 'TotalTime'
     DEVICE_ID = 'DeviceID'
     SOFTWARE_VERSION = 'SV'
+    CLOCK = 'RTC'
     FILES_LIST = 'FILE'
     PLAYBACK = 'Playback'
     PLAYBACK_END = 'END\r'
 
-    DISPLAY = [RUN_TIME, TOTAL_TIME, DEVICE_ID, SOFTWARE_VERSION]
+    DISPLAY = [RUN_TIME, TOTAL_TIME, DEVICE_ID, SOFTWARE_VERSION, CLOCK]
 
 
 class Commands:
@@ -28,6 +29,8 @@ class Commands:
     SOFTWARE_VERSION = 37
     START_RECORD = 38
     STOP_RECORD = 39
+    READ_CLOCK = 47
+    WRITE_CLOCK = 48
 
     GET_FILE_LIST = 43
     READ_SINGLE_FILE = 40

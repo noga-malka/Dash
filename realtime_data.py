@@ -26,6 +26,7 @@ class RealtimeData:
             HardwarePackets.FILE: self.add_dataframe,
             HardwarePackets.DEVICE_ID: self.save_single_output,
             HardwarePackets.SOFTWARE_VERSION: self.save_single_output,
+            HardwarePackets.CLOCK: self.save_single_output,
             HardwarePackets.TOTAL_TIME: self.save_single_output,
             HardwarePackets.RUN_TIME: self.save_single_output,
             HardwarePackets.FILES_LIST: self.save_multiple_outputs,

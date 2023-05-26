@@ -6,6 +6,8 @@ MAPPING = {
     Commands.START_RECORD: TextPacketBuilder,
     Commands.READ_SINGLE_FILE: TextPacketBuilder,
     Commands.SET_DEVICE_ID: SensorsPacketBuilder,
+    Commands.READ_CLOCK: SensorsPacketBuilder,
+    Commands.WRITE_CLOCK: SensorsPacketBuilder,
     Commands.STOP_RECORD: SensorsPacketBuilder,
     Commands.READ_DEVICE_ID: SensorsPacketBuilder,
     Commands.READ_ELAPSED_TIME: SensorsPacketBuilder,

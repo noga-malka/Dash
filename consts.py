@@ -122,6 +122,8 @@ class TagIds:
                 BREATH_RATE = 'breath_rate'
                 RESET_COUNTERS = 'reset_counters'
                 READ_TIME = 'read_time'
+                READ_CLOCK = 'read_clock'
+                SYNC_CLOCK = 'sync_clock'
                 READ_DEVICE_ID = 'read_device_id'
                 READ_SOFTWARE_VERSION = 'read_software_version'
                 CLEAR_SD = 'clear_sd'
