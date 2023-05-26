@@ -15,6 +15,7 @@ logging.getLogger('callbacks').disabled = not IS_DEBUG
 
 class InputNames:
     TACH = 'Tach'
+    TACH_2 = 'Tach2'
     TEMP = 'Temp'
     TIMER = 'Time'
     BATTERY = 'Vbat'
@@ -22,7 +23,8 @@ class InputNames:
 
 
 class SensorNames:
-    FAN = 'Fan Speed'
+    FIRST_FAN = 'First Fan Speed'
+    SECOND_FAN = 'Second Fan Speed'
     TEMP = 'Temperature'
     BATTERY = 'Battery'
 
@@ -113,8 +115,11 @@ def set_sensors(groups):
 
 class Settings:
     DEFAULT = {
-        SensorNames.FAN: {
+        SensorNames.FIRST_FAN: {
             InputNames.TACH: SensorInstance.FanSpeed,
+        },
+        SensorNames.SECOND_FAN: {
+            InputNames.TACH_2: SensorInstance.FanSpeed,
         },
         SensorNames.TEMP: {
             InputNames.TEMP: SensorInstance.Temperature,
@@ -126,7 +131,7 @@ class Settings:
     SENSORS = set_sensors(DEFAULT)
 
     DISPLAY = [
-        [InputNames.TACH, InputNames.TEMP, InputNames.BATTERY],
+        [InputNames.TACH, InputNames.TACH_2, InputNames.TEMP, InputNames.BATTERY],
     ]
 
     GRAPHS = {
@@ -135,6 +140,7 @@ class Settings:
         ],
         'Fan Speed': [
             InputNames.TACH,
+            InputNames.TACH_2,
         ],
         'Battery': [
             InputNames.BATTERY,

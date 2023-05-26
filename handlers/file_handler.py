@@ -9,7 +9,7 @@ from utilities import packet_sender
 
 
 class FileHandler(Handler):
-    COLUMNS = ['Time', 'Temp', 'Vbat', 'Fan', 'Tach']
+    COLUMNS = ['Time', 'Temp', 'Vbat', 'Fan', 'Tach', 'Tach2']
 
     def __init__(self):
         super(FileHandler, self).__init__(False)
