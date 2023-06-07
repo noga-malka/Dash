@@ -76,7 +76,7 @@ class DatabaseManager:
     def add_row(self, content):
         row = pandas.DataFrame(functools.reduce(lambda a, b: a | b, content, {}), index=[pandas.Timestamp.now()])
         if not row.empty and len(row.columns) >= len(self.data.columns):
-            self.data = self.data.append(row)
+            self.data = pandas.concat((self.data, row))
 
     def to_csv(self, path=None):
         return self.data.to_csv(path)

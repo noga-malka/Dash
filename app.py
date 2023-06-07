@@ -12,4 +12,4 @@ if __name__ == '__main__':
         load_configuration(config)
     except (FileNotFoundError, KeyError):
         pass
-    app.run_server(debug=IS_DEBUG)
+    app.run_server(debug=IS_DEBUG, port=8051)
