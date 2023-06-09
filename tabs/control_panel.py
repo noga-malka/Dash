@@ -38,7 +38,7 @@ def sensors_controls():
                                         dbc.Button('set', id=TagIds.Tabs.Monitors.Control.SET_FAN)]),
         generate_card('Set Device ID',
                       [dbc.Input(id=TagIds.Tabs.Monitors.Control.DEVICE_ID_VALUE, type='number',
-                                 style={'width': '80px'}, value=0, max=255, min=0),
+                                 style={'width': '80px'}, value=0, max=65535, min=0),
                        dbc.Button('set', id=TagIds.Tabs.Monitors.Control.SET_DEVICE_ID)]),
         generate_card('Reset Counters', [dbc.Button('Reset', id=TagIds.Tabs.Monitors.Control.RESET_COUNTERS)]),
         generate_card('Delete SD files', [dbc.Button('Delete', id=TagIds.Tabs.Monitors.Control.CLEAR_SD)]),
