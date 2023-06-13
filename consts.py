@@ -247,7 +247,7 @@ def to_fahrenheit(value):
 class UnitTypes:
     CELSIUS = 'C°'
     FAHRENHEIT = 'F°'
-    TACHO = 'RPS'
+    TACH = 'RPM(1000)'
     PERCENTAGE = '%'
     CONVERT = {
         FAHRENHEIT: to_fahrenheit

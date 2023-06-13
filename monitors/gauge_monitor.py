@@ -6,11 +6,12 @@ from monitors.basic_monitor import Monitor
 
 class GaugeMonitor(Monitor):
 
-    def __init__(self, size, show_label=True, show_percentage=False, max_percent=None):
+    def __init__(self, size, show_label=True, show_percentage=False, max_percent=None, adapt_function=None):
         super(GaugeMonitor, self).__init__(size, show_label)
         self.show_percentage = show_percentage
         self.max_percent = max_percent
         self.show_label = show_label
+        self.adapt_function = adapt_function if adapt_function else lambda value: value
 
     def generate_daq(self, sensor, monitor_id):
         if self.show_label:
@@ -24,7 +25,7 @@ class GaugeMonitor(Monitor):
         return [gauge, led]
 
     def generate_output_values(self, sensor, value):
-        values = super(GaugeMonitor, self).generate_output_values(sensor, value)
+        values = super(GaugeMonitor, self).generate_output_values(sensor, self.adapt_function(value))
         if self.show_percentage:
             percent = value / self.max_percent * 100 if self.max_percent else -1
             values.append(['{:.2f}'.format(percent)] + values[-2:])

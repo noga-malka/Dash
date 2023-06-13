@@ -69,11 +69,11 @@ class SensorInstance:
                       minimum=0,
                       low_error=0,
                       low_warning=0,
-                      high_warning=300,
-                      high_error=300,
-                      maximum=300,
-                      unit_type=UnitTypes.TACHO,
-                      possible_units=[UnitTypes.TACHO])
+                      high_warning=5,
+                      high_error=5,
+                      maximum=5,
+                      unit_type=UnitTypes.TACH,
+                      possible_units=[UnitTypes.TACH])
 
     Battery = Sensor(label=Labels.BATTERY,
                      minimum=0,
@@ -93,7 +93,7 @@ class Schema:
 
     MONITOR_TYPES = {
         Labels.TEMP: TemperatureMonitor(90),
-        Labels.FAN: GaugeMonitor(110),
+        Labels.FAN: GaugeMonitor(110, adapt_function=lambda value: value / 1000),
         Labels.BATTERY: GaugeMonitor(110),
     }
 
