@@ -1,7 +1,7 @@
 class DataColumns:
     NAMES = ['Time', 'Temp', 'Vbat', 'Fan', 'Tach', 'Tach2']
-    INDEXES = list(range(1, len(NAMES) * 2, 2))
-    COUNT = len(NAMES)
+    COUNT = len(NAMES) * 2
+    INDEXES = list(range(1, COUNT, 2))
 
 
 class InputTypes:
