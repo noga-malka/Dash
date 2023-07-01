@@ -6,7 +6,7 @@ import pandas
 from configurations import logger
 from consts import DatabaseTypes
 from database_manager import DatabaseManager
-from handlers.consts import HardwarePackets
+from handlers.consts import HardwarePackets, DataColumns
 from handlers.handler_exception import DisconnectionEvent
 from mappings.handlers import TYPES
 from stoppable_thread import StoppableThread
@@ -79,7 +79,7 @@ class RealtimeData:
 
     @staticmethod
     def add_playback_row(content: str, **kwargs):
-        if len(content[0].split(',')) == 12:
+        if len(content[0].split(',')) == DataColumns.COUNT:
             return DatabaseTypes.PLAYBACK, content[0]
 
     @staticmethod

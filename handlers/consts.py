@@ -1,3 +1,9 @@
+class DataColumns:
+    NAMES = ['Time', 'Temp', 'Vbat', 'Fan', 'Tach', 'Tach2']
+    INDEXES = list(range(1, len(NAMES) * 2, 2))
+    COUNT = len(NAMES)
+
+
 class InputTypes:
     SENSORS = 'sensors'
     CO2_CONTROLLER = 'CO2 controller'

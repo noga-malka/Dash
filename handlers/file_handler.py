@@ -3,7 +3,7 @@ from io import StringIO
 
 import pandas
 
-from handlers.consts import HardwarePackets
+from handlers.consts import HardwarePackets, DataColumns
 from handlers.handler import Handler
 from utilities import packet_sender
 
@@ -26,7 +26,7 @@ class FileHandler(Handler):
             self.current = file_name
             data = content.encode("utf8").split(b";base64,")[1]
             data = StringIO(base64.decodebytes(data).decode('utf8'))
-            self.content = pandas.read_csv(data, usecols=list(range(1, 10, 2)), names=self.COLUMNS)
+            self.content = pandas.read_csv(data, usecols=DataColumns.INDEXES, names=DataColumns.NAMES)
             return True
         return False
 
