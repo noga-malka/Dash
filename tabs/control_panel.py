@@ -31,28 +31,36 @@ def controls(input_type):
 
 
 @controls(InputTypes.SENSORS)
-def sensors_controls():
+def setup_controls():
+    control_ids = TagIds.Tabs.Monitors.Control
+    default_params = dict(type='number', style={'width': '80px'}, value=0, min=0)
     return [
-        generate_card('Set Fan (RPM)', [dbc.Input(id=TagIds.Tabs.Monitors.Control.FAN_VALUE, type='number',
-                                                  style={'width': '80px'}, value=0, max=6000, min=0),
-                                        dbc.Button('set', id=TagIds.Tabs.Monitors.Control.SET_FAN)]),
+        generate_card('Set Fan (RPM)',
+                      [dbc.Input(id=control_ids.FAN_VALUE, max=6000, **default_params),
+                       dbc.Button('set', id=control_ids.SET_FAN)]),
         generate_card('Set Device ID',
-                      [dbc.Input(id=TagIds.Tabs.Monitors.Control.DEVICE_ID_VALUE, type='number',
-                                 style={'width': '80px'}, value=0, max=65535, min=0),
-                       dbc.Button('set', id=TagIds.Tabs.Monitors.Control.SET_DEVICE_ID)]),
-        generate_card('Reset Counters', [dbc.Button('Reset', id=TagIds.Tabs.Monitors.Control.RESET_COUNTERS)]),
-        generate_card('Delete SD files', [dbc.Button('Delete', id=TagIds.Tabs.Monitors.Control.CLEAR_SD)]),
-        generate_card('Read Timers', [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_TIME)]),
-        generate_card('Read Clock', [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_CLOCK)]),
-        generate_card('Sync Clock', [dbc.Button('Sync', id=TagIds.Tabs.Monitors.Control.SYNC_CLOCK)]),
-        generate_card('Read Software Version',
-                      [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_SOFTWARE_VERSION)]),
-        generate_card('Read Device ID', [dbc.Button('Read', id=TagIds.Tabs.Monitors.Control.READ_DEVICE_ID)]),
+                      [dbc.Input(id=control_ids.DEVICE_ID_VALUE, max=65535, **default_params),
+                       dbc.Button('set', id=control_ids.SET_DEVICE_ID)]),
+
+        generate_card('Reset Counters', [dbc.Button('Reset', id=control_ids.RESET_COUNTERS)]),
+        generate_card('Sync Clock', [dbc.Button('Sync', id=control_ids.SYNC_CLOCK)]),
+        generate_card('Delete SD files', [dbc.Button('Delete', id=control_ids.CLEAR_SD)]),
+    ]
+
+
+@controls(InputTypes.SENSORS)
+def reading_controls():
+    control_ids = TagIds.Tabs.Monitors.Control
+    return [
+        generate_card('Read Timers', [dbc.Button('Read', id=control_ids.READ_TIME)]),
+        generate_card('Read Clock', [dbc.Button('Read', id=control_ids.READ_CLOCK)]),
+        generate_card('Read Software Version', [dbc.Button('Read', id=control_ids.READ_SOFTWARE_VERSION)]),
+        generate_card('Read Device ID', [dbc.Button('Read', id=control_ids.READ_DEVICE_ID)]),
     ]
 
 
 def live_stream_extra():
-    return [sensors_controls(True)]
+    return [setup_controls(True), reading_controls(True)]
 
 
 def file_extra():
