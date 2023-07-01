@@ -3,7 +3,7 @@ import dash_daq as daq
 from dash import html, dcc
 from dash_bootstrap_templates import ThemeSwitchAIO
 
-from consts import TagIds, DaqConsts, Theme, Icons, InputModes
+from consts import TagIds, DaqConsts, Theme, Icons, InputModes, VERSION
 from mappings.tabs import PAGES
 from tabs.modals import download_session, are_you_sure, bluetooth_modal
 
@@ -21,8 +21,9 @@ def generate_buttons():
 def generate_layout():
     return html.Div(
         children=[
-            html.Div(
-                html.Img(src='assets/logo.png', width=120),
+            html.Div([
+                html.Img(src='assets/logo.png', id='title_image', width=120),
+                dbc.Tooltip(VERSION, target='title_image', fade=True, placement='right-end')],
                 className='bg-primary flex center', style={'padding': '10px'}),
             dcc.Location(id=TagIds.LOCATION),
             dbc.Alert("Press 'Stop Recording' before trying to access SD files", id=TagIds.Alerts.RECORDING_ON,

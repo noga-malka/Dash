@@ -7,6 +7,8 @@ from dash_iconify import DashIconify
 
 IS_DEBUG = len(sys.argv) > 1 and sys.argv[1] == 'debug'
 
+VERSION = 'Caeli-M-010723'
+
 
 class TagFields:
     IS_OPEN = 'is_open'
