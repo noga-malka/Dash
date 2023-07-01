@@ -3,7 +3,7 @@ from typing import Callable
 
 import pandas
 
-from configurations import logger
+from configurations import logger, InputNames
 from consts import DatabaseTypes
 from database_manager import DatabaseManager
 from handlers.consts import HardwarePackets, DataColumns
@@ -98,6 +98,11 @@ class RealtimeData:
         except DisconnectionEvent as disconnect:
             realtime.thread.disconnect(disconnect)
             return False
+
+    def is_recording(self) -> bool:
+        if self.database.is_not_empty():
+            return self.database.read().get(InputNames.RECORD_STATUS) == 'Recording'
+        return False
 
 
 realtime = RealtimeData()

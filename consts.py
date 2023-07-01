@@ -64,6 +64,9 @@ class TagIds:
         CLEAN = 'clean_button'
         FILES = 'manage_files'
 
+    class Alerts:
+        RECORDING_ON = 'recording_on_alert'
+
     class Modals:
         class Files:
             MODAL = 'files_modal'

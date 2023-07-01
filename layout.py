@@ -25,6 +25,8 @@ def generate_layout():
                 html.Img(src='assets/logo.png', width=120),
                 className='bg-primary flex center', style={'padding': '10px'}),
             dcc.Location(id=TagIds.LOCATION),
+            dbc.Alert("Can not access files while recording", id=TagIds.Alerts.RECORDING_ON, color="danger",
+                      dismissable=True, fade=True, is_open=False),
             html.Div(
                 children=[
                     html.Div([
