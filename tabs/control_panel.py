@@ -37,12 +37,12 @@ def setup_controls():
     return [
         generate_card('Set Fan (RPM)',
                       [dbc.Input(id=control_ids.FAN_VALUE, max=6000, **default_params),
-                       dbc.Button('set', id=control_ids.SET_FAN)]),
+                       dbc.Button('Set', id=control_ids.SET_FAN)]),
         generate_card('Set Device ID',
                       [dbc.Input(id=control_ids.DEVICE_ID_VALUE, max=65535, **default_params),
-                       dbc.Button('set', id=control_ids.SET_DEVICE_ID)]),
+                       dbc.Button('Set', id=control_ids.SET_DEVICE_ID)]),
 
-        generate_card('Reset Counters', [dbc.Button('Reset', id=control_ids.RESET_COUNTERS)]),
+        generate_card('Reset Timers', [dbc.Button('Reset', id=control_ids.RESET_COUNTERS)]),
         generate_card('Sync Clock', [dbc.Button('Sync', id=control_ids.SYNC_CLOCK)]),
         generate_card('Delete SD files', [dbc.Button('Delete', id=control_ids.CLEAR_SD)]),
     ]
