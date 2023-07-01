@@ -33,17 +33,19 @@ def controls(input_type):
 @controls(InputTypes.SENSORS)
 def setup_controls():
     control_ids = TagIds.Tabs.Monitors.Control
-    default_params = dict(type='number', style={'width': '80px'}, value=0, min=0)
+    default_params = dict(type='number', style={'width': '80px'}, value=0)
     return [
         generate_card('Set Fan (RPM)',
-                      [dbc.Input(id=control_ids.FAN_VALUE, max=6000, **default_params),
+                      [dbc.Input(id=control_ids.FAN_VALUE, min=0, max=6000, **default_params),
                        dbc.Button('Set', id=control_ids.SET_FAN)]),
         generate_card('Set Device ID',
-                      [dbc.Input(id=control_ids.DEVICE_ID_VALUE, max=65535, **default_params),
+                      [dbc.Input(id=control_ids.DEVICE_ID_VALUE, min=0, max=65535, **default_params),
                        dbc.Button('Set', id=control_ids.SET_DEVICE_ID)]),
 
         generate_card('Reset Timers', [dbc.Button('Reset', id=control_ids.RESET_COUNTERS)]),
-        generate_card('Sync Clock', [dbc.Button('Sync', id=control_ids.SYNC_CLOCK)]),
+        generate_card('Sync Clock (Relative TZ)',
+                      [dbc.Input(id=control_ids.TIME_ZONE_VALUE, min=-12, max=12, **default_params),
+                       dbc.Button('Sync', id=control_ids.SYNC_CLOCK)]),
         generate_card('Delete SD files', [dbc.Button('Delete', id=control_ids.CLEAR_SD)]),
     ]
 

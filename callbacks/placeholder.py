@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from dash import Input, Output, State, callback_context
 
@@ -49,10 +49,12 @@ def send_command(click):
 
 
 @app.callback(Output(TagIds.PLACEHOLDER, 'spellCheck'), Input(TagIds.Tabs.Monitors.Control.SYNC_CLOCK, TagFields.CLICK),
+              State(TagIds.Tabs.Monitors.Control.TIME_ZONE_VALUE, TagFields.VALUE),
               prevent_initial_call=True)
-def send_command(click):
+def send_command(click, timezone):
     if click is not None:
-        content = datetime.now().strftime('%y,%m,%d,%H,%M').split(',')
+        current_time = datetime.now() + timedelta(hours=timezone)
+        content = current_time.strftime('%y,%m,%d,%H,%M').split(',')
         realtime.send_command(Commands.WRITE_CLOCK, content, content_length=1)
 
 

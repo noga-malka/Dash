@@ -124,6 +124,7 @@ class TagIds:
                 READ_TIME = 'read_time'
                 READ_CLOCK = 'read_clock'
                 SYNC_CLOCK = 'sync_clock'
+                TIME_ZONE_VALUE = 'time_zone_value'
                 READ_DEVICE_ID = 'read_device_id'
                 READ_SOFTWARE_VERSION = 'read_software_version'
                 CLEAR_SD = 'clear_sd'
