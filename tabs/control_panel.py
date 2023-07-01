@@ -55,9 +55,9 @@ def reading_controls():
     control_ids = TagIds.Tabs.Monitors.Control
     return [
         generate_card('Read Timers', [dbc.Button('Read', id=control_ids.READ_TIME)]),
-        generate_card('Read Clock', [dbc.Button('Read', id=control_ids.READ_CLOCK)]),
-        generate_card('Read Software Version', [dbc.Button('Read', id=control_ids.READ_SOFTWARE_VERSION)]),
         generate_card('Read Device ID', [dbc.Button('Read', id=control_ids.READ_DEVICE_ID)]),
+        generate_card('Read Software Version', [dbc.Button('Read', id=control_ids.READ_SOFTWARE_VERSION)]),
+        generate_card('Read Clock', [dbc.Button('Read', id=control_ids.READ_CLOCK)]),
     ]
 
 
