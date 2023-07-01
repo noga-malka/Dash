@@ -77,11 +77,11 @@ class SensorInstance:
 
     Battery = Sensor(label=Labels.BATTERY,
                      minimum=0,
-                     low_error=0,
-                     low_warning=0,
-                     high_warning=100,
-                     high_error=100,
-                     maximum=100,
+                     low_error=10,
+                     low_warning=25,
+                     high_warning=110,
+                     high_error=110,
+                     maximum=110,
                      unit_type=UnitTypes.PERCENTAGE,
                      possible_units=[UnitTypes.PERCENTAGE])
 
