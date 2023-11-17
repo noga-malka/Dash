@@ -20,6 +20,8 @@ class InputNames:
     TIMER = 'Time'
     BATTERY = 'Vbat'
     RECORD_STATUS = 'Record'
+    PRESSURE = 'Pressure'
+    MOTOR = 'Motor'
 
 
 class SensorNames:
@@ -135,6 +137,12 @@ class Settings:
     ]
 
     GRAPHS = {
+        'Pressure': [
+            InputNames.PRESSURE
+        ],
+        'Motor': [
+            InputNames.MOTOR
+        ],
         'Temperature': [
             InputNames.TEMP,
         ],
