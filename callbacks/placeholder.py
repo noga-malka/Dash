@@ -41,7 +41,7 @@ def send_command(*clicks):
         realtime.send_command(command_mapping[callback_context.triggered_id])
 
 
-@app.callback(Output(TagIds.PLACEHOLDER, 'contextMenu'), Input(TagIds.Buttons.START_RECORD, TagFields.CLICK),
+@app.callback(Output(TagIds.PLACEHOLDER, 'draggable'), Input(TagIds.Buttons.START_RECORD, TagFields.CLICK),
               prevent_initial_call=True)
 def send_command(click):
     if click is not None:
